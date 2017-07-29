@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {ElementRef,Renderer2} from '@angular/core';
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
+
 export class DashboardComponent implements OnInit {
 
-  // constructor( ) { }
+  constructor(mainChart: ElementRef) { 
+    this.mainChart = mainChart;
+  }
 
+  public mainChart : ElementRef;
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';
@@ -233,8 +238,23 @@ export class DashboardComponent implements OnInit {
   }
 
   public triggerFile(fileInput:Element) {
-    // do something
-    alert("test");
+    this.setChartDataSeries();
+  }
+
+  public addData(chart, label, data) {
+    chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+  }
+
+  public removeData(chart) {
+      chart.data.labels.pop();
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.pop();
+      });
+      chart.update();
   }
 
   public mainChartElements = 27;
@@ -466,13 +486,21 @@ export class DashboardComponent implements OnInit {
   public sparklineChartLegend = false;
   public sparklineChartType = 'line';
 
-
-  ngOnInit(): void {
+  private setChartDataSeries(){
     // generate random values for mainChart
+    for (let i = 0; i <= this.mainChartElements; i++) {
+      this.mainChartData1.pop();
+      this.mainChartData2.pop();
+      this.mainChartData3.pop();
+    }
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));
       this.mainChartData2.push(this.random(80, 100));
       this.mainChartData3.push(65);
     }
+  }
+
+  ngOnInit(): void {
+    this.setChartDataSeries();
   }
 }
