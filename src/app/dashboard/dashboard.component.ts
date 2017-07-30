@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
+import { FileParser } from '../shared/fileparser';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -39,21 +40,7 @@ export class DashboardComponent implements OnInit {
     return rgba;
   }
 
-  // events
-  public chartClicked(e: any): void {
-    console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    console.log(e);
-  }
-
   // mainChart
-
-  public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
   private text: string;
 
   readSingleFile(inputField) {
@@ -67,60 +54,101 @@ export class DashboardComponent implements OnInit {
           var contents: any = file.target;
           this.text = contents.result;
           console.log("Loaded file");
-      };
+          let fp:FileParser = new FileParser();
+          var parsedFile = fp.parseFile(this.text);
+          var ax:any = fp.parseArray(parsedFile,2,1);
+          var ay:any = fp.parseArray(parsedFile,2,2);
+          var az:any = fp.parseArray(parsedFile,2,3);
+          var rx:any = fp.parseArray(parsedFile,2,4);
+          var ry:any = fp.parseArray(parsedFile,2,5);
+          var rz:any = fp.parseArray(parsedFile,2,6);
+          var x:any = fp.parseArray(parsedFile,1,1);
+          var y:any = fp.parseArray(parsedFile,1,2);
+          var z:any = fp.parseArray(parsedFile,1,3);
+          this.accelerationChartData = [
+            {
+              data: ax,
+              label: 'X'
+            },
+            {
+              data: ay,
+              label: 'Y'
+            },
+            {
+              data: az,
+              label: 'Z'
+            }
+          ];
+          this.rotationChartData = [
+            {
+              data: rx,
+              label: 'X'
+            },
+            {
+              data: ry,
+              label: 'Y'
+            },
+            {
+              data: rz,
+              label: 'Z'
+            }
+          ];
+          this.positionChartData = [
+            {
+              data: z,
+              label: 'Z'
+            }
+          ];
+        };
       reader.readAsText(fileName);
   }
 
   public triggerFile(fileInput:Element) {
     this.readSingleFile(fileInput);
-    this.setChartDataSeries();
   }
 
-  public mainChartElements = 27;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
+  public ax: Array<number> = [];
+  public ay: Array<number> = [];
+  public az: Array<number> = [];
 
-  public mainChartData: Array<any> = [
+  public accelerationChartData: Array<any> = [
     {
-      data: this.mainChartData1,
+      data: this.ax,
       label: 'X'
     },
     {
-      data: this.mainChartData2,
+      data: this.ay,
       label: 'Y'
     },
     {
-      data: this.mainChartData3,
+      data: this.az,
       label: 'Z'
     }
   ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  /* tslint:enable:max-line-length */
+  public rotationChartData: Array<any> = [
+    {
+      data: this.ax,
+      label: 'X'
+    },
+    {
+      data: this.ay,
+      label: 'Y'
+    },
+    {
+      data: this.az,
+      label: 'Z'
+    }
+  ];
+  public positionChartData: Array<any> = [
+    {
+      data: this.az,
+      label: 'Z'
+    }
+  ];
+ 
   public mainChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value: any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
     elements: {
       line: {
         borderWidth: 2
@@ -131,9 +159,6 @@ export class DashboardComponent implements OnInit {
         hoverRadius: 4,
         hoverBorderWidth: 3,
       }
-    },
-    legend: {
-      display: false
     }
   };
   public mainChartColours: Array<any> = [
@@ -153,37 +178,10 @@ export class DashboardComponent implements OnInit {
       pointHoverBackgroundColor: '#fff'
     }
   ];
-  public mainChartLegend = false;
-  public mainChartType = 'line';
-
-  private setChartDataSeries(){
-    // generate random values for mainChart
-    let _mainChartData1:Array<any> = new Array();
-    let _mainChartData2:Array<any> = new Array();
-    let _mainChartData3:Array<any> = new Array();
-    for (let i = 0; i <= this.mainChartElements; i++) {
-      _mainChartData1.push(this.random(50, 200));
-      _mainChartData2.push(this.random(80, 100));
-      _mainChartData3.push(this.random(80, 100));
-    }
-    this.mainChartData = [
-    {
-      data: _mainChartData1,
-      label: 'X'
-    },
-    {
-      data: _mainChartData2,
-      label: 'Y'
-    },
-    {
-      data: _mainChartData3,
-      label: 'Z'
-    }
-  ];
-    this.mainChartLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  }
+  public mainChartLegend = true;
+  public mainChartType = 'scatter';
 
   ngOnInit(): void {
-    this.setChartDataSeries();
+
   }
 }

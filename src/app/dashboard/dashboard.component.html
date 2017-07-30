@@ -18,8 +18,45 @@
       </div><!--/.row-->
       <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
-        [datasets]="mainChartData"
-        [labels]="mainChartLabels"
+        [datasets]="accelerationChartData"
+        [options]="mainChartOptions"
+        [colors]="mainChartColours"
+        [legend]="mainChartLegend"
+        [chartType]="mainChartType"></canvas>
+      </div>
+    </div>
+  </div>
+  <!--/.card-->
+  <div class="card">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-0">Rotation</h4>
+          <div class="small text-muted">X,Y and Z</div>
+        </div><!--/.col-->
+      </div><!--/.row-->
+      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+        <canvas baseChart class="chart"
+        [datasets]="rotationChartData"
+        [options]="mainChartOptions"
+        [colors]="mainChartColours"
+        [legend]="mainChartLegend"
+        [chartType]="mainChartType"></canvas>
+      </div>
+    </div>
+  </div>
+  <!--/.card-->
+  <div class="card">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-0">Height</h4>
+          <div class="small text-muted">in meters</div>
+        </div><!--/.col-->
+      </div><!--/.row-->
+      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+        <canvas baseChart class="chart"
+        [datasets]="positionChartData"
         [options]="mainChartOptions"
         [colors]="mainChartColours"
         [legend]="mainChartLegend"
