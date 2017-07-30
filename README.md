@@ -8,3 +8,7 @@ This project analyses vertigo datalogger files and acts as a first pass data ana
     - Add map
 - Add live bluetooth connection
 - Add 3D view to show live position of datalogger
+
+## Build
+Build to web app via dotnet publish --configuration Release --framework netcoreapp1.1
+More guidance at: http://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/deployment-beanstalk-custom-netcore.html
