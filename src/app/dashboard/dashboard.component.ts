@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public mainChart : ElementRef;
+
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';
@@ -53,7 +54,25 @@ export class DashboardComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  private text: string;
+
+  readSingleFile(inputField) {
+      var fileName = inputField.files[0];
+      if (!fileName) {
+          alert("No file selected");
+          return;
+      }
+      var reader = new FileReader();
+      reader.onload = file => {
+          var contents: any = file.target;
+          this.text = contents.result;
+          console.log("Loaded file");
+      };
+      reader.readAsText(fileName);
+  }
+
   public triggerFile(fileInput:Element) {
+    this.readSingleFile(fileInput);
     this.setChartDataSeries();
   }
 
