@@ -15,21 +15,17 @@ export class FileParser {
       var fs = require('fs');
       var parse = require('csv-parse');
       var parse = require('csv-parse/lib/sync');
-      var lines = parse(str,{delimiter: '\n'});
-      var output:Array<Array<number>> = [];
-      lines.forEach(line => {
-        var vals = parse(line,{delimiter: ','});
-        output.push(vals[0]);
-      });
-      return output;
+      var lines = parse(str,{relax_column_count: true});
+      return lines;
   }
 
   public parseArray(array:Array<Array<number>>,type:number,channel:number):any{
     var index = 0;  
     var output = [];
+    var start = array[0][0];
     array.forEach(line => {
           if (line[1]==type){
-              output.push({x:index,y:line[1+channel]});
+              output.push({x:(line[0]-start)/1000.0,y:line[1+channel]});
               index = index + 1;
           }
       });
