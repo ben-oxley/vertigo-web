@@ -59,6 +59,9 @@ export class DashboardComponent implements OnInit {
           var ax:any = fp.parseArray(parsedFile,2,1);
           var ay:any = fp.parseArray(parsedFile,2,2);
           var az:any = fp.parseArray(parsedFile,2,3);
+          var iax:any = this.integrate(ax);
+          var iay:any = this.integrate(ay);
+          var iaz:any = this.integrate(az);
           var rx:any = fp.parseArray(parsedFile,2,4);
           var ry:any = fp.parseArray(parsedFile,2,5);
           var rz:any = fp.parseArray(parsedFile,2,6);
@@ -76,6 +79,20 @@ export class DashboardComponent implements OnInit {
             },
             {
               data: az,
+              label: 'Z'
+            }
+          ];
+          this.accelerationIntegralChartData = [
+            {
+              data: iax,
+              label: 'X'
+            },
+            {
+              data: iay,
+              label: 'Y'
+            },
+            {
+              data: iaz,
               label: 'Z'
             }
           ];
@@ -103,6 +120,24 @@ export class DashboardComponent implements OnInit {
       reader.readAsText(fileName);
   }
 
+  private integrate(any:any):any{
+    var lastX:number = any[0].x;
+    var lastY:number = any[0].y;
+    var output = [];
+    var last:number = 0;
+    any.forEach(element => {
+      var diff:number = ((parseFloat(element.y)+lastY)*(parseFloat(element.x)-lastX)/2.0);
+      if (isNaN(diff)){
+        diff = 0;
+      }
+      output.push({x:element.x,y:last+diff});
+      last = last+diff;
+      lastX = parseFloat(element.x);
+      lastY = parseFloat(element.y);
+    });
+    return output;
+  }
+
   public triggerFile(fileInput:Element) {
     this.readSingleFile(fileInput);
   }
@@ -112,6 +147,20 @@ export class DashboardComponent implements OnInit {
   public az: Array<number> = [];
 
   public accelerationChartData: Array<any> = [
+    {
+      data: this.ax,
+      label: 'X'
+    },
+    {
+      data: this.ay,
+      label: 'Y'
+    },
+    {
+      data: this.az,
+      label: 'Z'
+    }
+  ];
+  public accelerationIntegralChartData: Array<any> = [
     {
       data: this.ax,
       label: 'X'

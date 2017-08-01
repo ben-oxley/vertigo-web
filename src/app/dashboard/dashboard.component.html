@@ -26,6 +26,24 @@
       </div>
     </div>
   </div>
+  <div class="card">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-0">Acceleration, First Integral (Velocity)</h4>
+          <div class="small text-muted">X,Y and Z</div>
+        </div><!--/.col-->
+      </div><!--/.row-->
+      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+        <canvas baseChart class="chart"
+        [datasets]="accelerationIntegralChartData"
+        [options]="mainChartOptions"
+        [colors]="mainChartColours"
+        [legend]="mainChartLegend"
+        [chartType]="mainChartType"></canvas>
+      </div>
+    </div>
+  </div>
   <!--/.card-->
   <div class="card">
     <div class="card-block">
