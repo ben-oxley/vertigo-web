@@ -4,8 +4,12 @@ This project analyses vertigo datalogger files and acts as a first pass data ana
 
 ## TODO
 - Parse datalogger files
-    - Add new graph types
+    - Add Kalman Filtered data
+    - Add new integrators and integration to all graphs
     - Add map
+    - Correct graph labels
+    - Add zooming on graphs
+- Prepare data parsing to use streaming data sources
 - Add live bluetooth connection
 - Add 3D view to show live position of datalogger
 
