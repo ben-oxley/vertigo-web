@@ -73,8 +73,10 @@ export class DashboardComponent implements OnInit {
           var q2:any = fp.parseArray(parsedFile,3,3);
           var q3:any = fp.parseArray(parsedFile,3,4);
           var accelerationVector:Array<any> = [ax,ay,az];
+          var angularAccelerationVector:Array<any> = [rx,ry,rz];
           var quaternion:Array<any> = [q0,q1,q2,q3];
           var correctedAcceleration:Array<any> = this.convertDataToWorldReference(accelerationVector,quaternion);
+          var correctedAngularAcceleration:Array<any> = this.convertDataToWorldReference(angularAccelerationVector,quaternion);
           this.worldReferenceAccelerationChartData = [
             {
               data: correctedAcceleration[0],
@@ -86,6 +88,20 @@ export class DashboardComponent implements OnInit {
             },
             {
               data: correctedAcceleration[2],
+              label: 'Z'
+            }
+          ];
+          this.worldReferenceAngularAccelerationChartData = [
+            {
+              data: correctedAngularAcceleration[0],
+              label: 'X'
+            },
+            {
+              data: correctedAngularAcceleration[1],
+              label: 'Y'
+            },
+            {
+              data: correctedAngularAcceleration[2],
               label: 'Z'
             }
           ];
@@ -117,7 +133,7 @@ export class DashboardComponent implements OnInit {
               label: 'Z'
             }
           ];
-          this.rotationChartData = [
+          this.angularAccelerationChartData = [
             {
               data: rx,
               label: 'X'
@@ -128,6 +144,20 @@ export class DashboardComponent implements OnInit {
             },
             {
               data: rz,
+              label: 'Z'
+            }
+          ];
+          this.worldReferenceAccelerationChartData = [
+            {
+              data: correctedAcceleration[0],
+              label: 'X'
+            },
+            {
+              data: correctedAcceleration[1],
+              label: 'Y'
+            },
+            {
+              data: correctedAcceleration[2],
               label: 'Z'
             }
           ];
@@ -253,7 +283,21 @@ export class DashboardComponent implements OnInit {
       label: 'Z'
     }
   ];
-  public rotationChartData: Array<any> = [
+  public angularAccelerationChartData: Array<any> = [
+    {
+      data: this.ax,
+      label: 'X'
+    },
+    {
+      data: this.ay,
+      label: 'Y'
+    },
+    {
+      data: this.az,
+      label: 'Z'
+    }
+  ];
+  public worldReferenceAngularAccelerationChartData: Array<any> = [
     {
       data: this.ax,
       label: 'X'

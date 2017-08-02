@@ -48,13 +48,13 @@
     <div class="card-block">
       <div class="row">
         <div class="col-sm-12">
-          <h4 class="card-title mb-0">Acceleration, First Integral (Velocity)</h4>
-          <div class="small text-muted">X,Y and Z</div>
+          <h4 class="card-title mb-0">Angular Acceleration</h4>
+          <div class="small text-muted">Around X,Y and Z</div>
         </div><!--/.col-->
       </div><!--/.row-->
       <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
-        [datasets]="accelerationIntegralChartData"
+        [datasets]="angularAccelerationChartData"
         [options]="mainChartOptions"
         [colors]="mainChartColours"
         [legend]="mainChartLegend"
@@ -67,13 +67,13 @@
     <div class="card-block">
       <div class="row">
         <div class="col-sm-12">
-          <h4 class="card-title mb-0">Rotation</h4>
-          <div class="small text-muted">X,Y and Z</div>
+          <h4 class="card-title mb-0">Angular Acceleration in World Reference Frame</h4>
+          <div class="small text-muted">Around X,Y and Z</div>
         </div><!--/.col-->
       </div><!--/.row-->
       <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
-        [datasets]="rotationChartData"
+        [datasets]="worldReferenceAngularAccelerationChartData"
         [options]="mainChartOptions"
         [colors]="mainChartColours"
         [legend]="mainChartLegend"
@@ -93,6 +93,25 @@
       <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="positionChartData"
+        [options]="mainChartOptions"
+        [colors]="mainChartColours"
+        [legend]="mainChartLegend"
+        [chartType]="mainChartType"></canvas>
+      </div>
+    </div>
+  </div>
+  <!--/.card-->
+  <div class="card">
+    <div class="card-block">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="card-title mb-0">Acceleration, First Integral (Velocity)</h4>
+          <div class="small text-muted">X,Y and Z</div>
+        </div><!--/.col-->
+      </div><!--/.row-->
+      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+        <canvas baseChart class="chart"
+        [datasets]="accelerationIntegralChartData"
         [options]="mainChartOptions"
         [colors]="mainChartColours"
         [legend]="mainChartLegend"
