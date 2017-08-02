@@ -68,6 +68,27 @@ export class DashboardComponent implements OnInit {
           var x:any = fp.parseArray(parsedFile,1,1);
           var y:any = fp.parseArray(parsedFile,1,2);
           var z:any = fp.parseArray(parsedFile,1,3);
+          var q0:any = fp.parseArray(parsedFile,3,1);
+          var q1:any = fp.parseArray(parsedFile,3,2);
+          var q2:any = fp.parseArray(parsedFile,3,3);
+          var q3:any = fp.parseArray(parsedFile,3,4);
+          var accelerationVector:Array<any> = [ax,ay,az];
+          var quaternion:Array<any> = [q0,q1,q2,q3];
+          var correctedAcceleration:Array<any> = this.convertDataToWorldReference(accelerationVector,quaternion);
+          this.worldReferenceAccelerationChartData = [
+            {
+              data: correctedAcceleration[0],
+              label: 'X'
+            },
+            {
+              data: correctedAcceleration[1],
+              label: 'Y'
+            },
+            {
+              data: correctedAcceleration[2],
+              label: 'Z'
+            }
+          ];
           this.accelerationChartData = [
             {
               data: ax,
@@ -138,6 +159,50 @@ export class DashboardComponent implements OnInit {
     return output;
   }
 
+  private convertDataToWorldReference(data:Array<any>,quaternion:Array<any>):Array<any>{
+    var output:Array<any> = [[],[],[]];
+    var endIndex = data[0].length;
+    if (quaternion[0].length< endIndex){
+      endIndex = quaternion[0].length;
+    }
+
+    for (var i = 0; i < endIndex; i++){
+      var vector:Array<number> = [parseFloat(data[0][i].y),parseFloat(data[1][i].y),parseFloat(data[2][i].y)];
+      var thisQuaternion:Array<number> = [parseFloat(quaternion[0][i].y),parseFloat(quaternion[1][i].y),parseFloat(quaternion[2][i].y),parseFloat(quaternion[3][i].y)];
+      var correctedVector:Array<number> = this.toWorldReference(vector,thisQuaternion);
+      output[0].push({x:data[0][i].x,y:correctedVector[0]});
+      output[1].push({x:data[0][i].x,y:correctedVector[1]});
+      output[2].push({x:data[0][i].x,y:correctedVector[2]});
+    }
+    return output;
+  }
+
+  private toWorldReference(vector:Array<number>,quaternion:Array<number>):Array<number>{
+    var outputVector:Array<number> = [0.0,vector[0],vector[1],vector[2]];
+    outputVector = this.hamiltonian(quaternion,outputVector);
+    outputVector = this.hamiltonian(outputVector,this.quaternionConjugate(quaternion));
+    outputVector = [outputVector[1],outputVector[2],outputVector[3]];
+    return outputVector;
+  }
+
+  private quaternionConjugate(q:Array<number>):Array<number>{
+    var output:Array<number> = [];
+    output.push( q[0]);
+    output.push(-q[1]);
+    output.push(-q[2]);
+    output.push(-q[3]);
+    return output;
+  }
+
+  private hamiltonian(q:Array<number>, r:Array<number>):Array<number>{
+    var output:Array<number> = [];
+    output.push(q[0]*r[0] - q[1]*r[1] - q[2]*r[2] - q[3]*r[3]);
+    output.push(q[0]*r[1] + r[0]*q[1] + q[2]*r[3] - q[3]*r[2]);
+    output.push(q[0]*r[2] + r[0]*q[2] + q[3]*r[1] - q[1]*r[3]);
+    output.push(q[0]*r[3] + r[0]*q[3] + q[1]*r[2] - q[2]*r[1]);
+    return output;
+  }
+
   public triggerFile(fileInput:Element) {
     this.readSingleFile(fileInput);
   }
@@ -145,7 +210,21 @@ export class DashboardComponent implements OnInit {
   public ax: Array<number> = [];
   public ay: Array<number> = [];
   public az: Array<number> = [];
-
+  
+  public worldReferenceAccelerationChartData: Array<any> = [
+    {
+      data: this.ax,
+      label: 'X'
+    },
+    {
+      data: this.ay,
+      label: 'Y'
+    },
+    {
+      data: this.az,
+      label: 'Z'
+    }
+  ];
   public accelerationChartData: Array<any> = [
     {
       data: this.ax,
