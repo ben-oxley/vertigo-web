@@ -37,11 +37,13 @@ export class FileParser {
         });
         // When we are done, test that the parsed output matched what expected
         parser.on('finish', function(){
-        
+            console.log('Finished');
+
         });
         var f:Function = function(a){
             parser.write(a);
         }
+        
         return f;
   }
 

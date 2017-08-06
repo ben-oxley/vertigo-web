@@ -190,7 +190,7 @@ export class DashboardComponent implements OnInit {
           var fileText:string = contents.result;
           console.log("Loaded file");
           let fp:FileParser = new FileParser();
-          var callback:Function = function(l){
+          var callback:Function = (l)=>{
             fp.parseLine(this.accelerationChartData[0],l,2,1);
             fp.parseLine(this.accelerationChartData[1],l,2,2);
             fp.parseLine(this.accelerationChartData[2],l,2,3);
@@ -234,7 +234,7 @@ export class DashboardComponent implements OnInit {
             });
           }
           var stringLoader:Function = fp.parseLines(callback);
-          fileText.split('\n').forEach(line=>{
+          fileText.split('\r\n').forEach(line=>{
             stringLoader(line);
           });
         };
