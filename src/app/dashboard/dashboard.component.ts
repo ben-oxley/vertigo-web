@@ -171,6 +171,29 @@ export class DashboardComponent implements OnInit {
       reader.readAsText(fileName);
   }
 
+  asynchronousReadFile(inputField) {
+      var fileName = inputField.files[0];
+      if (!fileName) {
+          alert("No file selected");
+          return;
+      }
+      var reader = new FileReader();
+      reader.onload = file => {
+          var contents: any = file.target;
+          var fileText:string = contents.result;
+          console.log("Loaded file");
+          let fp:FileParser = new FileParser();
+          var callback:Function = ()=>{
+            
+          }
+          var stringLoader:Function = fp.parseLines(callback);
+          fileText.split('\n').forEach(line=>{
+            stringLoader.apply(line);
+          });
+        };
+      reader.readAsText(fileName);
+  }
+
   private integrate(any:any):any{
     var lastX:number = any[0].x;
     var lastY:number = any[0].y;

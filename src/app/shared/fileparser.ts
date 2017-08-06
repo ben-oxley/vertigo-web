@@ -19,6 +19,30 @@ export class FileParser {
       return lines;
   }
 
+  public parseLines(callback:Function):Function{
+        var fs = require('fs');
+        var parse = require('csv-parse');
+        var record; 
+        // Create the parser
+        var parser = parse({relax_column_count: true});
+        // Use the writable stream api
+        parser.on('readable', function(){
+            while(record = parser.read()){
+                callback.apply(record);
+            }
+        });
+        // Catch any error
+        parser.on('error', function(err){
+            console.log(err.message);
+        });
+        // When we are done, test that the parsed output matched what expected
+        parser.on('finish', function(){
+        
+        });
+        var f:Function = a=>parser.write(a);
+        return f;
+  }
+
   public parseArray(array:Array<Array<number>>,type:number,channel:number):any{
     var index = 0;  
     var output = [];
