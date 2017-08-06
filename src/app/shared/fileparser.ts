@@ -28,7 +28,7 @@ export class FileParser {
         // Use the writable stream api
         parser.on('readable', function(){
             while(record = parser.read()){
-                callback.apply(record);
+                callback(record);
             }
         });
         // Catch any error
@@ -39,7 +39,9 @@ export class FileParser {
         parser.on('finish', function(){
         
         });
-        var f:Function = a=>parser.write(a);
+        var f:Function = function(a){
+            parser.write(a);
+        }
         return f;
   }
 
@@ -54,6 +56,20 @@ export class FileParser {
           }
       });
       return output;
+  }
+
+  public parseLine(outputArray:any,line:Array<number>,type:number,channel:number):any{
+    if (line[1]==type){
+        outputArray.push({x:(line[0])/1000.0,y:line[1+channel]});
+    }
+  }
+
+  public parseLineAnd(outputArray:any,line:Array<number>,type:number,channel:number,then:Function):any{
+    if (line[1]==type){
+        var obj = {x:(line[0])/1000.0,y:line[1+channel]}
+        outputArray.push(obj);
+        then(obj);
+    }
   }
     
 }
