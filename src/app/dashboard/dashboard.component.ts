@@ -163,6 +163,14 @@ export class DashboardComponent implements OnInit {
           ];
           this.positionChartData = [
             {
+              data: x,
+              label: 'X'
+            },
+            {
+              data: y,
+              label: 'Y'
+            },
+            {
               data: z,
               label: 'Z'
             }
@@ -182,7 +190,7 @@ export class DashboardComponent implements OnInit {
       this.accelerationIntegralChartData = this.create3DDataArray();
       this.angularAccelerationChartData = this.create3DDataArray();
       this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
-      this.positionChartData = this.create1DDataArray();
+      this.positionChartData = this.create3DDataArray();
       this.quaternionChartData = this.create4DDataArray();
       var reader = new FileReader();
       reader.onload = file => {
@@ -191,45 +199,48 @@ export class DashboardComponent implements OnInit {
           console.log("Loaded file");
           let fp:FileParser = new FileParser();
           var callback:Function = (l)=>{
-            fp.parseLine(this.accelerationChartData[0],l,2,1);
-            fp.parseLine(this.accelerationChartData[1],l,2,2);
-            fp.parseLine(this.accelerationChartData[2],l,2,3);
-            fp.parseLine(this.angularAccelerationChartData[0],l,2,4);
-            fp.parseLine(this.angularAccelerationChartData[1],l,2,5);
-            fp.parseLine(this.angularAccelerationChartData[2],l,2,6);
-            fp.parseLine(this.positionChartData[0],l,1,1);
-            fp.parseLine(this.positionChartData[1],l,1,2);
-            fp.parseLine(this.positionChartData[2],l,1,3);
-            fp.parseLine(this.quaternionChartData[0],l,3,1);
-            fp.parseLine(this.quaternionChartData[1],l,3,2);
-            fp.parseLine(this.quaternionChartData[2],l,3,3);
-            fp.parseLineAnd(this.quaternionChartData[3],l,3,4,()=>{
-              if (this.angularAccelerationChartData[0].length>0&&this.accelerationChartData[0].length>0){
-                var xArr = this.accelerationChartData[0];
+            for (var i = 0; i < l.length;i++){
+              l[i] = parseFloat(l[i]);
+            }
+            fp.parseLine(this.accelerationChartData[0].data,l,2,1);
+            fp.parseLine(this.accelerationChartData[1].data,l,2,2);
+            fp.parseLine(this.accelerationChartData[2].data,l,2,3);
+            fp.parseLine(this.angularAccelerationChartData[0].data,l,2,4);
+            fp.parseLine(this.angularAccelerationChartData[1].data,l,2,5);
+            fp.parseLine(this.angularAccelerationChartData[2].data,l,2,6);
+            fp.parseLine(this.positionChartData[0].data,l,1,1);
+            fp.parseLine(this.positionChartData[1].data,l,1,2);
+            fp.parseLine(this.positionChartData[2].data,l,1,3);
+            fp.parseLine(this.quaternionChartData[0].data,l,3,1);
+            fp.parseLine(this.quaternionChartData[1].data,l,3,2);
+            fp.parseLine(this.quaternionChartData[2].data,l,3,3);
+            fp.parseLineAnd(this.quaternionChartData[3].data,l,3,4,()=>{
+              if (this.angularAccelerationChartData[0].data.length>0&&this.accelerationChartData[0].data.length>0){
+                var xArr = this.accelerationChartData[0].data;
                 var ax = xArr[xArr.length-1].y;
-                var yArr = this.accelerationChartData[1];
+                var yArr = this.accelerationChartData[1].data;
                 var ay = yArr[yArr.length-1].y;
-                var zArr = this.accelerationChartData[2];
+                var zArr = this.accelerationChartData[2].data;
                 var az = zArr[zArr.length-1].y;
-                var rxArr = this.angularAccelerationChartData[0];
+                var rxArr = this.angularAccelerationChartData[0].data;
                 var rx = rxArr[rxArr.length-1].y;
-                var ryArr = this.angularAccelerationChartData[1];
+                var ryArr = this.angularAccelerationChartData[1].data;
                 var ry = ryArr[ryArr.length-1].y;
-                var rzArr = this.angularAccelerationChartData[2];
+                var rzArr = this.angularAccelerationChartData[2].data;
                 var rz = rzArr[rzArr.length-1].y;
-                var q0Arr = this.quaternionChartData[0];
+                var q0Arr = this.quaternionChartData[0].data;
                 var q0 = q0Arr[q0Arr.length-1].y;
-                var q1Arr = this.quaternionChartData[1];
+                var q1Arr = this.quaternionChartData[1].data;
                 var q1 = q1Arr[q1Arr.length-1].y;
-                var q2Arr = this.quaternionChartData[2];
+                var q2Arr = this.quaternionChartData[2].data;
                 var q2 = q2Arr[q2Arr.length-1].y;
-                var q3Arr = this.quaternionChartData[2];
+                var q3Arr = this.quaternionChartData[3].data;
                 var q3 = q3Arr[q3Arr.length-1].y;
                 var accelerationVector:Array<any> = [ax,ay,az];
                 var angularAccelerationVector:Array<any> = [rx,ry,rz];
                 var quaternion:Array<any> = [q0,q1,q2,q3];
-                this.convertToWorldReference(q0Arr[q0Arr.length-1].x,this.worldReferenceAccelerationChartData,accelerationVector,quaternion);
-                this.convertToWorldReference(q0Arr[q0Arr.length-1].x,this.worldReferenceAngularAccelerationChartData,angularAccelerationVector,quaternion);
+                this.convertToWorldReference(q0Arr[q0Arr.length-1].x,accelerationVector,quaternion,this.worldReferenceAccelerationChartData);
+                this.convertToWorldReference(q0Arr[q0Arr.length-1].x,angularAccelerationVector,quaternion,this.worldReferenceAngularAccelerationChartData);
             }
             });
           }
@@ -239,6 +250,7 @@ export class DashboardComponent implements OnInit {
           });
         };
       reader.readAsText(fileName);
+      console.log('Finished loading file');
   }
 
   private integrate(any:any):any{
@@ -260,12 +272,12 @@ export class DashboardComponent implements OnInit {
   }
 
   private convertToWorldReference(time:number,data:Array<any>,quaternion:Array<any>,output:Array<any>){
-      var vector:Array<number> = [parseFloat(data[0]),parseFloat(data[1]),parseFloat(data[2])];
-      var thisQuaternion:Array<number> = [parseFloat(quaternion[0]),parseFloat(quaternion[1]),parseFloat(quaternion[2]),parseFloat(quaternion[3])];
+      var vector:Array<number> = [data[0],data[1],data[2]];
+      var thisQuaternion:Array<number> = [quaternion[0],quaternion[1],quaternion[2],quaternion[3]];
       var correctedVector:Array<number> = this.toWorldReference(vector,thisQuaternion);
-      output[0].push({x:time,y:correctedVector[0]});
-      output[1].push({x:time,y:correctedVector[1]});
-      output[2].push({x:time,y:correctedVector[2]});
+      output[0].data.push({x:time,y:correctedVector[0]});
+      output[1].data.push({x:time,y:correctedVector[1]});
+      output[2].data.push({x:time,y:correctedVector[2]});
   }
 
   private convertDataToWorldReference(data:Array<any>,quaternion:Array<any>):Array<any>{
@@ -321,7 +333,7 @@ export class DashboardComponent implements OnInit {
   public accelerationIntegralChartData: Array<any> = this.create3DDataArray();
   public angularAccelerationChartData: Array<any> = this.create3DDataArray();
   public worldReferenceAngularAccelerationChartData: Array<any> = this.create3DDataArray();
-  public positionChartData: Array<any> = this.create1DDataArray();
+  public positionChartData: Array<any> = this.create3DDataArray();
   public quaternionChartData: Array<any> = this.create4DDataArray();
 
   public create1DDataArray():Array<any>{
