@@ -205,12 +205,15 @@ export class DashboardComponent implements OnInit {
             fp.parseLine(this.accelerationChartData[0].data,l,2,1);
             fp.parseLine(this.accelerationChartData[1].data,l,2,2);
             fp.parseLine(this.accelerationChartData[2].data,l,2,3);
+            this.accelerationChartData = this.accelerationChartData.slice();
             fp.parseLine(this.angularAccelerationChartData[0].data,l,2,4);
             fp.parseLine(this.angularAccelerationChartData[1].data,l,2,5);
             fp.parseLine(this.angularAccelerationChartData[2].data,l,2,6);
+            this.angularAccelerationChartData = this.angularAccelerationChartData.slice();
             fp.parseLine(this.positionChartData[0].data,l,1,1);
             fp.parseLine(this.positionChartData[1].data,l,1,2);
             fp.parseLine(this.positionChartData[2].data,l,1,3);
+            this.positionChartData = this.positionChartData.slice();
             fp.parseLine(this.quaternionChartData[0].data,l,3,1);
             fp.parseLine(this.quaternionChartData[1].data,l,3,2);
             fp.parseLine(this.quaternionChartData[2].data,l,3,3);
@@ -240,17 +243,57 @@ export class DashboardComponent implements OnInit {
                 var angularAccelerationVector:Array<any> = [rx,ry,rz];
                 var quaternion:Array<any> = [q0,q1,q2,q3];
                 this.convertToWorldReference(q0Arr[q0Arr.length-1].x,accelerationVector,quaternion,this.worldReferenceAccelerationChartData);
+                this.worldReferenceAccelerationChartData = this.worldReferenceAccelerationChartData.slice();
                 this.convertToWorldReference(q0Arr[q0Arr.length-1].x,angularAccelerationVector,quaternion,this.worldReferenceAngularAccelerationChartData);
+                this.worldReferenceAngularAccelerationChartData = this.worldReferenceAngularAccelerationChartData.slice();
             }
+              //TODO - Slice is a hack that forces data re-rendering. However this can be extremely slow.
+              //For now, we'll use it but we need to find a better way for chart.js to 
+              //only render the changes rather than a full re-render. Look at the following for ideas
+              //https://github.com/valor-software/ng2-charts/issues/291
+              //This appears to be the fix:
+              //https://github.com/valor-software/ng2-charts/pull/563
+            this.quaternionChartData = this.quaternionChartData.slice();
+              
             });
           }
           var stringLoader:Function = fp.parseLines(callback);
-          fileText.split('\r\n').forEach(line=>{
-            stringLoader(line);
+          fileText.split('\n').forEach(line=>{
+            stringLoader(line+'\n');
           });
+          // var fileArray:string[] = fileText.split('\n');
+          // this.runSlowly((l)=>stringLoader(l+'\n'),fileArray,0);
+          console.log('Finished loading file');
         };
       reader.readAsText(fileName);
-      console.log('Finished loading file');
+      
+  }
+
+  private runSlowly(callback:Function,filearray:string[],line){
+      callback(filearray[line]);
+      var ref = this;
+      if (line<filearray.length-1){
+          setTimeout(()=>ref.runSlowly(callback,filearray,line+1),10);
+      }
+  }
+
+  private updateSets(datasets:any){
+    datasets = datasets.slice();
+  }
+
+  private updateset(datasets:any):any{
+    let newDataSets = [];
+    datasets.forEach(dataset => {
+      let newDataSet;
+      let newData = dataset.data.slice();
+        
+      newDataSet = [{
+        label: dataset.label,
+        data: newData
+      }];
+      newDataSets.push(newDataSet);
+    });
+    return newDataSets;
   }
 
   private integrate(any:any):any{
@@ -384,6 +427,7 @@ export class DashboardComponent implements OnInit {
   }
  
   public mainChartOptions: any = {
+    animation: false,
     responsive: true,
     maintainAspectRatio: false,
     elements: {
