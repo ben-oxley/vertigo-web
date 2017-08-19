@@ -16,9 +16,9 @@ export class Data {
   public q1:Point[];
   public q2:Point[];
   public q3:Point[];
-  public newPositionData = false;
-  public newIMUData = false;
-  public newQuaternionData = false;
+  public newPositionData:boolean = false;
+  public newIMUData:boolean = false;
+  public newQuaternionData:boolean = false;
 
   public reset(){
       this.newPositionData = false;
