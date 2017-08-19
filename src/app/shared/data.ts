@@ -1,6 +1,10 @@
 import { Point } from './point';
 import { FileParser } from './fileparser';
 
+export interface DataListener {
+    DataUpdated(data:CalculatedData):void;
+}
+
 export class Data {
   constructor() { }
   public x:Point[] = [];

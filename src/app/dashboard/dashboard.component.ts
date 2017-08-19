@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
 import { FileParser } from '../shared/fileparser';
-import { Data,CalculatedData } from '../shared/data';
+import { Data,CalculatedData, DataListener } from '../shared/data';
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, DataListener {
 
   public static data:CalculatedData;
 
@@ -49,30 +49,8 @@ export class DashboardComponent implements OnInit {
   // mainChart
   private text: string;
 
-  asynchronousReadFile(inputField) {
-      var fileName = inputField.files[0];
-      if (!fileName) {
-          alert("No file selected");
-          return;
-      }
-      this.worldReferenceAccelerationChartData = this.create3DDataArray();
-      this.accelerationChartData = this.create3DDataArray();
-      this.accelerationIntegralChartData = this.create3DDataArray();
-      this.angularAccelerationChartData = this.create3DDataArray();
-      this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
-      this.positionChartData = this.create3DDataArray();
-      this.quaternionChartData = this.create4DDataArray();
-      DashboardComponent.data = new CalculatedData();
-      this.data = DashboardComponent.data;
-      var reader = new FileReader();
-      reader.onload = file => {
-          var contents: any = file.target;
-          var fileText:string = contents.result;
-          console.log("Loaded file");
-          let fp:FileParser = new FileParser();
-          var callback:Function = (l)=>{
-            this.data.loadData(l);
-            if (this.data.boardReference.newIMUData){
+  private refreshDataOnScreen(){
+          if (this.data.boardReference.newIMUData){
               this.accelerationChartData[0].data = this.data.boardReference.ax;
               this.accelerationChartData[1].data = this.data.boardReference.ay;
               this.accelerationChartData[2].data = this.data.boardReference.az;
@@ -105,6 +83,32 @@ export class DashboardComponent implements OnInit {
               //https://github.com/valor-software/ng2-charts/issues/291
               //This appears to be the fix:
               //https://github.com/valor-software/ng2-charts/pull/563
+  }
+
+  asynchronousReadFile(inputField) {
+      var fileName = inputField.files[0];
+      if (!fileName) {
+          alert("No file selected");
+          return;
+      }
+      this.worldReferenceAccelerationChartData = this.create3DDataArray();
+      this.accelerationChartData = this.create3DDataArray();
+      this.accelerationIntegralChartData = this.create3DDataArray();
+      this.angularAccelerationChartData = this.create3DDataArray();
+      this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
+      this.positionChartData = this.create3DDataArray();
+      this.quaternionChartData = this.create4DDataArray();
+      DashboardComponent.data = new CalculatedData();
+      this.data = DashboardComponent.data;
+      var reader = new FileReader();
+      reader.onload = file => {
+          var contents: any = file.target;
+          var fileText:string = contents.result;
+          console.log("Loaded file");
+          let fp:FileParser = new FileParser();
+          var callback:Function = (l)=>{
+            this.data.loadData(l);
+            this.refreshDataOnScreen();
           }
           var stringLoader:Function = FileParser.parseLines(callback);
           fileText.split('\n').forEach(line=>{
@@ -223,6 +227,18 @@ export class DashboardComponent implements OnInit {
   public mainChartType = 'scatter';
 
   ngOnInit(): void {
+    
+    this.data = DashboardComponent.data;
+    if (this.data && this.data.boardReference){
+      this.data.boardReference.newIMUData = true;
+      this.data.boardReference.newPositionData = true;
+      this.data.boardReference.newQuaternionData = true;
+      this.data.worldReference.newIMUData = true;
+      this.DataUpdated(this.data);
+    }
+  }
 
+  public DataUpdated(data:CalculatedData){
+    this.refreshDataOnScreen();
   }
 }
