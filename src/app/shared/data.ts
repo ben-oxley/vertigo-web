@@ -54,7 +54,7 @@ export class Data {
     }
 }
 
-export class CalculatedData{
+export class CalculatedData {
     public boardReference:Data;
     public integral:Data;
     public worldReference:Data;

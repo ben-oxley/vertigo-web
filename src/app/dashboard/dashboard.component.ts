@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
 import { FileParser } from '../shared/fileparser';
+import { CalculatedData } from '../shared/data';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public mainChart : ElementRef;
+  public data:CalculatedData;
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
@@ -268,6 +270,76 @@ export class DashboardComponent implements OnInit {
       reader.readAsText(fileName);
       
   }
+
+
+
+  asynchronousReadFile2(inputField) {
+      var fileName = inputField.files[0];
+      if (!fileName) {
+          alert("No file selected");
+          return;
+      }
+      this.worldReferenceAccelerationChartData = this.create3DDataArray();
+      this.accelerationChartData = this.create3DDataArray();
+      this.accelerationIntegralChartData = this.create3DDataArray();
+      this.angularAccelerationChartData = this.create3DDataArray();
+      this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
+      this.positionChartData = this.create3DDataArray();
+      this.quaternionChartData = this.create4DDataArray();
+      var reader = new FileReader();
+      reader.onload = file => {
+          var contents: any = file.target;
+          var fileText:string = contents.result;
+          console.log("Loaded file");
+          let fp:FileParser = new FileParser();
+          var callback:Function = (l)=>{
+            this.data.loadData(l);
+            if (this.data.boardReference.newIMUData){
+              this.accelerationChartData[0].data = this.data.boardReference.ax;
+              this.accelerationChartData[1].data = this.data.boardReference.ay;
+              this.accelerationChartData[2].data = this.data.boardReference.az;
+              this.angularAccelerationChartData[0].data = this.data.boardReference.rx;
+              this.angularAccelerationChartData[1].data = this.data.boardReference.ry;
+              this.angularAccelerationChartData[2].data = this.data.boardReference.rz;
+              this.accelerationChartData = this.accelerationChartData.slice();
+              this.angularAccelerationChartData = this.angularAccelerationChartData.slice();
+            }
+            if (this.data.boardReference.newPositionData){
+              this.positionChartData[0].data = this.data.boardReference.x;
+              this.positionChartData[1].data = this.data.boardReference.y;
+              this.positionChartData[2].data = this.data.boardReference.z;
+              this.positionChartData = this.positionChartData.slice();
+            }
+            if (this.data.worldReference.newIMUData){
+              this.worldReferenceAccelerationChartData[0].data = this.data.worldReference.ax;
+              this.worldReferenceAccelerationChartData[1].data = this.data.worldReference.ay;
+              this.worldReferenceAccelerationChartData[2].data = this.data.worldReference.az;
+              this.worldReferenceAngularAccelerationChartData[0].data = this.data.worldReference.rx;
+              this.worldReferenceAngularAccelerationChartData[1].data = this.data.worldReference.ry;
+              this.worldReferenceAngularAccelerationChartData[2].data = this.data.worldReference.rz;
+              this.worldReferenceAccelerationChartData = this.worldReferenceAccelerationChartData.slice();
+              this.worldReferenceAngularAccelerationChartData = this.worldReferenceAngularAccelerationChartData.slice();
+            }
+           
+              //TODO - Slice is a hack that forces data re-rendering. However this can be extremely slow.
+              //For now, we'll use it but we need to find a better way for chart.js to 
+              //only render the changes rather than a full re-render. Look at the following for ideas
+              //https://github.com/valor-software/ng2-charts/issues/291
+              //This appears to be the fix:
+              //https://github.com/valor-software/ng2-charts/pull/563
+          }
+          var stringLoader:Function = FileParser.parseLines(callback);
+          fileText.split('\n').forEach(line=>{
+            stringLoader(line+'\n');
+          });
+          // var fileArray:string[] = fileText.split('\n');
+          // this.runSlowly((l)=>stringLoader(l+'\n'),fileArray,0);
+          console.log('Finished loading file');
+        };
+      reader.readAsText(fileName);
+      
+  }
+
 
   private runSlowly(callback:Function,filearray:string[],line){
       callback(filearray[line]);
