@@ -8,7 +8,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper, AgmPolyline, AgmPolylinePoint, Pol
 @Component({
   styles: [`
     agm-map {
-      height: 800px;
+      height: 400px;
     }
   `],
   templateUrl: 'map.component.html'
@@ -18,6 +18,7 @@ export class MapComponent implements OnInit {
   @Input() locations:any = [];
   lat: number = 0.0;
   lng: number = 0.0;
+  zoom:number = 16;
   public data:CalculatedData;
   private map: any;
   

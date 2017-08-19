@@ -27,6 +27,10 @@ export const routes: Routes = [
         loadChildren: './map/map.module#MapModule'
       },
       {
+        path: '3d',
+        loadChildren: './threed/threed.module#ThreeDModule'
+      },
+      {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule'
       },
