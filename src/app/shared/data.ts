@@ -3,19 +3,19 @@ import { FileParser } from './fileparser';
 
 export class Data {
   constructor() { }
-  public x:Point[];
-  public y:Point[];
-  public z:Point[];
-  public ax:Point[];
-  public ay:Point[];
-  public az:Point[];
-  public rx:Point[];
-  public ry:Point[];
-  public rz:Point[];
-  public q0:Point[];
-  public q1:Point[];
-  public q2:Point[];
-  public q3:Point[];
+  public x:Point[] = [];
+  public y:Point[] = [];
+  public z:Point[] = [];
+  public ax:Point[] = [];
+  public ay:Point[] = [];
+  public az:Point[] = [];
+  public rx:Point[] = [];
+  public ry:Point[] = [];
+  public rz:Point[] = [];
+  public q0:Point[] = [];
+  public q1:Point[] = [];
+  public q2:Point[] = [];
+  public q3:Point[] = [];
   public newPositionData:boolean = false;
   public newIMUData:boolean = false;
   public newQuaternionData:boolean = false;
@@ -47,17 +47,18 @@ export class Data {
         this.newPositionData = Data.parseLine(this.x,data,1,1);
         Data.parseLine(this.y,data,1,2);
         Data.parseLine(this.z,data,1,3);
-        this.newQuaternionData = Data.parseLine(this.q0,data,1,1);
-        Data.parseLine(this.q1,data,1,2);
-        Data.parseLine(this.q2,data,1,3);
-        Data.parseLine(this.q3,data,1,4);
+        this.newQuaternionData = Data.parseLine(this.q0,data,3,1);
+        Data.parseLine(this.q1,data,3,2);
+        Data.parseLine(this.q2,data,3,3);
+        Data.parseLine(this.q3,data,3,4);
     }
 }
 
 export class CalculatedData {
-    public boardReference:Data;
-    public integral:Data;
-    public worldReference:Data;
+    constructor(){}
+    public boardReference:Data = new Data();
+    public integral:Data = new Data();
+    public worldReference:Data = new Data();
     public loadData(data:any[]){
         this.boardReference.loadData(data);
         if (this.boardReference.newQuaternionData){
@@ -89,7 +90,8 @@ export class CalculatedData {
                 this.convertToWorldReference(q0Arr[q0Arr.length-1].x,angularAccelerationVector,quaternion,[this.worldReference.rx,this.worldReference.ry,this.worldReference.rz]);
                 this.worldReference.newIMUData = true;
             }
-        
+        } else {
+            this.worldReference.newIMUData = false;
         }
     }
     private integrate(any:any):any{

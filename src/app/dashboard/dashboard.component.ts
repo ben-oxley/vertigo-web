@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
 import { FileParser } from '../shared/fileparser';
-import { CalculatedData } from '../shared/data';
+import { Data,CalculatedData } from '../shared/data';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit {
       this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
       this.positionChartData = this.create3DDataArray();
       this.quaternionChartData = this.create4DDataArray();
+      this.data = new CalculatedData();
       var reader = new FileReader();
       reader.onload = file => {
           var contents: any = file.target;
