@@ -3,7 +3,11 @@
     <div class="col-sm-12 col-lg-12">
       <div class="card card-inverse card-primary">
         <agm-map [latitude]="lat" [longitude]="lng">
-          
+          <agm-polyline>
+            <agm-polyline-point *ngFor='let location of locations'
+    [latitude]='location.latitude'
+    [longitude]='location.longitude'></agm-polyline-point>
+          </agm-polyline>
         </agm-map>
       </div>
     </div>
