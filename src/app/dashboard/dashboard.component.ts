@@ -20,6 +20,10 @@ export class DashboardComponent implements OnInit, DataListener {
 
   public mainChart : ElementRef;
   
+  public showIntegral = false;
+  public showAcceleration = true;
+  public showAngularAcceleration = true;
+  public showPosition = true;
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';

@@ -9,13 +9,15 @@
   </div>
 
   <div class="card">
-    <div class="card-block">
-      <div class="row">
-        <div class="col-sm-12">
+    <div class="card-header" role="tab" (click)="showAcceleration=!showAcceleration">
+      <h5 class="mb-0">
+        <a>
           <h4 class="card-title mb-0">Acceleration</h4>
           <div class="small text-muted">X,Y and Z</div>
-        </div><!--/.col-->
-      </div><!--/.row-->
+        </a>
+      </h5>
+    </div>
+    <div class="card-block" [hidden]="!showAcceleration">
       <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="accelerationChartData"
@@ -27,14 +29,16 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-block">
-      <div class="row">
-        <div class="col-sm-12">
+    <div class="card-header" role="tab" (click)="showAcceleration=!showAcceleration">
+      <h5 class="mb-0">
+        <a>
           <h4 class="card-title mb-0">Acceleration in World Reference Frame</h4>
           <div class="small text-muted">X,Y and Z</div>
-        </div><!--/.col-->
-      </div><!--/.row-->
-      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+        </a>
+      </h5>
+    </div>
+    <div class="card-block" [hidden]="!showAcceleration">
+      <div [hidden]="!showAcceleration" #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="worldReferenceAccelerationChartData"
         [options]="mainChartOptions"
@@ -52,7 +56,7 @@
           <div class="small text-muted">Around X,Y and Z</div>
         </div><!--/.col-->
       </div><!--/.row-->
-      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+      <div [hidden]="!showAngularAcceleration" #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="angularAccelerationChartData"
         [options]="mainChartOptions"
@@ -71,7 +75,7 @@
           <div class="small text-muted">Around X,Y and Z</div>
         </div><!--/.col-->
       </div><!--/.row-->
-      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+      <div [hidden]="!showAngularAcceleration" #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="worldReferenceAngularAccelerationChartData"
         [options]="mainChartOptions"
@@ -90,7 +94,7 @@
           <div class="small text-muted">in meters</div>
         </div><!--/.col-->
       </div><!--/.row-->
-      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+      <div [hidden]="!showPosition" #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="positionChartData"
         [options]="mainChartOptions"
@@ -109,7 +113,7 @@
           <div class="small text-muted">X,Y and Z</div>
         </div><!--/.col-->
       </div><!--/.row-->
-      <div #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
+      <div [hidden]="!showIntegral" #mainChart class="chart-wrapper" style="height:300px;margin-top:40px;">
         <canvas baseChart class="chart"
         [datasets]="accelerationIntegralChartData"
         [options]="mainChartOptions"
