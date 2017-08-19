@@ -10,12 +10,16 @@ import { Data,CalculatedData } from '../shared/data';
 
 export class DashboardComponent implements OnInit {
 
+  public static data:CalculatedData;
+
+  public data:CalculatedData;
+
   constructor(mainChart: ElementRef) { 
     this.mainChart = mainChart;
   }
 
   public mainChart : ElementRef;
-  public data:CalculatedData;
+  
 
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
@@ -58,7 +62,8 @@ export class DashboardComponent implements OnInit {
       this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
       this.positionChartData = this.create3DDataArray();
       this.quaternionChartData = this.create4DDataArray();
-      this.data = new CalculatedData();
+      DashboardComponent.data = new CalculatedData();
+      this.data = DashboardComponent.data;
       var reader = new FileReader();
       reader.onload = file => {
           var contents: any = file.target;
