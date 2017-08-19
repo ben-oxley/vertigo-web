@@ -14,17 +14,6 @@ export class DashboardComponent implements OnInit, DataListener {
 
   public data:CalculatedData;
 
-  constructor(mainChart: ElementRef) { 
-    this.mainChart = mainChart;
-  }
-
-  public mainChart : ElementRef;
-  
-  public showIntegral = false;
-  public showAcceleration = true;
-  public showAngularAcceleration = true;
-  public showPosition = true;
-
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';
@@ -65,9 +54,7 @@ export class DashboardComponent implements OnInit, DataListener {
               this.angularAccelerationChartData = this.angularAccelerationChartData.slice();
             }
             if (this.data.boardReference.newPositionData){
-              this.positionChartData[0].data = this.data.boardReference.x;
-              this.positionChartData[1].data = this.data.boardReference.y;
-              this.positionChartData[2].data = this.data.boardReference.z;
+              this.positionChartData[0].data = this.data.boardReference.z;
               this.positionChartData = this.positionChartData.slice();
             }
             if (this.data.worldReference.newIMUData){
@@ -100,7 +87,7 @@ export class DashboardComponent implements OnInit, DataListener {
       this.accelerationIntegralChartData = this.create3DDataArray();
       this.angularAccelerationChartData = this.create3DDataArray();
       this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
-      this.positionChartData = this.create3DDataArray();
+      this.positionChartData = this.create1DDataArray();
       this.quaternionChartData = this.create4DDataArray();
       DashboardComponent.data = new CalculatedData();
       this.data = DashboardComponent.data;
@@ -144,7 +131,7 @@ export class DashboardComponent implements OnInit, DataListener {
   public accelerationIntegralChartData: Array<any> = this.create3DDataArray();
   public angularAccelerationChartData: Array<any> = this.create3DDataArray();
   public worldReferenceAngularAccelerationChartData: Array<any> = this.create3DDataArray();
-  public positionChartData: Array<any> = this.create3DDataArray();
+  public positionChartData: Array<any> = this.create1DDataArray();
   public quaternionChartData: Array<any> = this.create4DDataArray();
 
   public create1DDataArray():Array<any>{
@@ -212,7 +199,7 @@ export class DashboardComponent implements OnInit, DataListener {
   };
   public mainChartColours: Array<any> = [
     { // brandInfo
-      backgroundColor: this.convertHex(this.brandInfo, 10),
+      backgroundColor: 'transparent',
       borderColor: this.brandInfo,
       pointHoverBackgroundColor: '#fff'
     },
