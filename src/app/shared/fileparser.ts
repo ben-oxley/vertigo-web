@@ -1,17 +1,10 @@
-import { Directive, HostListener } from '@angular/core';
 import 'csv-parse/lib/sync'
 import * as p from 'csv-parse';
 
-/**
-* Allows the aside to be toggled via click.
-*/
-@Directive({
-  selector: '[appAsideMenuToggler]',
-})
 export class FileParser {
   constructor() { }
 
-  public parseFile(str:string):Array<Array<number>>{
+  public static parseFile(str:string):Array<Array<number>>{
       var fs = require('fs');
       var parse = require('csv-parse');
       var parse = require('csv-parse/lib/sync');
@@ -19,7 +12,7 @@ export class FileParser {
       return lines;
   }
 
-  public parseLines(callback:Function):Function{
+  public static parseLines(callback:Function):Function{
         var fs = require('fs');
         var parse = require('csv-parse');
         var record; 
@@ -47,7 +40,7 @@ export class FileParser {
         return f;
   }
 
-  public parseArray(array:Array<Array<number>>,type:number,channel:number):any{
+  public static parseArray(array:Array<Array<number>>,type:number,channel:number):any{
     var index = 0;  
     var output = [];
     var start = array[0][0];
@@ -60,13 +53,13 @@ export class FileParser {
       return output;
   }
 
-  public parseLine(outputArray:any,line:Array<number>,type:number,channel:number):any{
+  public static parseLine(outputArray:any,line:Array<number>,type:number,channel:number):any{
     if (line[1]==type){
         outputArray.push({x:(line[0])/1000.0,y:line[1+channel]});
     }
   }
 
-  public parseLineAnd(outputArray:any,line:Array<number>,type:number,channel:number,then:Function):any{
+  public static parseLineAnd(outputArray:any,line:Array<number>,type:number,channel:number,then:Function):any{
     if (line[1]==type){
         var obj = {x:(line[0])/1000.0,y:line[1+channel]}
         outputArray.push(obj);

@@ -55,23 +55,23 @@ export class DashboardComponent implements OnInit {
           this.text = contents.result;
           console.log("Loaded file");
           let fp:FileParser = new FileParser();
-          var parsedFile = fp.parseFile(this.text);
-          var ax:any = fp.parseArray(parsedFile,2,1);
-          var ay:any = fp.parseArray(parsedFile,2,2);
-          var az:any = fp.parseArray(parsedFile,2,3);
+          var parsedFile = FileParser.parseFile(this.text);
+          var ax:any = FileParser.parseArray(parsedFile,2,1);
+          var ay:any = FileParser.parseArray(parsedFile,2,2);
+          var az:any = FileParser.parseArray(parsedFile,2,3);
           var iax:any = this.integrate(ax);
           var iay:any = this.integrate(ay);
           var iaz:any = this.integrate(az);
-          var rx:any = fp.parseArray(parsedFile,2,4);
-          var ry:any = fp.parseArray(parsedFile,2,5);
-          var rz:any = fp.parseArray(parsedFile,2,6);
-          var x:any = fp.parseArray(parsedFile,1,1);
-          var y:any = fp.parseArray(parsedFile,1,2);
-          var z:any = fp.parseArray(parsedFile,1,3);
-          var q0:any = fp.parseArray(parsedFile,3,1);
-          var q1:any = fp.parseArray(parsedFile,3,2);
-          var q2:any = fp.parseArray(parsedFile,3,3);
-          var q3:any = fp.parseArray(parsedFile,3,4);
+          var rx:any = FileParser.parseArray(parsedFile,2,4);
+          var ry:any = FileParser.parseArray(parsedFile,2,5);
+          var rz:any = FileParser.parseArray(parsedFile,2,6);
+          var x:any = FileParser.parseArray(parsedFile,1,1);
+          var y:any = FileParser.parseArray(parsedFile,1,2);
+          var z:any = FileParser.parseArray(parsedFile,1,3);
+          var q0:any = FileParser.parseArray(parsedFile,3,1);
+          var q1:any = FileParser.parseArray(parsedFile,3,2);
+          var q2:any = FileParser.parseArray(parsedFile,3,3);
+          var q3:any = FileParser.parseArray(parsedFile,3,4);
           var accelerationVector:Array<any> = [ax,ay,az];
           var angularAccelerationVector:Array<any> = [rx,ry,rz];
           var quaternion:Array<any> = [q0,q1,q2,q3];
@@ -202,22 +202,22 @@ export class DashboardComponent implements OnInit {
             for (var i = 0; i < l.length;i++){
               l[i] = parseFloat(l[i]);
             }
-            fp.parseLine(this.accelerationChartData[0].data,l,2,1);
-            fp.parseLine(this.accelerationChartData[1].data,l,2,2);
-            fp.parseLine(this.accelerationChartData[2].data,l,2,3);
+            FileParser.parseLine(this.accelerationChartData[0].data,l,2,1);
+            FileParser.parseLine(this.accelerationChartData[1].data,l,2,2);
+            FileParser.parseLine(this.accelerationChartData[2].data,l,2,3);
             this.accelerationChartData = this.accelerationChartData.slice();
-            fp.parseLine(this.angularAccelerationChartData[0].data,l,2,4);
-            fp.parseLine(this.angularAccelerationChartData[1].data,l,2,5);
-            fp.parseLine(this.angularAccelerationChartData[2].data,l,2,6);
+            FileParser.parseLine(this.angularAccelerationChartData[0].data,l,2,4);
+            FileParser.parseLine(this.angularAccelerationChartData[1].data,l,2,5);
+            FileParser.parseLine(this.angularAccelerationChartData[2].data,l,2,6);
             this.angularAccelerationChartData = this.angularAccelerationChartData.slice();
-            fp.parseLine(this.positionChartData[0].data,l,1,1);
-            fp.parseLine(this.positionChartData[1].data,l,1,2);
-            fp.parseLine(this.positionChartData[2].data,l,1,3);
+            FileParser.parseLine(this.positionChartData[0].data,l,1,1);
+            FileParser.parseLine(this.positionChartData[1].data,l,1,2);
+            FileParser.parseLine(this.positionChartData[2].data,l,1,3);
             this.positionChartData = this.positionChartData.slice();
-            fp.parseLine(this.quaternionChartData[0].data,l,3,1);
-            fp.parseLine(this.quaternionChartData[1].data,l,3,2);
-            fp.parseLine(this.quaternionChartData[2].data,l,3,3);
-            fp.parseLineAnd(this.quaternionChartData[3].data,l,3,4,()=>{
+            FileParser.parseLine(this.quaternionChartData[0].data,l,3,1);
+            FileParser.parseLine(this.quaternionChartData[1].data,l,3,2);
+            FileParser.parseLine(this.quaternionChartData[2].data,l,3,3);
+            FileParser.parseLineAnd(this.quaternionChartData[3].data,l,3,4,()=>{
               if (this.angularAccelerationChartData[0].data.length>0&&this.accelerationChartData[0].data.length>0){
                 var xArr = this.accelerationChartData[0].data;
                 var ax = xArr[xArr.length-1].y;
@@ -257,7 +257,7 @@ export class DashboardComponent implements OnInit {
               
             });
           }
-          var stringLoader:Function = fp.parseLines(callback);
+          var stringLoader:Function = FileParser.parseLines(callback);
           fileText.split('\n').forEach(line=>{
             stringLoader(line+'\n');
           });
