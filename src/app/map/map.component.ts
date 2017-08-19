@@ -10,13 +10,11 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 
 export class MapComponent implements OnInit {
 
-
   public data:CalculatedData;
 
   constructor (){
     this.data = DashboardComponent.data;
   }
- 
 
   ngOnInit(): void {
 

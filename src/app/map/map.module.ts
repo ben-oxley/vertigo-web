@@ -13,4 +13,4 @@ import { MapRoutingModule } from './map-routing.module';
   ],
   declarations: [ MapComponent ]
 })
-export class DashboardModule { }
+export class MapModule { }
