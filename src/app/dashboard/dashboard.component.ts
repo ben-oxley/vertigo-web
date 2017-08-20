@@ -14,6 +14,13 @@ export class DashboardComponent implements OnInit, DataListener {
 
   public data:CalculatedData;
 
+  public showWorldReferenceAngularAccelerationChartData:boolean = false;
+  public showAccelerationChartData:boolean = false;
+  public showWorldReferenceAccelerationChartData:boolean = false;
+  public showAngularAccelerationChartData:boolean = false;
+  public showPositionChartData:boolean = false;
+  public showAccelerationIntegralChartData:boolean = true;
+
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';

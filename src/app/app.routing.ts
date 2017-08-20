@@ -31,6 +31,10 @@ export const routes: Routes = [
         loadChildren: './threed/threed.module#ThreeDModule'
       },
       {
+        path: 'bluetooth',
+        loadChildren: './bluetooth/bluetooth.module#BluetoothModule'
+      },
+      {
         path: 'components',
         loadChildren: './components/components.module#ComponentsModule'
       },
