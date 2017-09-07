@@ -26,6 +26,8 @@
     "@angular/router": "4.2.5",
     "@angular/upgrade": "4.2.5",
     "@types/csv-parse": "^1.1.9",
+    "@types/three": "0.84.20",
+    "three-orbitcontrols-ts":"0.1.2",
     "chart.js": "2.6.0",
     "core-js": "2.4.1",
     "moment": "2.18.1",
