@@ -11,6 +11,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
+import { ControlsComponent } from './shared/controls.component';
 
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { MapsAPILoader } from '@agm/core';
@@ -36,6 +37,7 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
     SimpleLayoutComponent,
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
+    ControlsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
   ],
