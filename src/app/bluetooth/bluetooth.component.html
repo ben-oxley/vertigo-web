@@ -1,9 +1,21 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-sm-12 col-lg-12">
-      <div class="card card-inverse card-primary">
-        <a (click)="connect()"><i class="fa fa-bluetooth fa-5x" aria-hidden="true"> </i></a>
-      </div>
+    <div class="col-sm-12 col-lg-12" align="center" style="margin: 20px;">
+        <button [disabled]="!supported" (click)="connect()"><i class="fa fa-bluetooth fa-5x" aria-hidden="true"> </i></button>
     </div>
   </div>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">
+        <a>
+          <h4 class="card-title mb-0" [innerHTML]="title">Connected Device</h4>
+          <div class="small text-muted" [innerHTML]="deviceName"></div>
+        </a>
+      </h5>
+    </div>
+    <div class="card-block">
+
+    </div>
+  </div>
+  <!--/.card-->
 </div>
