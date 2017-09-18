@@ -5,6 +5,10 @@ export interface DataListener {
     DataUpdated(data:CalculatedData):void;
 }
 
+export interface DataPointListener {
+    DataPointUpdated(index:number):void;
+}
+
 export class Data {
   constructor() { }
   public x:Point[] = [];

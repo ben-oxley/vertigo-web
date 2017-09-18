@@ -5,6 +5,7 @@ import { Data,CalculatedData } from '../shared/data';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { Point } from '../shared/point';
+import { ControlsComponent } from "app/shared/controls.component";
 
 @Component({
   styles: [`
@@ -66,17 +67,17 @@ export class BluetoothComponent implements OnInit {
         this.deviceName = device.name;
         this.registerToServices(device,BluetoothComponent.service,BluetoothComponent.imuQuaternionCharacteristic,
           (event:any)=>{
-            if (!DashboardComponent.data){
-              DashboardComponent.data = new CalculatedData();
-              this.data = DashboardComponent.data;
-              this.data.boardReference.newQuaternionData = true;
-              //big endian by default
-              let time:number = BluetoothComponent.step+=0.001;
-              this.data.boardReference.q0.push(new Point(time,event.target.value.getFloat32(0,false)));
-              this.data.boardReference.q1.push(new Point(time,event.target.value.getFloat32(4,false)));
-              this.data.boardReference.q2.push(new Point(time,event.target.value.getFloat32(8,false)));
-              this.data.boardReference.q3.push(new Point(time,event.target.value.getFloat32(12,false)));
+            if (!ControlsComponent.Instance.getData()){
+              ControlsComponent.Instance.setData(new CalculatedData());
             }
+            this.data = ControlsComponent.Instance.getData();
+            this.data.boardReference.newQuaternionData = true;
+            //big endian by default
+            let time:number = BluetoothComponent.step+=0.001;
+            this.data.boardReference.q0.push(new Point(time,event.target.value.getFloat32(0,false)));
+            this.data.boardReference.q1.push(new Point(time,event.target.value.getFloat32(4,false)));
+            this.data.boardReference.q2.push(new Point(time,event.target.value.getFloat32(8,false)));
+            this.data.boardReference.q3.push(new Point(time,event.target.value.getFloat32(12,false)));
           }
         );
       } catch(error)  {

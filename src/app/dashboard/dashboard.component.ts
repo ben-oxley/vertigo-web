@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
 import { FileParser } from '../shared/fileparser';
 import { Data,CalculatedData, DataListener } from '../shared/data';
+import { ControlsComponent } from "app/shared/controls.component";
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
 
 export class DashboardComponent implements OnInit, DataListener {
-
-  public static data:CalculatedData;
 
   public data:CalculatedData;
 
@@ -96,8 +95,8 @@ export class DashboardComponent implements OnInit, DataListener {
       this.worldReferenceAngularAccelerationChartData = this.create3DDataArray();
       this.positionChartData = this.create1DDataArray();
       this.quaternionChartData = this.create4DDataArray();
-      DashboardComponent.data = new CalculatedData();
-      this.data = DashboardComponent.data;
+      ControlsComponent.Instance.setData(new CalculatedData());
+      this.data = ControlsComponent.Instance.getData();
       var reader = new FileReader();
       reader.onload = file => {
           var contents: any = file.target;
@@ -106,7 +105,7 @@ export class DashboardComponent implements OnInit, DataListener {
           let fp:FileParser = new FileParser();
           var callback:Function = (l)=>{
             this.data.loadData(l);
-            this.refreshDataOnScreen();
+            ControlsComponent.Instance.dataChanged();
           }
           var stringLoader:Function = FileParser.parseLines(callback);
           fileText.split('\n').forEach(line=>{
@@ -225,8 +224,8 @@ export class DashboardComponent implements OnInit, DataListener {
   public mainChartType = 'scatter';
 
   ngOnInit(): void {
-    
-    this.data = DashboardComponent.data;
+    ControlsComponent.Instance.registerDataListener(this);
+    this.data = ControlsComponent.Instance.getData();
     if (this.data && this.data.boardReference){
       this.data.boardReference.newIMUData = true;
       this.data.boardReference.newPositionData = true;
@@ -237,6 +236,7 @@ export class DashboardComponent implements OnInit, DataListener {
   }
 
   public DataUpdated(data:CalculatedData){
+    this.data = ControlsComponent.Instance.getData();
     this.refreshDataOnScreen();
   }
 }
