@@ -1,29 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CalculatedData, DataListener, DataPointListener } from "app/shared/data";
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-controls',
   template: `
   <div class="chart-wrapper" style="height:100px;">
-  <canvas baseChart class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours"
-  [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
+    <canvas baseChart class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
   </div>
 `
 })
 export class ControlsComponent implements DataListener, DataPointListener  {
 
+  @ViewChild(BaseChartDirective)
+  chart: BaseChartDirective;
 
-  DataPointUpdated(index: number): void {
+  private chartRef:BaseChartDirective;
+
+  constructor (){
+    this.registerDataListener(this);
+    this.registerDataPointListener(this);
+    if (ControlsComponent.Instance == undefined){
+      ControlsComponent.Instance = this;
+    } else {
+      throw new Error("Cannot have two instances of the ControlsComponent class.");
+    }
+  }
+
+  ngOnInit(): void {
+    this.registerDataListener(this);
+    this.registerDataPointListener(this);
+    this.data = ControlsComponent.Instance.getData();
+    this.DataUpdated(this.data);
+  }
+
+  public DataPointUpdated(index: number): void {
     throw new Error("Method not implemented.");
   }
-  DataUpdated(data: CalculatedData): void {
-    this.accelerationChartData[0].data = this.data.boardReference.ax;
-    this.accelerationChartData[1].data = this.data.boardReference.ay;
-    this.accelerationChartData[2].data = this.data.boardReference.az;
-    this.accelerationChartData = this.accelerationChartData.slice();
+  public DataUpdated(data: CalculatedData): void {
+    this.data = ControlsComponent.Instance.getData();
+    if (this.data !== undefined){
+      this.accelerationChartData[0].data = this.data.boardReference.ax;
+      this.accelerationChartData[1].data = this.data.boardReference.ay;
+      this.accelerationChartData[2].data = this.data.boardReference.az;
+      this.accelerationChartData = this.accelerationChartData.slice();
+    }
+//     if(this.chart !== undefined || this.chartRef !== undefined){
+//       this.chartRef = this.chart;
+//       this.chartRef.ngOnDestroy();
+//       this.chartRef.chart = this.chartRef.getChartBuilder(this.chartRef.ctx);
+//       this.chartRef.ctx.data = this.accelerationChartData;
+// }
   }
+
+  public chartClicked(e:any):void {
+    
+    if(e.active.length > 0){
+      
+      let label = e.active[0]._index;
+    
+      console.log("Point: "+label);
+      this.index = e.active[0]._index;
+      this.DataPointUpdated(this.index);
+    }}
   
-  public static Instance: ControlsComponent = new ControlsComponent();
+  public static Instance: ControlsComponent;
   private data:CalculatedData;
   private dataListeners:DataListener[] = [];
   private dataPointListeners:DataPointListener[] = [];
@@ -56,7 +97,7 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public create3DDataArray():Array<any>{
     return [
     {
-      data: [],
+      data: [{x:1,y:2},{x:2,y:3}],
       label: 'X'
     },
     {
