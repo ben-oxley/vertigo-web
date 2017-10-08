@@ -196,7 +196,7 @@ export class DashboardComponent implements OnInit, DataListener {
         borderWidth: 2
       },
       point: {
-        radius: 0,
+        radius: 0.2,
         hitRadius: 10,
         hoverRadius: 4,
         hoverBorderWidth: 3,
@@ -205,21 +205,29 @@ export class DashboardComponent implements OnInit, DataListener {
   };
   public mainChartColours: Array<any> = [
     { // brandInfo
-      backgroundColor: 'transparent',
+      backgroundColor: this.brandInfo,
       borderColor: this.brandInfo,
       pointHoverBackgroundColor: '#fff'
     },
     { // brandSuccess
-      backgroundColor: 'transparent',
+      backgroundColor: this.brandSuccess,
       borderColor: this.brandSuccess,
       pointHoverBackgroundColor: '#fff'
     },
     { // brandDanger
-      backgroundColor: 'transparent',
+      backgroundColor: this.brandDanger,
       borderColor: this.brandDanger,
       pointHoverBackgroundColor: '#fff'
     }
   ];
+  // { // grey
+  //   backgroundColor: 'rgba(148,159,177,0.2)',
+  //   borderColor: 'rgba(148,159,177,1)',
+  //   pointBackgroundColor: 'rgba(148,159,177,1)',
+  //   pointBorderColor: '#fff',
+  //   pointHoverBackgroundColor: '#fff',
+  //   pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  // },
   public mainChartLegend = true;
   public mainChartType = 'scatter';
 

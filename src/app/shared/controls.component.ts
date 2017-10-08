@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CalculatedData, DataListener, DataPointListener } from "app/shared/data";
 import { BaseChartDirective } from 'ng2-charts';
+import { NgModule }      from '@angular/core';
 
 @Component({
   selector: 'app-controls',
@@ -8,7 +9,64 @@ import { BaseChartDirective } from 'ng2-charts';
   <div class="chart-wrapper" style="height:100px;">
     <canvas baseChart class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
   </div>
-`
+  <div id="slidecontainer">
+    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  </div>
+  <div id="slidecontainer">
+    <button class="btn"><i class="icon-play"></i></button>
+    <button class="btn"><i class="icon-pause"></i></button>
+  </div>
+`,
+styles:[`
+#slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 30px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+.btn {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  height: 30px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #4CAF50; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}`]
 })
 export class ControlsComponent implements DataListener, DataPointListener  {
 
@@ -119,12 +177,34 @@ export class ControlsComponent implements DataListener, DataPointListener  {
         borderWidth: 2
       },
       point: {
-        radius: 0,
+        radius: 0.2,
         hitRadius: 10,
         hoverRadius: 4,
         hoverBorderWidth: 3,
       }
+    },
+    scales: {
+      xAxes: [{
+        display: false
+      }],
+      yAxes: [{
+        display: false
+      }],
+    },
+    tooltips: {enabled: false},
+    annotation: {
+      annotations: [
+        {
+          type: "line",
+          mode: "vertical",
+          scaleID: "x-axis-0",
+          value: "200",
+          borderColor: "red",
+          borderWidth: "2"
+        }
+      ]
     }
+    
   };
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
