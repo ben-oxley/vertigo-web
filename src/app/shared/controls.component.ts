@@ -9,19 +9,13 @@ import { NgModule }      from '@angular/core';
   <div class="chart-wrapper" style="height:100px;">
     <canvas baseChart class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
   </div>
-  <div id="slidecontainer">
-    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-  </div>
-  <div id="slidecontainer">
-    <button class="btn"><i class="icon-play"></i></button>
-    <button class="btn"><i class="icon-pause"></i></button>
+  <div class="row" style="padding:10px">
+    <div class="col-sm-12 col-lg-12">
+      <input type="range" (input)="setIndex($event.target.value)"  [min]="sliderMin" [max]="sliderMax" class="slider" id="myRange">
+    </div>
   </div>
 `,
 styles:[`
-#slidecontainer {
-  width: 100%; /* Width of the outside container */
-}
-
 /* The slider itself */
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */
@@ -74,6 +68,14 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   chart: BaseChartDirective;
 
   private chartRef:BaseChartDirective;
+  public static Instance: ControlsComponent;
+  private data:CalculatedData;
+  private dataListeners:DataListener[] = [];
+  private dataPointListeners:DataPointListener[] = [];
+  private index:number = 0;
+  public accelerationChartData: Array<any> = this.create3DDataArray();
+  public sliderMin:number=0;
+  public sliderMax:number=0;
 
   constructor (){
     this.registerDataListener(this);
@@ -93,8 +95,15 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   }
 
   public DataPointUpdated(index: number): void {
-    throw new Error("Method not implemented.");
+    // this.data = ControlsComponent.Instance.getData();
+    // if (this.data !== undefined){
+    //   var pos = this.data.boardReference.az[index].x;
+    //   this.accelerationChartData[3].data = [{x:pos,y:2},{x:pos,y:0},{x:pos,y:-2}];
+    // }
+    
+    // this.accelerationChartData = this.accelerationChartData.slice();
   }
+
   public DataUpdated(data: CalculatedData): void {
     this.data = ControlsComponent.Instance.getData();
     if (this.data !== undefined){
@@ -102,17 +111,11 @@ export class ControlsComponent implements DataListener, DataPointListener  {
       this.accelerationChartData[1].data = this.data.boardReference.ay;
       this.accelerationChartData[2].data = this.data.boardReference.az;
       this.accelerationChartData = this.accelerationChartData.slice();
+      this.sliderMax = this.data.boardReference.ax.length - 1;
     }
-//     if(this.chart !== undefined || this.chartRef !== undefined){
-//       this.chartRef = this.chart;
-//       this.chartRef.ngOnDestroy();
-//       this.chartRef.chart = this.chartRef.getChartBuilder(this.chartRef.ctx);
-//       this.chartRef.ctx.data = this.accelerationChartData;
-// }
   }
 
   public chartClicked(e:any):void {
-    
     if(e.active.length > 0){
       
       let label = e.active[0]._index;
@@ -120,15 +123,9 @@ export class ControlsComponent implements DataListener, DataPointListener  {
       console.log("Point: "+label);
       this.index = e.active[0]._index;
       this.DataPointUpdated(this.index);
-    }}
+    }
+  }
   
-  public static Instance: ControlsComponent;
-  private data:CalculatedData;
-  private dataListeners:DataListener[] = [];
-  private dataPointListeners:DataPointListener[] = [];
-  private index:number = 0;
-  public accelerationChartData: Array<any> = this.create3DDataArray();
-
   public getData():CalculatedData{
     return this.data;
   }
@@ -155,7 +152,7 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public create3DDataArray():Array<any>{
     return [
     {
-      data: [{x:1,y:2},{x:2,y:3}],
+      data: [],
       label: 'X'
     },
     {
@@ -165,7 +162,11 @@ export class ControlsComponent implements DataListener, DataPointListener  {
     {
       data: [],
       label: 'Z'
-    }
+    }//,
+    // {
+    //   data: [{x:0,y:2},{x:0,y:-2}],
+    //   label: 'Marker'
+    // }
   ];
   }
   public mainChartOptions: any = {
@@ -191,20 +192,7 @@ export class ControlsComponent implements DataListener, DataPointListener  {
         display: false
       }],
     },
-    tooltips: {enabled: false},
-    annotation: {
-      annotations: [
-        {
-          type: "line",
-          mode: "vertical",
-          scaleID: "x-axis-0",
-          value: "200",
-          borderColor: "red",
-          borderWidth: "2"
-        }
-      ]
-    }
-    
+    tooltips: {enabled: false}
   };
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
