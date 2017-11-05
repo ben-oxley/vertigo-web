@@ -28,7 +28,7 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
 			this.camera = camera;
 			var renderer = new THREE.WebGLRenderer();
 			this.renderer = renderer;
-			renderer.setSize( this.renderCanvas.nativeElement.offsetWidth,800);
+			renderer.setSize( this.renderCanvas.nativeElement.offsetWidth,400);
 			this.renderCanvas.nativeElement.appendChild( renderer.domElement );
 			scene.add( new THREE.AmbientLight( 0xffffff ) );
 			var light = new THREE.DirectionalLight( 0xffffff );

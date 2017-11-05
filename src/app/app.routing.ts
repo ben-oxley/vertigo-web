@@ -8,7 +8,7 @@ import { SimpleLayoutComponent } from './layouts/simple-layout.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'loader',
     pathMatch: 'full',
   },
   {
@@ -21,6 +21,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: 'loader',
+        loadChildren: './loader/loader.module#LoaderModule'
       },
       {
         path: 'map',

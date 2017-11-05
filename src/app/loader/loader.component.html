@@ -1,0 +1,49 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12 col-lg-12">
+      <div class="card card-inverse card-primary">
+        <input #fileInput type="file" />
+        <button type="button" class="btn btn-info" (click)="triggerFile(fileInput)">Upload</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+      <div class="card-header" role="tab">
+        <h5 class="mb-0">
+          <a>
+            <h4 class="card-title mb-0">Bicycle Wheel</h4>
+            <div class="small text-muted">Bicycle wheel, spun by hand</div>
+          </a>
+        </h5>
+      </div>
+      <div class="card-block">
+          <button type="button" class="btn btn-success" (click)="loadFileURL('./assets/files/vtg_log7_wheel.csv')">Load</button>
+      </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab">
+          <h5 class="mb-0">
+            <a>
+              <h4 class="card-title mb-0">No Movement</h4>
+              <div class="small text-muted">Recording whilst still</div>
+            </a>
+          </h5>
+        </div>
+        <div class="card-block">
+            <button type="button" class="btn btn-success" (click)="loadFileURL('./assets/files/vtg_log6_stationary.csv')">Load</button>
+        </div>
+      </div>
+      <div class="card">
+          <div class="card-header" role="tab">
+            <h5 class="mb-0">
+              <a>
+                <h4 class="card-title mb-0">Rocket</h4>
+                <div class="small text-muted">Small amateur rocket</div>
+              </a>
+            </h5>
+          </div>
+          <div class="card-block">
+              <button type="button" class="btn btn-success" (click)="loadFileURL('./assets/files/vtg_log8_rocket.csv')">Load</button>
+          </div>
+        </div>
+</div>
