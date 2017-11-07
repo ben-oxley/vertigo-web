@@ -46,4 +46,30 @@
               <button type="button" class="btn btn-success" (click)="loadFileURL('./assets/files/vtg_log8_rocket.csv')">Load</button>
           </div>
         </div>
+        <div class="card card-inverse card-danger">
+            <div class="card-header" role="tab">
+              <h5 class="mb-0">
+                <a>
+                  <h4 class="card-title mb-0">Load your own!</h4>
+                </a>
+              </h5>
+            </div>
+            <div class="card-block">
+                <form method="POST" action="https://api.staticman.net/v2/entry/SGSVertigo/sgsvertigo.github.io/master/files">
+                 
+                  <!-- e.g. "2016-01-02-this-is-a-post" -->
+                  <input name="options[slug]" type="hidden" value="{{ page.slug }}">
+                  <label><input name="fields[name]" type="text" required>Name (Required)</label>
+                  <label><input name="fields[email]" type="email" required>E-mail (Required)</label>
+                  <label><textarea name="fields[title]" type="text" required></textarea>Title (Required)</label>
+                  <label><textarea name="fields[description]" rows="5" type="text" required></textarea>Description (Required)</label>
+                  <textarea hidden="true" #dataArea name="fields[file]" type="text" required></textarea>
+                  <label><input type="file" #dataFile required>Data file (Required)</label>
+                  <button type="button" class="btn btn-info" (click)="loadFile(dataFile,dataArea,submitBtn)">Upload</button>
+                  <label><textarea name="fields[video_url]" type="URL"></textarea>Youtube video (optional)</label>
+                  <button type="submit" #submitBtn class="btn btn-success" disabled="true">Submit</button> 
+                </form>
+            </div>
+          </div>
+
 </div>

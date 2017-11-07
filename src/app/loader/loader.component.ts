@@ -66,7 +66,21 @@ export class LoaderComponent implements OnInit {
       
   }
 
-
+  public loadFile(fileForm,field,submitBtn){
+    var file = fileForm.files[0];
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = f => {
+      var contents: any = f.target;
+      var fileText:string = contents.result;
+      field.value = fileText;
+      submitBtn.disabled=false;
+    };
+    reader.readAsText(file);
+  }
 
   public triggerFile(fileInput) {
     this.asynchronousReadFile(fileInput.files[0]);
@@ -76,27 +90,27 @@ export class LoaderComponent implements OnInit {
     if (!fileInput) {
       alert("No file selected");
       return;
-  }
-  ControlsComponent.Instance.setData(new CalculatedData());
-  this.data = ControlsComponent.Instance.getData();
-  var reader = new FileReader();
-    this.http.get(fileInput)
-    // Subscribe to the observable to get the parsed people object and attach it to the
-    // component
-    .subscribe(file => {
-      var fileText:string = file.text();
-      console.log("Loaded file");
-      let fp:FileParser = new FileParser();
-      var callback:Function = (l)=>{
-        this.data.loadData(l);
-        ControlsComponent.Instance.dataChanged();
-      }
-      var stringLoader:Function = FileParser.parseLines(callback);
-      fileText.split('\n').forEach(line=>{
-        stringLoader(line+'\n');
+    }
+    ControlsComponent.Instance.setData(new CalculatedData());
+    this.data = ControlsComponent.Instance.getData();
+    var reader = new FileReader();
+      this.http.get(fileInput)
+      // Subscribe to the observable to get the parsed people object and attach it to the
+      // component
+      .subscribe(file => {
+        var fileText:string = file.text();
+        console.log("Loaded file");
+        let fp:FileParser = new FileParser();
+        var callback:Function = (l)=>{
+          this.data.loadData(l);
+          ControlsComponent.Instance.dataChanged();
+        }
+        var stringLoader:Function = FileParser.parseLines(callback);
+        fileText.split('\n').forEach(line=>{
+          stringLoader(line+'\n');
+        });
+        console.log('Finished loading file');
       });
-      console.log('Finished loading file');
-    });
   }
   
   ngOnInit(): void {
