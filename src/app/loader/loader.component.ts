@@ -19,6 +19,8 @@ export class LoaderComponent implements OnInit {
 
   public data:CalculatedData;
 
+  public files:any[] = [];
+
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
   public brandInfo = '#63c2de';
@@ -86,10 +88,21 @@ export class LoaderComponent implements OnInit {
     this.asynchronousReadFile(fileInput.files[0]);
   }
 
+  private queryFiles(){
+    this.http.get("http://vertigo-uploader.azurewebsites.net/api/vertigo_query")
+    .subscribe(data => {
+        let json:any = data.json();
+        this.files = json;
+    });
+  }
+
   public loadFileURL(fileInput) {
     if (!fileInput) {
       alert("No file selected");
       return;
+    }
+    if (typeof fileInput != 'string'){
+        fileInput = fileInput.File_Url;
     }
     ControlsComponent.Instance.setData(new CalculatedData());
     this.data = ControlsComponent.Instance.getData();
@@ -115,6 +128,6 @@ export class LoaderComponent implements OnInit {
   
   ngOnInit(): void {
     this.data = ControlsComponent.Instance.getData();
-  
+    this.queryFiles()
   }
 }
