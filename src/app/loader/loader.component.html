@@ -22,7 +22,7 @@
   </div>
 
 
-        <div class="card card-inverse card-danger">
+        <div class="card card-inverse card-success">
             <div class="card-header" role="tab">
               <h5 class="mb-0">
                 <a>
@@ -31,8 +31,9 @@
               </h5>
             </div>
             <div class="card-block">
-                <form action="https://vertigo-uploader.azurewebsites.net/api/vertigo_upload3r" enctype="multipart/form-data" method="post">
-      
+                
+                <form action="https://vertigo-uploader.azurewebsites.net/api/vertigo_upload3r" enctype="multipart/form-data" method="post" target="invisible">
+                  
                   <div class="form-group">
                     <label for="fileupload">Select vertigo datalogger file to upload</label>
                     <input type="file" name="file" class="form-control-file" id="fileupload">
@@ -58,8 +59,16 @@
                     <label for="url">Youtube Video URL (Optional)</label>
                     <textarea class="form-control" id="url" name="fields[video_url]" type="URL"></textarea>
                   </div>
-                   <input type="submit" value="Submit" class="btn btn-success" id="submit"><br>
+                   <input type="submit" value="Submit" class="btn btn-primary" id="submit"><br>
                   </form>
+                  <hr>
+                  <p></p>
+                  <div>
+                    <p>Upload Location</p>
+                      <iframe id="invisible" name="invisible" style="width:100%; height:50px; background-color: white; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;"><p>Submit to see the uploaded file location.</p></iframe>
+                  </div>
+                  
+                  
             </div>
           </div>
 

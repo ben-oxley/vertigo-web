@@ -125,6 +125,10 @@ export class LoaderComponent implements OnInit {
         console.log('Finished loading file');
       });
   }
+
+  public onSubmit(){
+    alert('test');
+  }
   
   ngOnInit(): void {
     this.data = ControlsComponent.Instance.getData();
