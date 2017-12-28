@@ -55,7 +55,7 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
 			controls.addEventListener( 'change', animate );
 			//controls.maxPolarAngle = Math.PI / 2;
 			controls.enableZoom = true;
-			controls.enablePan = true;
+			controls.enablePan = false;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
