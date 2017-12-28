@@ -34,27 +34,28 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
 			var light = new THREE.DirectionalLight( 0xffffff );
 			light.position.set( 0, 1, 0 );
 			scene.add( light );
-			var map = new THREE.TextureLoader().load( '/assets/img/board-top.png' );
+			var map = new THREE.TextureLoader().load( '/assets/img/board-top-rotated.png' );
 			map.wrapS = map.wrapT = THREE.RepeatWrapping;
 			map.anisotropy = 16;
-			var geometry = new THREE.BoxGeometry( 0.5, 1.3, 0.05 );
+			var geometry = new THREE.BoxGeometry( 1.3, 0.05, 0.5 );
 			//var material = new THREE.MeshBasicMaterial( { color: 0x4444aa } );
 			var material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } );
 			var cube = new THREE.Mesh( geometry, material );
 			this.cube = cube;
-			var axis = new THREE.AxisHelper( 1 );
+			var axis = new THREE.AxisHelper( 1000 );
 			this.axis = axis;
-			var helper = new THREE.GridHelper( 10, 2, 0xffffff, 0xffffff );
+			var helper = new THREE.GridHelper( 10, 10, 0x888888, 0x888888 );
 			scene.add( helper );
 			scene.add( cube,axis);
 
-			camera.position.z = 2;
+			camera.position.x = -2;
+			camera.position.y = 1;
 
 			var controls = new OrbitControls( camera, renderer.domElement );
 			controls.addEventListener( 'change', animate );
 			//controls.maxPolarAngle = Math.PI / 2;
-			controls.enableZoom = false;
-			controls.enablePan = false;
+			controls.enableZoom = true;
+			controls.enablePan = true;
 
 			var animate = function () {
 				requestAnimationFrame( animate );
@@ -79,10 +80,11 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
         localIndex = data.boardReference.rx.length;
 	  }
 	  var quaternion:THREE.Quaternion = new THREE.Quaternion(
-		  data.boardReference.q0[localIndex].y,
-		  data.boardReference.q1[localIndex].y,
-		  data.boardReference.q2[localIndex].y,
-		  data.boardReference.q3[localIndex].y
+		  
+			data.boardReference.q1[localIndex].y,
+			-data.boardReference.q3[localIndex].y,//this is our world z
+			data.boardReference.q2[localIndex].y,
+		  data.boardReference.q0[localIndex].y
 		);
       this.cube.setRotationFromQuaternion(quaternion);
     }
