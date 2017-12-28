@@ -89,7 +89,7 @@ export class LoaderComponent implements OnInit {
   }
 
   private queryFiles(){
-    this.http.get("http://vertigo-uploader.azurewebsites.net/api/vertigo_query")
+    this.http.get("https://vertigo-uploader.azurewebsites.net/api/vertigo_query")
     .subscribe(data => {
         let json:any = data.json();
         this.files = json;

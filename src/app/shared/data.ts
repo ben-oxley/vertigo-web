@@ -24,6 +24,7 @@ export class Data {
   public q1:Point[] = [];
   public q2:Point[] = [];
   public q3:Point[] = [];
+  public startTime:number = -1;
   public newPositionData:boolean = false;
   public newIMUData:boolean = false;
   public newQuaternionData:boolean = false;
@@ -32,11 +33,12 @@ export class Data {
       this.newPositionData = false;
       this.newIMUData = false;
       this.newQuaternionData = false;
+      this.startTime = -1;
   }
   
-  public static parseLine(outputArray:Point[],line:Array<number>,type:number,channel:number):boolean{
+  public static parseLine(startTime:number,outputArray:Point[],line:Array<number>,type:number,channel:number):boolean{
         if (line[1]==type){
-            outputArray.push(new Point(line[0]/1000.0,line[1+channel]));
+            outputArray.push(new Point((line[0]-startTime)/1000.0,line[1+channel]));
             return true;
         }
         return false;
@@ -46,19 +48,22 @@ export class Data {
         for (var i = 0; i < data.length;i++){
             data[i] = parseFloat(data[i]);
         }
-        this.newIMUData = Data.parseLine(this.ax,data,2,1);
-        Data.parseLine(this.ay,data,2,2);
-        Data.parseLine(this.az,data,2,3);
-        Data.parseLine(this.rx,data,2,4);
-        Data.parseLine(this.ry,data,2,5);
-        Data.parseLine(this.rz,data,2,6);
-        this.newPositionData = Data.parseLine(this.x,data,1,1);
-        Data.parseLine(this.y,data,1,2);
-        Data.parseLine(this.z,data,1,3);
-        this.newQuaternionData = Data.parseLine(this.q0,data,3,1);
-        Data.parseLine(this.q1,data,3,2);
-        Data.parseLine(this.q2,data,3,3);
-        Data.parseLine(this.q3,data,3,4);
+        if (this.startTime == -1){
+            this.startTime = data[0];
+        }
+        this.newIMUData = Data.parseLine(this.startTime,this.ax,data,2,1);
+        Data.parseLine(this.startTime,this.ay,data,2,2);
+        Data.parseLine(this.startTime,this.az,data,2,3);
+        Data.parseLine(this.startTime,this.rx,data,2,4);
+        Data.parseLine(this.startTime,this.ry,data,2,5);
+        Data.parseLine(this.startTime,this.rz,data,2,6);
+        this.newPositionData = Data.parseLine(this.startTime,this.x,data,1,1);
+        Data.parseLine(this.startTime,this.y,data,1,2);
+        Data.parseLine(this.startTime,this.z,data,1,3);
+        this.newQuaternionData = Data.parseLine(this.startTime,this.q0,data,3,1);
+        Data.parseLine(this.startTime,this.q1,data,3,2);
+        Data.parseLine(this.startTime,this.q2,data,3,3);
+        Data.parseLine(this.startTime,this.q3,data,3,4);
     }
 }
 
@@ -67,6 +72,7 @@ export class CalculatedData {
     public boardReference:Data = new Data();
     public integral:Data = new Data();
     public worldReference:Data = new Data();
+    
     public loadData(data:any[]){
         this.boardReference.loadData(data);
         if (this.boardReference.newQuaternionData){

@@ -2,13 +2,16 @@ import { Component, ViewChild } from '@angular/core';
 import { CalculatedData, DataListener, DataPointListener } from "app/shared/data";
 import { BaseChartDirective } from 'ng2-charts';
 import { NgModule }      from '@angular/core';
+import { Chart } from 'chart.js'
 
 @Component({
   selector: 'app-controls',
   template: `
-  <div class="chart-wrapper" style="height:100px;">
-    <canvas baseChart class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
+  <div style="height:100px; position: relative;">
+    <canvas baseChart style="position: absolute; left: 0; top: 0; z-index: 0;" class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
+    <canvas #chartLayer style="height:100px; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
   </div>
+  
   <div class="row" style="padding:10px">
     <div class="col-sm-12 col-lg-12">
       <input type="range" (input)="setIndex($event.target.value)"  [min]="sliderMin" [max]="sliderMax" class="slider" id="myRange">
@@ -48,6 +51,7 @@ export class ControlsComponent implements DataListener, DataPointListener  {
 
   @ViewChild(BaseChartDirective)
   chart: BaseChartDirective;
+  @ViewChild("chartLayer") chartLayer;
 
   private chartRef:BaseChartDirective;
   public static Instance: ControlsComponent;
@@ -58,6 +62,8 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public accelerationChartData: Array<any> = this.create3DDataArray();
   public sliderMin:number=0;
   public sliderMax:number=0;
+  private originalLineDraw = Chart.controllers.line.prototype.draw;
+  
 
   constructor (){
     this.registerDataListener(this);
@@ -74,10 +80,33 @@ export class ControlsComponent implements DataListener, DataPointListener  {
     this.registerDataPointListener(this);
     this.data = ControlsComponent.Instance.getData();
     this.DataUpdated(this.data);
+    
+   
+  }
+
+  private drawLine(index: number){
+    
+    var chart = this.chart;
+    let canvas = this.chartLayer.nativeElement;
+    let ctx = canvas.getContext("2d");
+    if (index) {
+      
+      var xaxis = chart.chart.scales['x-axis-1'];
+      var yaxis = chart.chart.scales['y-axis-1'];
+      ctx.clearRect(0,0,10000,10000);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(xaxis.getPixelForValue(index), yaxis.top);
+      ctx.strokeStyle = '#ff0000';
+      ctx.lineTo(xaxis.getPixelForValue(index), yaxis.bottom);
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
   public DataPointUpdated(index: number): void {
-    // this.data = ControlsComponent.Instance.getData();
+    this.data = ControlsComponent.Instance.getData();
+    this.drawLine(this.data.boardReference.az[index].x);
     // if (this.data !== undefined){
     //   var pos = this.data.boardReference.az[index].x;
     //   this.accelerationChartData[3].data = [{x:pos,y:2},{x:pos,y:0},{x:pos,y:-2}];
@@ -168,13 +197,16 @@ export class ControlsComponent implements DataListener, DataPointListener  {
     },
     scales: {
       xAxes: [{
-        display: false
+        display: true,
+        id:"x-axis-1"
       }],
       yAxes: [{
-        display: false
+        display: false,
+        id:"y-axis-1"
       }],
     },
     tooltips: {enabled: false}
+
   };
   public brandPrimary = '#20a8d8';
   public brandSuccess = '#4dbd74';
