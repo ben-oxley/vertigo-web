@@ -3,13 +3,14 @@ import { CalculatedData, DataListener, DataPointListener } from "app/shared/data
 import { BaseChartDirective } from 'ng2-charts';
 import { NgModule }      from '@angular/core';
 import { Chart } from 'chart.js'
+import 'chartjs-plugin-annotation'
 
 @Component({
   selector: 'app-controls',
   template: `
   <div style="height:100px; position: relative;">
     <canvas baseChart style="position: absolute; left: 0; top: 0; z-index: 0;" class="chart" [datasets]="accelerationChartData" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType" (chartClick)="chartClicked($event)"></canvas>
-    <canvas #chartLayer style="height:100px; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+    <canvas #chartLayer height = 100px style="height:100px; width:100%; position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
   </div>
   
   <div class="row" style="padding:10px">
@@ -86,11 +87,13 @@ export class ControlsComponent implements DataListener, DataPointListener  {
 
   private drawLine(index: number){
     
-    var chart = this.chart;
+    var chart:any = this.chart;
     let canvas = this.chartLayer.nativeElement;
+    canvas.width = canvas.clientWidth;
     let ctx = canvas.getContext("2d");
     if (index) {
-      
+      // chart.options.annotation.annotations["0"].value = index;
+      // chart.chart.update(0);
       var xaxis = chart.chart.scales['x-axis-1'];
       var yaxis = chart.chart.scales['y-axis-1'];
       ctx.clearRect(0,0,10000,10000);
@@ -205,7 +208,21 @@ export class ControlsComponent implements DataListener, DataPointListener  {
         id:"y-axis-1"
       }],
     },
-    tooltips: {enabled: false}
+    tooltips: {enabled: false},
+    annotation: {
+      annotations: [
+        {
+          drawTime: "afterDraw",
+          id: "vline",
+          type: "line",
+          mode: "vertical",
+          scaleID: "x-axis-1",
+          value: 0,
+          borderColor: "black",
+          borderWidth: 1
+        }
+      ]
+    }
 
   };
   public brandPrimary = '#20a8d8';
