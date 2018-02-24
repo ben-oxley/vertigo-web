@@ -4,6 +4,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { NgModule }      from '@angular/core';
 import { Chart } from 'chart.js'
 import 'chartjs-plugin-annotation'
+import { BluetoothHandler } from 'app/shared/bluetoothHandler';
 
 @Component({
   selector: 'app-controls',
@@ -60,10 +61,11 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   private dataListeners:DataListener[] = [];
   private dataPointListeners:DataPointListener[] = [];
   private index:number = 0;
-  public accelerationChartData: Array<any> = this.create3DDataArray();
+  public accelerationChartData: Array<any> = this.create4DDataArray();
   public sliderMin:number=0;
   public sliderMax:number=0;
   private originalLineDraw = Chart.controllers.line.prototype.draw;
+  private bluetoothHandler:BluetoothHandler = new BluetoothHandler();
   
 
   constructor (){
@@ -107,9 +109,13 @@ export class ControlsComponent implements DataListener, DataPointListener  {
     }
   }
 
+  public async ConnectToBluetooth(){
+    this.bluetoothHandler.connect();
+  }
+
   public DataPointUpdated(index: number): void {
     this.data = ControlsComponent.Instance.getData();
-    this.drawLine(this.data.boardReference.az[index].x);
+    this.drawLine(this.data.boardReference.q0[index].x);
     // if (this.data !== undefined){
     //   var pos = this.data.boardReference.az[index].x;
     //   this.accelerationChartData[3].data = [{x:pos,y:2},{x:pos,y:0},{x:pos,y:-2}];
@@ -121,11 +127,14 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public DataUpdated(data: CalculatedData): void {
     this.data = ControlsComponent.Instance.getData();
     if (this.data !== undefined){
-      this.accelerationChartData[0].data = this.data.boardReference.ax;
-      this.accelerationChartData[1].data = this.data.boardReference.ay;
-      this.accelerationChartData[2].data = this.data.boardReference.az;
-      this.accelerationChartData = this.accelerationChartData.slice();
-      this.sliderMax = this.data.boardReference.ax.length - 1;
+      this.accelerationChartData[0].data = this.data.boardReference.q0;
+      this.accelerationChartData[1].data = this.data.boardReference.q1;
+      this.accelerationChartData[2].data = this.data.boardReference.q2;
+      this.accelerationChartData[3].data = this.data.boardReference.q3;
+      //this.accelerationChartData = this.accelerationChartData.slice();
+      this.sliderMax = this.data.boardReference.q0.length - 1;
+      this.setIndex(this.sliderMax);
+      // this.drawLine(this.data.boardReference.q0[this.index].x);
     }
   }
 
@@ -163,19 +172,23 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public dataPointChanged(){
     this.dataPointListeners.forEach(l=>l.DataPointUpdated(this.index));
   }
-  public create3DDataArray():Array<any>{
+  public create4DDataArray():Array<any>{
     return [
     {
       data: [],
-      label: 'X'
+      label: 'Q0'
     },
     {
       data: [],
-      label: 'Y'
+      label: 'Q1'
     },
     {
       data: [],
-      label: 'Z'
+      label: 'Q2'
+    },
+    {
+      data: [],
+      label: 'Q3'
     }//,
     // {
     //   data: [{x:0,y:2},{x:0,y:-2}],

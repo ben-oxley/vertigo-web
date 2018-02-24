@@ -73,17 +73,19 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
   }
 
   DataPointUpdated(index:number):void{
-    var data = ControlsComponent.Instance.getData();
+		var data = ControlsComponent.Instance.getData();
+		
     if (data && data.boardReference){
-      var localIndex:number = data.boardReference.rx.findIndex(p=>p.x>=data.boardReference.ax[index].x)
-      if (localIndex === -1){
-        localIndex = data.boardReference.rx.length;
-	  }
+			var localIndex:number = index;
+    //   var localIndex:number = data.boardReference.rx.findIndex(p=>p.x>=data.boardReference.ax[index].x)
+    //   if (localIndex === -1){
+    //     localIndex = data.boardReference.rx.length;
+	  // }
 	  var quaternion:THREE.Quaternion = new THREE.Quaternion(
 		  
 			data.boardReference.q1[localIndex].y,
-			-data.boardReference.q3[localIndex].y,//this is our world z
-			data.boardReference.q2[localIndex].y,
+			data.boardReference.q3[localIndex].y,//this is our world z
+			-data.boardReference.q2[localIndex].y,
 		  data.boardReference.q0[localIndex].y
 		);
       this.cube.setRotationFromQuaternion(quaternion);
