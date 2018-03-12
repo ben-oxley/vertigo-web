@@ -37,35 +37,23 @@ export const routes: Routes = [
       {
         path: 'bluetooth',
         loadChildren: './bluetooth/bluetooth.module#BluetoothModule'
-      },
-      {
-        path: 'components',
-        loadChildren: './components/components.module#ComponentsModule'
-      },
-      {
-        path: 'icons',
-        loadChildren: './icons/icons.module#IconsModule'
-      },
-      {
-        path: 'widgets',
-        loadChildren: './widgets/widgets.module#WidgetsModule'
-      },
-      {
-        path: 'charts',
-        loadChildren: './chartjs/chartjs.module#ChartJSModule'
       }
     ]
   },
   {
-    path: 'pages',
+    path: 'beta',
     component: SimpleLayoutComponent,
     data: {
-      title: 'Pages'
+      title: 'Beta'
     },
     children: [
       {
-        path: '',
-        loadChildren: './pages/pages.module#PagesModule',
+        path: '3d',
+        loadChildren: './threed/threed.module#ThreeDModule'
+      },
+      {
+        path: 'bluetooth',
+        loadChildren: './bluetooth/bluetooth.module#BluetoothModule'
       }
     ]
   }

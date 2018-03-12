@@ -1,0 +1,54 @@
+<header class="app-header navbar">
+    <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
+    <a class="navbar-brand" href="#"></a>
+    <ul class="nav navbar-nav d-md-down-none">
+      <li class="nav-item">
+        <a class="nav-link navbar-toggler" href="#" appSidebarToggler>&#9776;</a>
+      </li>
+      <li class="nav-item px-3">
+        <a class="nav-link" href="#">Dashboard</a>
+      </li>
+    </ul>
+  </header>
+  
+  <div class="app-body">
+    <div class="sidebar">
+      <nav class="sidebar-nav">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/beta/3d']"><i class="icon-globe"></i> 3D</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/beta/bluetooth']"><i class="fa fa-bluetooth" aria-hidden="true"> </i> Bluetooth</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  
+    <!-- Main content -->
+    <main class="main">
+  
+      <!-- Breadcrumb -->
+      <ol class="breadcrumb">
+        <app-breadcrumbs></app-breadcrumbs>
+        
+        <!-- Breadcrumb Menu-->
+        <li class="breadcrumb-menu d-md-down-none">
+        </li>
+        <li><app-controls></app-controls></li>
+  
+      </ol>
+  
+  
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div><!-- /.conainer-fluid -->
+    </main>
+  
+   
+  </div>
+  
+  <footer class="app-footer">
+    <span class="float-right">Powered by <a href="http://coreui.io">CoreUI</a></span>
+  </footer>
+  
