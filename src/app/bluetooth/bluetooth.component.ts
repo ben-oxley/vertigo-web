@@ -39,8 +39,7 @@ import { BluetoothHandler } from 'app/shared/bluetoothHandler';
 
 export class BluetoothComponent implements OnInit {
   public supported:boolean = false;
-  public title:string = "Connected Device";
-
+  public title:string = "Connect a device Device";
 
   public async connect(){
     if (this.supported){

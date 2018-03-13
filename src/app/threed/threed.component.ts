@@ -76,11 +76,7 @@ export class ThreeDComponent implements OnInit , DataPointListener  {
 		var data = ControlsComponent.Instance.getData();
 		
     if (data && data.boardReference){
-			var localIndex:number = index;
-    //   var localIndex:number = data.boardReference.rx.findIndex(p=>p.x>=data.boardReference.ax[index].x)
-    //   if (localIndex === -1){
-    //     localIndex = data.boardReference.rx.length;
-	  // }
+	  var localIndex:number = index;
 	  var quaternion:THREE.Quaternion = new THREE.Quaternion(
 		  
 			data.boardReference.q1[localIndex].y,

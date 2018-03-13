@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, SimpleChanges } from '@angular/core';
 import { CalculatedData, DataListener, DataPointListener } from "app/shared/data";
 import { BaseChartDirective } from 'ng2-charts';
 import { NgModule }      from '@angular/core';
@@ -88,16 +88,29 @@ export class ControlsComponent implements DataListener, DataPointListener  {
     let timer = Observable.timer(10000,1);
     timer.subscribe(t=>{
       if (this.showGraph){
-        for (let i:number = 0; i < this.accelerationChartData.length; i++){
-          if ( this.chartData[i].data.length < this.accelerationChartData[i].data.length){
-            while (this.chartData[i].data.length < this.accelerationChartData[i].data.length){
-              this.chartData[i].data.push(this.accelerationChartData[i].data[this.chartData[i].data.length]);
-            }
-          }
-        }
-        this.chart.chart.update();
-        //this.accelerationChartData[0].data.push({x:this.accelerationChartData[0].data.length,y:0});
-      }
+    //     for (let i:number = 0; i < this.accelerationChartData.length; i++){
+    //       if ( this.chartData[i].data.length < this.accelerationChartData[i].data.length){
+    //         while (this.chartData[i].data.length < this.accelerationChartData[i].data.length){
+    //           this.chartData[i].data.push(this.accelerationChartData[i].data[this.chartData[i].data.length]);
+    //         }
+    //       }
+    //     }
+    //     this.chart.chart.update();
+    //     //this.accelerationChartData[0].data.push({x:this.accelerationChartData[0].data.length,y:0});
+  //   this.chart.ngOnChanges({
+  //     datasets: {
+  //         currentValue: this.chartData,
+  //         previousValue: null,
+  //         firstChange: false,
+  //         isFirstChange: () => false
+  //     }
+  // });    
+  this.chart.chart.update({
+      duration: 0,
+      lazy: true,
+      easing: 'linear'
+  })
+  }
     });
     
   }
@@ -143,17 +156,36 @@ export class ControlsComponent implements DataListener, DataPointListener  {
   public DataUpdated(data: CalculatedData): void {
     this.data = ControlsComponent.Instance.getData();
     if (this.data !== undefined && this.showGraph){
-      this.accelerationChartData.forEach((dataset) => {
-        dataset.data.pop();
-      });
-      this.accelerationChartData[0].data = this.data.boardReference.ay;
+      this.accelerationChartData[0].data = this.data.boardReference.ax;
       this.accelerationChartData[1].data = this.data.boardReference.ay;
       this.accelerationChartData[2].data = this.data.boardReference.az;
       this.sliderMax = this.data.boardReference.ax.length - 1;
+      if (this.sliderMax === -1){
+        this.sliderMax = this.data.boardReference.rx.length - 1;
+      }
+      if (this.sliderMax === -1){
+        this.sliderMax = this.data.boardReference.x.length - 1;
+      }
+      if (this.sliderMax === -1){
+        this.sliderMax = this.data.boardReference.q0.length - 1;
+      }
       this.setIndex(this.sliderMax);
-
+      //this.chart.chart.update();
       // this.drawLine(this.data.boardReference.q0[this.index].x);
+      for (let i:number = 0; i < this.accelerationChartData.length; i++){
+        if ( this.chartData[i].data.length < this.accelerationChartData[i].data.length){
+          while (this.chartData[i].data.length < this.accelerationChartData[i].data.length){
+            this.chartData[i].data.push(this.accelerationChartData[i].data[this.chartData[i].data.length]);
+          }
+        }
+        
+      }
+      
+      //this.chart.chart.update();
+      //this.accelerationChartData[0].data.push({x:this.accelerationChartData[0].data.length,y:0});
     }
+    
+        
   }
 
   public chartClicked(e:any):void {
