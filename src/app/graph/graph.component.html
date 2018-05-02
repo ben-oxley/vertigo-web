@@ -1,0 +1,20 @@
+<div class="chart-wrapper" style="height:300px;margin-top:40px;">
+  <canvas baseChart class="chart" [datasets]="graphData" [options]="options" [colors]="colours"
+    [legend]="legend" [chartType]="type"></canvas>
+</div>
+<label for="xaxis">X-Axis</label>
+<angular2-multiselect [data]="itemList" [(ngModel)]="selectedXValue" 
+                      [settings]="settings" 
+                      (onSelect)="rebuild($event)"
+                      (onDeSelect)="rebuild($event)" 
+                      (onSelectAll)="rebuild($event)" 
+                      (onDeSelectAll)="rebuild($event)" name="xaxis">
+</angular2-multiselect>
+<label for="yaxis">Y-Axis</label>
+<angular2-multiselect [data]="itemList" [(ngModel)]="selectedYValues" 
+                      [settings]="settings" 
+                      (onSelect)="rebuild($event)"
+                      (onDeSelect)="rebuild($event)" 
+                      (onSelectAll)="rebuild($event)" 
+                      (onDeSelectAll)="rebuild($event)" name="yaxis">
+</angular2-multiselect>

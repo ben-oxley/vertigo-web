@@ -1,14 +1,15 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "version": "1.0.0-alpha.6",
     "name": "coreui-angular"
   },
   "apps": [
     {
       "root": "src",
       "outDir": "wwwroot",
-      "assets": ["assets"],
+      "assets": [
+        "assets"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -16,6 +17,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "serviceWorker": true,
       "styles": [
         "scss/style.scss",
         "../node_modules/font-awesome/css/font-awesome.css"
@@ -53,7 +55,6 @@
     }
   },
   "defaults": {
-    "styleExt": "scss",
-    "prefixInterfaces": false
+    "styleExt": "scss"
   }
 }
