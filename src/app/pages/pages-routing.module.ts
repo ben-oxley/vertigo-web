@@ -1,52 +1,57 @@
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
-import { P404Component } from './404.component';
-import { P500Component } from './500.component';
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
+import { PagesComponent } from './pages.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ECommerceComponent } from './e-commerce/e-commerce.component';
+import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 
-const routes: Routes = [
-  {
+const routes: Routes = [{
+  path: '',
+  component: PagesComponent,
+  children: [{
+    path: 'dashboard',
+    component: ECommerceComponent,
+  }, {
+    path: 'iot-dashboard',
+    component: DashboardComponent,
+  }, {
+    path: 'ui-features',
+    loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
+  }, {
+    path: 'components',
+    loadChildren: './components/components.module#ComponentsModule',
+  }, {
+    path: 'maps',
+    loadChildren: './maps/maps.module#MapsModule',
+  }, {
+    path: 'charts',
+    loadChildren: './charts/charts.module#ChartsModule',
+  }, {
+    path: 'editors',
+    loadChildren: './editors/editors.module#EditorsModule',
+  }, {
+    path: 'forms',
+    loadChildren: './forms/forms.module#FormsModule',
+  }, {
+    path: 'tables',
+    loadChildren: './tables/tables.module#TablesModule',
+  }, {
+    path: 'miscellaneous',
+    loadChildren: './miscellaneous/miscellaneous.module#MiscellaneousModule',
+  }, {
     path: '',
-    data: {
-      title: 'Example Pages'
-    },
-    children: [
-      {
-        path: '404',
-        component: P404Component,
-        data: {
-          title: 'Page 404'
-        }
-      },
-      {
-        path: '500',
-        component: P500Component,
-        data: {
-          title: 'Page 500'
-        }
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
-        data: {
-          title: 'Login Page'
-        }
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
-        data: {
-          title: 'Register Page'
-        }
-      }
-    ]
-  }
-];
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  }, {
+    path: '**',
+    component: NotFoundComponent,
+  }],
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule {
+}
