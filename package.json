@@ -1,13 +1,12 @@
 {
-  "name": "ngx-admin",
-  "version": "2.3.0",
-  "license": "MIT",
+  "name": "vertugi",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akveo/ngx-admin.git"
+    "url": "git+https://github.com/SGSVertigo/vertigo-web.git"
   },
   "bugs": {
-    "url": "https://github.com/akveo/ngx-admin/issues"
+    "url": "https://github.com/SGSVertigo/vertigo-web/issues"
   },
   "browserslist": [
     "> 1%",
@@ -23,7 +22,7 @@
     "test": "ng test",
     "test:coverage": "rimraf coverage && npm run test -- --code-coverage",
     "lint": "ng lint",
-    "lint:fix": "ng lint ngx-admin-demo --fix",
+    "lint:fix": "ng lint vertigo --fix",
     "lint:styles": "stylelint ./src/**/*.scss",
     "lint:ci": "npm run lint && npm run lint:styles",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
@@ -115,8 +114,8 @@
     "tslint-language-service": "0.9.6",
     "typescript": "2.7.2"
   },
-  "description": "[![Build Status](https://travis-ci.org/akveo/ngx-admin.svg?branch=master)](https://travis-ci.org/akveo/ngx-admin) [![Join the chat at https://gitter.im/ng2-admin/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ng2-admin/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Dependency Status](https://david-dm.org/akveo/ngx-admin/status.svg)](https://david-dm.org/akveo/ng2-admin)",
-  "homepage": "https://github.com/akveo/ngx-admin#readme",
+  "description": "Vertigo IMU Web App",
+  "homepage": "https://http://vertigo.engineering",
   "main": "karma.conf.js",
   "keywords": [],
   "author": ""
