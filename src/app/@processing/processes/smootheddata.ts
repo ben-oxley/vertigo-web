@@ -7,8 +7,8 @@ import { AbstractDataBlock } from "./abstractdatablock";
 export class SmoothedData extends AbstractDataBlock{
 
     public readonly bufferSize:number;
-    private buffer:Data[];
-    private numberInBuffer:number;
+    private buffer:Data[] = [];
+    private numberInBuffer:number = 0;
     private combinedValue:Data;
 
     public constructor(bufferSize:number){
@@ -18,7 +18,11 @@ export class SmoothedData extends AbstractDataBlock{
 
     private add(data:Data):Data{
         this.buffer.push(data);
-        this.combinedValue.AddData(data);
+        if (!this.combinedValue){
+            this.combinedValue = new Data(data.Data);
+        } else {
+            this.combinedValue.AddData(data);
+        }
         if (this.numberInBuffer===this.bufferSize){
             let removedData:Data = this.buffer.shift();
             this.combinedValue.SubtractData(removedData);
