@@ -42,7 +42,7 @@ export class SmoothedData extends AbstractDataBlock{
     public LoadAll(data:Data[]){
         var smoothedDataArray:Data[] = [];
         data.forEach(d => {
-            var smoothedData:Data =this.add(d);
+            var smoothedData:Data = this.add(d);
             smoothedDataArray.push(smoothedData);
         });
         this.notifyListeners(smoothedDataArray,[]);
