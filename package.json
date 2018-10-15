@@ -1,5 +1,5 @@
 {
-  "name": "vertugi",
+  "name": "vertigo",
   "version": "0.0.1",
   "repository": {
     "type": "git",
@@ -61,6 +61,7 @@
     "ckeditor": "4.7.3",
     "classlist.js": "1.1.20150312",
     "core-js": "2.5.1",
+    "csv-parse": "^3.1.3",
     "echarts": "^4.1.0",
     "intl": "1.2.5",
     "ionicons": "2.0.1",

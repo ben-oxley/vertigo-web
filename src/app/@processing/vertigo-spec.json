@@ -1,0 +1,48 @@
+{
+    "dataTypes":[
+            {
+                "name":"gps",
+                "identifier":1,
+                "columns":[
+                
+                    {"name":"longitude","units":"Decimal Degrees x 1e7"},
+                    {"name":"latitude","units":"Decimal Degrees x 1e7"},
+                    {"name":"altitude","units":"mm"},
+                    {"name":"north velocity","units":"mm/s"},
+                    {"name":"east velocity","units":"mm/s"},
+                    {"name":"down velocity","units":"mm/s"},
+                    {"name":"horizontal accuracy","units":"mm"},
+                    {"name":"vertical accuracy","units":"mm"}
+                ]
+            },
+            {
+                "name":"imu",
+                "identifier":2,
+                "columns":[
+                    {"name":"ax","units":"g"},
+                    {"name":"ay","units":"g"},
+                    {"name":"az","units":"g"},
+                    {"name":"rx","units":"deg/s"},
+                    {"name":"ry","units":"deg/s"},
+                    {"name":"rz","units":"deg/s"}
+                ]
+            },
+            {
+                "name":"ahrs",
+                "identifier":3,
+                "columns":[
+                    {"name":"q0","units":"1"},
+                    {"name":"q1","units":"i"},
+                    {"name":"q2","units":"j"},
+                    {"name":"q3","units":"k"}
+                ]
+            },
+            {
+                "name":"atmospheric",
+                "identifier":4,
+                "columns":[
+                    {"name":"pressure","units":"kPa"}
+                ]
+            }
+    ]
+}
