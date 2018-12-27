@@ -18,6 +18,21 @@ import {
   NbPopoverModule,
   NbContextMenuModule,
   NbProgressBarModule,
+  NbCalendarModule,
+  NbCalendarRangeModule,
+  NbStepperModule,
+  NbButtonModule,
+  NbInputModule,
+  NbAccordionModule,
+  NbDialogModule,
+  NbWindowModule,
+  NbListModule,
+  NbToastrModule,
+  NbAlertModule,
+  NbSpinnerModule,
+  NbRadioModule,
+  NbSelectModule,
+  NbTooltipModule,
 } from '@nebular/theme';
 
 import { NbSecurityModule } from '@nebular/security';
@@ -30,7 +45,6 @@ import {
   SwitcherComponent,
   LayoutDirectionSwitcherComponent,
   ThemeSwitcherComponent,
-  TinyMCEComponent,
   ThemeSwitcherListComponent,
 } from './components';
 import {
@@ -39,6 +53,7 @@ import {
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe,
+  EvaIconsPipe,
 } from './pipes';
 import {
   OneColumnLayoutComponent,
@@ -68,6 +83,21 @@ const NB_MODULES = [
   NgbModule,
   NbSecurityModule, // *nbIsGranted directive,
   NbProgressBarModule,
+  NbCalendarModule,
+  NbCalendarRangeModule,
+  NbStepperModule,
+  NbButtonModule,
+  NbListModule,
+  NbToastrModule,
+  NbInputModule,
+  NbAccordionModule,
+  NbDialogModule,
+  NbWindowModule,
+  NbAlertModule,
+  NbSpinnerModule,
+  NbRadioModule,
+  NbSelectModule,
+  NbTooltipModule,
 ];
 
 const COMPONENTS = [
@@ -79,7 +109,6 @@ const COMPONENTS = [
   FooterComponent,
   SearchInputComponent,
   ThemeSettingsComponent,
-  TinyMCEComponent,
   OneColumnLayoutComponent,
   SampleLayoutComponent,
   ThreeColumnsLayoutComponent,
@@ -96,6 +125,7 @@ const PIPES = [
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe,
+  EvaIconsPipe,
 ];
 
 const NB_THEME_PROVIDERS = [
@@ -107,6 +137,9 @@ const NB_THEME_PROVIDERS = [
   ).providers,
   ...NbSidebarModule.forRoot().providers,
   ...NbMenuModule.forRoot().providers,
+  ...NbDialogModule.forRoot().providers,
+  ...NbWindowModule.forRoot().providers,
+  ...NbToastrModule.forRoot().providers,
 ];
 
 @NgModule({

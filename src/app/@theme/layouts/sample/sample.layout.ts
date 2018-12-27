@@ -25,6 +25,11 @@ import { StateService } from '../../../@core/data/state.service';
                    tag="menu-sidebar"
                    responsive
                    [end]="sidebar.id === 'end'">
+        <nb-sidebar-header *ngIf="currentTheme !== 'corporate'">
+          <a href="#" class="btn btn-hero-success main-btn">
+            <i class="ion ion-social-github"></i> <span>Support Us</span>
+          </a>
+        </nb-sidebar-header>
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
 
@@ -40,6 +45,9 @@ import { StateService } from '../../../@core/data/state.service';
         <nb-menu [items]="subMenu"></nb-menu>
       </nb-layout-column>
 
+      <nb-layout-footer fixed>
+        <ngx-footer></ngx-footer>
+      </nb-layout-footer>
 
       <nb-sidebar class="settings-sidebar"
                    tag="settings-sidebar"
@@ -56,42 +64,6 @@ export class SampleLayoutComponent implements OnDestroy {
   subMenu: NbMenuItem[] = [
     {
       title: 'PAGE LEVEL MENU',
-      group: true,
-    },
-    {
-      title: 'Buttons',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/buttons',
-    },
-    {
-      title: 'Grid',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/grid',
-    },
-    {
-      title: 'Icons',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/icons',
-    },
-    {
-      title: 'Modals',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/modals',
-    },
-    {
-      title: 'Typography',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/typography',
-    },
-    {
-      title: 'Animated Searches',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/search-fields',
-    },
-    {
-      title: 'Tabs',
-      icon: 'ion ion-android-radio-button-off',
-      link: '/pages/ui-features/tabs',
     },
   ];
   layout: any = {};
