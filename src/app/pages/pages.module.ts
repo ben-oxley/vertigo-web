@@ -6,9 +6,12 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { LiveComponent } from './live/live.component';
+import { BluetoothComponent } from './bluetooth/bluetooth.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
+  LiveComponent,
+  BluetoothComponent
 ];
 
 @NgModule({
@@ -20,7 +23,6 @@ const PAGES_COMPONENTS = [
   ],
   declarations: [
     ...PAGES_COMPONENTS,
-    LiveComponent,
   ],
 })
 export class PagesModule {

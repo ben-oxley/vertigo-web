@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LiveComponent } from './live/live.component';
+import { BluetoothComponent } from './bluetooth/bluetooth.component';
 
 const routes: Routes = [{
   path: '',
@@ -16,6 +17,10 @@ const routes: Routes = [{
     {
       path: 'live',
       component: LiveComponent,
+    },
+    {
+      path: 'bluetooth',
+      component: BluetoothComponent,
     },
     {
       path: '',

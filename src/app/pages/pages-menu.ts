@@ -14,27 +14,29 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: false,
   },
   {
-    title: 'FEATURES',
-    group: true,
+    title: 'Bluetooth',
+    icon: 'nb-arrow-retweet',
+    link: '/pages/bluetooth',
+    home: false,
   },
   {
-    title: 'Auth',
-    icon: 'nb-locked',
+    title: 'Lessons',
+    icon: 'nb-compose',
     children: [
       {
-        title: 'Login',
+        title: 'Pendulum',
         link: '/auth/login',
       },
       {
-        title: 'Register',
+        title: 'Circular Motion',
         link: '/auth/register',
       },
       {
-        title: 'Request Password',
+        title: 'Velocity/time',
         link: '/auth/request-password',
       },
       {
-        title: 'Reset Password',
+        title: 'Trampoline',
         link: '/auth/reset-password',
       },
     ],
