@@ -8,6 +8,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
+    title: 'Live',
+    icon: 'nb-arrow-retweet',
+    link: '/pages/live',
+    home: false,
+  },
+  {
     title: 'FEATURES',
     group: true,
   },
