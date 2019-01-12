@@ -128,10 +128,13 @@ export class BluetoothComponent implements OnInit {
   }
 
   private handleGPS(event) {
+    let lon:number = event.target.value.getInt32(0,true)/1e7;
+    let lat:number = event.target.value.getInt32(4,true)/1e7;
+    let alt:number = event.target.value.getInt32(8,true)/1e7;
     console.log(
-      event.target.value.getInt32(0,true)/1e7,
-      event.target.value.getInt32(4,true)/1e7,
-      event.target.value.getInt32(8,true)/1e7,
+      lon,
+      lat,
+      alt,
       event.target.value.getUint8(12,true)/1e3,
       );
   }
