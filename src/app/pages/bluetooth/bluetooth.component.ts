@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import {ElementRef,Renderer2} from '@angular/core';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { timer } from 'rxjs';
+import { LivemapComponent } from '../../maps/livemap/livemap.component'
+import { context } from 'cubism-es';
 
 @Component({
   selector: 'bluetooth',
@@ -12,7 +14,7 @@ import { timer } from 'rxjs';
 export class BluetoothComponent implements OnInit {
 
   private static NO_CONNECTION:string = 'No device connected, click the bluetooth button to connect!';
-
+  public connected:boolean = false;
   public deviceName:string = BluetoothComponent.NO_CONNECTION;
   public supported:boolean = false;
   public title:string = "Connected Device";
@@ -27,6 +29,8 @@ export class BluetoothComponent implements OnInit {
   private static statusCharacteristicID:string = 'c70617b6-993d-481f-b02a-7fcfbb3d2133';
   // CONTROL (“CTRL”)
   private static controlCharacteristicID:string = 'c771b990-055f-11e9-8eb2-f2801f1b9fd1';
+  private static batteryID:string = 'battery_service';
+  private static levelCharateristicID:string = 'battery_level'
   private server:BluetoothRemoteGATTServer;
   private device:BluetoothDevice;
   private service:BluetoothRemoteGATTService;
@@ -42,10 +46,14 @@ export class BluetoothComponent implements OnInit {
 
   public async connect(){
     if (this.supported){
-      let options:any = {
-        filters: [
-          {services: [BluetoothComponent.serviceID]}
-        ],
+      let options:RequestDeviceOptions = {
+        // filters: [
+        //   {services: [BluetoothComponent.batteryID]}
+        // ],
+        acceptAllDevices:true,
+        optionalServices: [
+          BluetoothComponent.serviceID
+        ]
       };
       try {
         console.log('Requesting Bluetooth Device...');
@@ -55,6 +63,7 @@ export class BluetoothComponent implements OnInit {
         console.log('> Id:               ' + device.id);
         console.log('> Connected:        ' + device.gatt.connected);
         this.deviceName = device.name;
+        this.connected = true;
         this.device = device;
         device.gatt.connect().then(server=>{
           this.server = server;
@@ -75,17 +84,27 @@ export class BluetoothComponent implements OnInit {
           ])
         })
         .then(()=>{
-          this.magnetometerCharacteristic.addEventListener('characteristicvaluechanged',
-        this.handleMagnetometer);
+          this.imuQuaternionCharacteristic.addEventListener('characteristicvaluechanged',this.handleIMU);
+          this.magnetometerCharacteristic.addEventListener('characteristicvaluechanged',this.handleMagnetometer);
+          this.gpsCharacteristic.addEventListener('characteristicvaluechanged',this.handleGPS)
           this.pollforUpdates();
         })
-        .catch(error=>console.log(error))
+        .catch(error=>{
+          console.log(error);
+        })
         
       } catch(error)  {
         console.log('Argh! ' + error);
         this.deviceName = BluetoothComponent.NO_CONNECTION;
+        this.connected = false;
       }
     }
+  }
+
+  private handleBattery(event){
+    console.log(
+      event.target.value.getUint8(0)
+    );
   }
 
   private handleMagnetometer(event) {
@@ -98,48 +117,34 @@ export class BluetoothComponent implements OnInit {
       event.target.value.getInt16(10,true),
       );
   }
+
+  private handleIMU(event) {
+    console.log(
+      event.target.value.getFloat32(0,true),
+      event.target.value.getFloat32(4,true),
+      event.target.value.getFloat32(8,true),
+      event.target.value.getFloat32(12,true),
+      );
+  }
+
+  private handleGPS(event) {
+    console.log(
+      event.target.value.getInt32(0,true)/1e7,
+      event.target.value.getInt32(4,true)/1e7,
+      event.target.value.getInt32(8,true)/1e7,
+      event.target.value.getUint8(12,true)/1e3,
+      );
+  }
   
   
   private pollforUpdates(){
     try{
       if (this.device.gatt.connected){
-        // this.imuQuaternionCharacteristic.readValue().then(dataView=>{
-        //   console.log(
-        //     dataView.getFloat32(0,false),
-        //     dataView.getFloat32(4,false),
-        //     dataView.getFloat32(8,false),
-        //     dataView.getFloat32(12,false),
-        //     );
-        // }).then(()=>{
-        //   timer(1000).subscribe(()=>this.pollforUpdates());
-        // });
-        this.device.gatt.connect().then(server=>{
-          this.server = server;
-          return server.getPrimaryService(BluetoothComponent.serviceID);
-        })
-        .then(()=>{
-            return this.registerToServices(this.service,BluetoothComponent.magnetometerCharacteristicID);
-        })
-        .then(char=>{
-            return char.readValue();
-          })
-          .then(()=>{
-            timer(1000).subscribe(()=>this.pollforUpdates());
-          });
-        // this.magnetometerCharacteristic.readValue().then(dataView=>{
-        //   console.log(
-        //     dataView.getInt16(0,true),
-        //     dataView.getInt16(2,true),
-        //     dataView.getInt16(4,true),
-        //     dataView.getInt16(6,true),
-        //     dataView.getInt16(8,true),
-        //     dataView.getInt16(10,true),
-        //     );
-        // }).then(()=>{
-        //   timer(1000).subscribe(()=>this.pollforUpdates());
-        // });
-        
-        //setTimeout(this.pollforUpdates,1000);
+
+        this.magnetometerCharacteristic.readValue();
+        this.imuQuaternionCharacteristic.readValue();
+        this.gpsCharacteristic.readValue();
+        timer(1000).subscribe(()=>this.pollforUpdates());
       } else {
         this.deviceName = BluetoothComponent.NO_CONNECTION;
       }

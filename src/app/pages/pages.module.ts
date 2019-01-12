@@ -7,6 +7,9 @@ import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { LiveComponent } from './live/live.component';
 import { BluetoothComponent } from './bluetooth/bluetooth.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LivemapComponent } from '../maps/livemap/livemap.component'
+import { MapsModule } from '../maps/maps.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -20,6 +23,8 @@ const PAGES_COMPONENTS = [
     ThemeModule,
     DashboardModule,
     MiscellaneousModule,
+    MapsModule,
+    LeafletModule.forRoot()
   ],
   declarations: [
     ...PAGES_COMPONENTS,
