@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
 import 'style-loader!leaflet/dist/leaflet.css';
 
@@ -8,26 +8,38 @@ import 'style-loader!leaflet/dist/leaflet.css';
   templateUrl: './livemap.component.html',
   styleUrls: ['./livemap.component.scss']
 })
-export class LivemapComponent implements OnInit {
+export class LivemapComponent implements OnInit, OnChanges {
 
-  options = {
+
+  @Input() lat = 0;
+  @Input() lon = 0;
+
+  public options = {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
     ],
     zoom: 5,
-    center: L.latLng({ lat: 38.991709, lng: -76.886109 }),
-};
+    center: L.latLng({ lat: this.lat, lng: this.lon }),
+  };
 
-layersControl = {
-	baseLayers: {
-		'Open Street Map': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
-		'Open Cycle Map': L.tileLayer('http://{s}.tile.opencyclemap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
-	},
-	overlays: {
-		'Big Circle': L.circle([ 46.95, -122 ], { radius: 5000 }),
-		'Big Square': L.polygon([[ 46.8, -121.55 ], [ 46.9, -121.55 ], [ 46.9, -121.7 ], [ 46.8, -121.7 ]])
-	}
-};
+  public layers = [];
+  
+
+  public layersControl = {
+    baseLayers: {
+      'Open Street Map': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+      'Open Cycle Map': L.tileLayer('http://{s}.tile.opencyclemap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+    },
+    overlays: {
+      'Big Circle': L.circle([46.95, -122], { radius: 5000 }),
+      'Big Square': L.polygon([[46.8, -121.55], [46.9, -121.55], [46.9, -121.7], [46.8, -121.7]])
+    }
+  };
+
+  ngOnChanges(changes:SimpleChanges): void {
+    this.options.center = L.latLng({ lat: this.lat, lng: this.lon })
+    this.layers[0] = L.marker([this.lat,  this.lon]);
+  }
 
   constructor() { }
 

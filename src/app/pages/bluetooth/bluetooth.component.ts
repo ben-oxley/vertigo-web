@@ -52,8 +52,8 @@ export class BluetoothComponent implements OnInit {
   public rotx:number = 0.0;
   public roty:number = 0.0;
   public rotz:number = 0.0;
-  public lon:number = 0.0;
-  public lat:number = 0.0;
+  public lon:number = 1.0;
+  public lat:number = 50.0;
   public alt:number = 0.0;
   public q0:number = 0.0;
   public q1:number = 0.0;
