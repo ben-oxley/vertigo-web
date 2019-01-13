@@ -10,6 +10,7 @@ import { BluetoothComponent } from './bluetooth/bluetooth.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LivemapComponent } from '../maps/livemap/livemap.component'
 import { MapsModule } from '../maps/maps.module';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -24,7 +25,8 @@ const PAGES_COMPONENTS = [
     DashboardModule,
     MiscellaneousModule,
     MapsModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    AngularFontAwesomeModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,

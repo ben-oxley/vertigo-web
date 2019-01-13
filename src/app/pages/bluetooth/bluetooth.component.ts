@@ -15,6 +15,8 @@ export class BluetoothComponent implements OnInit {
 
   private static NO_CONNECTION:string = 'No device connected, click the bluetooth button to connect!';
   public connected:boolean = false;
+  public pause:boolean = false;
+  public stop:boolean = false;
   public deviceName:string = BluetoothComponent.NO_CONNECTION;
   public supported:boolean = false;
   public title:string = "Connected Device";
@@ -42,6 +44,15 @@ export class BluetoothComponent implements OnInit {
  
   
   private static step:number = 0.0;
+  public accx:string = 0.0.toString();
+  public accy:string = 0.0.toString();
+  public accz:string = 0.0.toString();
+  public lon:string = 0.0.toString();
+  public lat:string = 0.0.toString();
+  public alt:string = 0.0.toString();
+
+  public constructor(){
+  }
 
 
   public async connect(){
@@ -84,10 +95,12 @@ export class BluetoothComponent implements OnInit {
           ])
         })
         .then(()=>{
-          this.imuQuaternionCharacteristic.addEventListener('characteristicvaluechanged',this.handleIMU);
-          this.magnetometerCharacteristic.addEventListener('characteristicvaluechanged',this.handleMagnetometer);
-          this.gpsCharacteristic.addEventListener('characteristicvaluechanged',this.handleGPS)
-          this.pollforUpdates();
+          this.stop = false;
+          this.pause = false;
+          // this.imuQuaternionCharacteristic.addEventListener('characteristicvaluechanged',this.handleIMU);
+          // this.magnetometerCharacteristic.addEventListener('characteristicvaluechanged',this.handleMagnetometer);
+          // this.gpsCharacteristic.addEventListener('characteristicvaluechanged',this.handleGPS)
+          timer(1000).subscribe(()=>this.pollforUpdates());
         })
         .catch(error=>{
           console.log(error);
@@ -107,14 +120,23 @@ export class BluetoothComponent implements OnInit {
     );
   }
 
-  private handleMagnetometer(event) {
+  private inc(){
+    this.accx=Date.now().toString();
+  }
+
+  private handleMagnetometer(component:BluetoothComponent,event:DataView) {
+    component.accx = (event.getInt16(0,true)/1e3).toString();
+    component.accy = (event.getInt16(2,true)/1e3).toString();
+    component.accz = (event.getInt16(4,true)/1e3).toString();
+
+
     console.log(
-      event.target.value.getInt16(0,true),
-      event.target.value.getInt16(2,true),
-      event.target.value.getInt16(4,true),
-      event.target.value.getInt16(6,true),
-      event.target.value.getInt16(8,true),
-      event.target.value.getInt16(10,true),
+      component.accx,
+      component.accy,
+      component.accz,
+      event.getInt16(6,true),
+      event.getInt16(8,true),
+      event.getInt16(10,true),
       );
   }
 
@@ -128,26 +150,55 @@ export class BluetoothComponent implements OnInit {
   }
 
   private handleGPS(event) {
-    let lon:number = event.target.value.getInt32(0,true)/1e7;
-    let lat:number = event.target.value.getInt32(4,true)/1e7;
-    let alt:number = event.target.value.getInt32(8,true)/1e7;
+    this.lon = (event.target.value.getInt32(0,true)/1e7).toString();
+    this.lat = (event.target.value.getInt32(4,true)/1e7).toString();
+    this.alt = (event.target.value.getInt32(8,true)/1e7).toString();
     console.log(
-      lon,
-      lat,
-      alt,
+      this.lon,
+      this.lat,
+      this.alt,
       event.target.value.getUint8(12,true)/1e3,
       );
   }
+
+  public setAccx(value){
+    this.accx = value;
+  }
+
+  public getAccx(){
+    return this.accx;
+  }
+
+  public setLon(value){
+    this.lon = value;
+  }
+
+  public getLon(){
+    return this.lon;
+  }
+
   
+  private pauseLogging(){
+    this.pause= !this.pause;
+  }
+
+  private stopLogging(){
+    this.stop = true;
+  }
   
   private pollforUpdates(){
     try{
       if (this.device.gatt.connected){
-
-        this.magnetometerCharacteristic.readValue();
-        this.imuQuaternionCharacteristic.readValue();
-        this.gpsCharacteristic.readValue();
-        timer(1000).subscribe(()=>this.pollforUpdates());
+        if (this.stop) return;
+        if (this.pause) {
+          timer(1000).subscribe(()=>this.pollforUpdates());
+          return;
+        };
+        return Promise.all([
+        this.magnetometerCharacteristic.readValue().then(m=>this.handleMagnetometer(this,m)),
+        this.imuQuaternionCharacteristic.readValue(),
+        this.gpsCharacteristic.readValue()
+        ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates()))
       } else {
         this.deviceName = BluetoothComponent.NO_CONNECTION;
       }

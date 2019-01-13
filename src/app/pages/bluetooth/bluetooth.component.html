@@ -1,19 +1,39 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <button type="button" class="btn btn-outline-primary btn-block" [disabled]="connected" (click)="connect()">Connect</button>
-            <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected">Start</button>
-            <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected">Stop</button>
-            <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected">Add Tag</button>
-            <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected">Download</button>
-            <i class="fa fa-adjust"></i>
-        </div>
-        <div class="col-sm">
-          <div>Acceleration</div>
-          
-        </div>
-        <div class="col-sm">
-            <live-map></live-map>
-        </div>
-        </div>
+  <div class="row">
+    <div class="col-sm">
+      <button type="button" class="btn btn-outline-primary btn-block" [disabled]="connected" (click)="connect()">Connect</button>
+      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected">Start</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">Pause</button>
+      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">Stop</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected">Add Tag</button>
+      <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected">Download</button>
+
+    </div>
+    <div class="col-sm">
+      <nb-card>
+        <nb-card-body>
+          <div class="propname">
+            <span>Acceleration</span>
+          </div>
+          <div class="prop">
+            <div><span><b>X: </b><span>{{ accx }}</span></span></div>
+            <div><span><b>Y: </b><span>{{ accy }}</span></span></div>
+            <div><span><b>Z: </b><span>{{ accz }}</span></span></div>
+          </div>
+          <div class="propname">
+            <span>Location</span>
+          </div>
+          <div class="prop">
+            <div><span><b>Latitude: </b><span>{{lat}}</span> Degrees</span></div>
+            <div><span><b>Longitude: </b><span>{{lon}}</span> Degrees</span></div>
+            <div><span><b>Altitude: </b><span>{{alt}}</span> m</span></div>
+          </div>
+        </nb-card-body>
+
+      </nb-card>
+    </div>
+    <div class="col-sm" size="large">
+      <live-map></live-map>
+    </div>
+  </div>
 </div>
