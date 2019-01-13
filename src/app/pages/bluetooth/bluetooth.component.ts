@@ -42,7 +42,8 @@ export class BluetoothComponent implements OnInit {
   private gpsCharacteristic:BluetoothRemoteGATTCharacteristic;
   private statusCharacteristic:BluetoothRemoteGATTCharacteristic;
   private controlCharacteristic:BluetoothRemoteGATTCharacteristic;
- 
+  
+  
   
   private static step:number = 0.0;
   public accx:number = 0.0;
@@ -58,8 +59,13 @@ export class BluetoothComponent implements OnInit {
   public q1:number = 0.0;
   public q2:number = 0.0;
   public q3:number = 0.0;
-  public fix:number = 0;
-  public flags:number = 0;
+  public fix:string = "Not detected";
+  public flags:string = "Not detected";
+  public versionNumber:string = "Not detected";
+  public gpsState:string = "Not detected";
+  public imuState:string = "Not detected";
+  public atmosphericState:string = "Not detected";
+  public loggerState:string = "Not detected";
 
   public constructor(){
   }
@@ -152,8 +158,23 @@ export class BluetoothComponent implements OnInit {
     component.lon = (event.getInt32(0,true)/1e7);
     component.lat = (event.getInt32(4,true)/1e7);
     component.alt = (event.getInt32(8,true)/1e7);
-    component.fix = event.getUint8(12);
-    component.flags = 0x03&event.getUint8(13);
+    component.fix = this.lookupGPSFix(event.getUint8(12));
+    component.flags = this.lookupGPSvalidity(event.getUint8(13));
+  }
+
+  private handleState(component:BluetoothComponent,event:DataView) {
+    component.versionNumber = String.fromCharCode(event.getInt8(0))+
+      String.fromCharCode(event.getInt8(1))+
+      String.fromCharCode(event.getInt8(2))+
+      String.fromCharCode(event.getInt8(3))+
+      String.fromCharCode(event.getInt8(4))+
+      String.fromCharCode(event.getInt8(5))+
+      String.fromCharCode(event.getInt8(6));
+
+    component.loggerState = this.lookupLoggerState(event.getInt8(7));
+    component.imuState = this.lookupIMUState(event.getInt8(8));
+    component.gpsState = this.lookupGPSState(event.getInt8(9));
+    component.atmosphericState = this.lookupAtmosphericState(event.getInt8(10));
   }
 
   private startLogging(){
@@ -167,6 +188,78 @@ export class BluetoothComponent implements OnInit {
     }
   }
   
+  private lookupLoggerState(byte):string{
+    switch(byte){
+      case 0x00: return "Unconfigured";
+      case 0x01: return "No SD card present";
+      case 0x02: return "Clearing SD card of previous log files";
+      case 0x03: return "Ready";
+      case 0x04: return "Initialising";
+      case 0x05: return "Logging";
+      case 0x06: return "Finalising";
+      case 0x07: return "Fatal error";
+    }
+  }
+
+  private lookupGPSFix(byte):string{
+    switch(byte){
+      case 0: return "No Fix";
+      case 2: return "2D Fix";
+      case 3: return "3D Fix";
+    }
+  }
+
+  private lookupGPSvalidity(byte):string{
+    switch(0x4&byte){
+      case 0x00: return "No valid time information";
+      case 0x01: return "Valid date";
+      case 0x02: return "Valid time";
+      case 0x03: return "Valid date and time";
+      case 0x04: return "Valid time of day";
+      case 0x05: return "Valid time of day";
+      case 0x06: return "Valid time of day";
+      case 0x07: return "Valid time of day";
+      case 0x08: return "Valid magnetic declination, No valid time information";
+      case 0x09: return "Valid magnetic declination and date";
+      case 0x0a: return "Valid magnetic declination and time";
+      case 0x0b: return "Valid magnetic declination, date and time";
+      case 0x0c: return "Valid magnetic declination and time of day";
+      case 0x0d: return "Valid magnetic declination and time of day";
+      case 0x0e: return "Valid magnetic declination and time of day";
+      case 0x0f: return "Valid magnetic declination and time of day";
+    }
+  }
+
+  private lookupIMUState(byte):string{
+    switch(byte){
+      case 0x00: return "Unconfigured";
+      case 0x01: return "Initialisation failed";
+      case 0x02: return "Armed";
+      case 0x03: return "Generating";
+      case 0x04: return "Finalise";
+    }
+  }
+
+  private lookupGPSState(byte):string{
+    switch(byte){
+      case 0x00: return "Unconfigured";
+      case 0x01: return "Initialisation failed";
+      case 0x02: return "Armed";
+      case 0x03: return "Generating";
+      case 0x04: return "Finalise";
+    }
+  }
+
+  private lookupAtmosphericState(byte):string{
+    switch(byte){
+      case 0x00: return "Unconfigured";
+      case 0x01: return "Initialisation failed";
+      case 0x02: return "Armed";
+      case 0x03: return "Generating";
+      case 0x04: return "Finalise";
+    }
+  }
+
   private pauseLogging(){
     this.pause= !this.pause;
   }
@@ -190,9 +283,10 @@ export class BluetoothComponent implements OnInit {
           return;
         };
         return Promise.all([
-        this.magnetometerCharacteristic.readValue().then(m=>this.handleMagnetometer(this,m)),
-        this.imuQuaternionCharacteristic.readValue().then(m=>this.handleIMU(this,m)),
-        this.gpsCharacteristic.readValue().then(m=>this.handleGPS(this,m))
+          this.magnetometerCharacteristic.readValue().then(m=>this.handleMagnetometer(this,m)),
+          this.imuQuaternionCharacteristic.readValue().then(m=>this.handleIMU(this,m)),
+          this.gpsCharacteristic.readValue().then(m=>this.handleGPS(this,m)),
+          this.statusCharacteristic.readValue().then(m=>this.handleState(this,m))
         ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates())).catch(error=>{
           console.log(error);
           this.handleBluetoothError();

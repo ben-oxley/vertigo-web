@@ -35,8 +35,18 @@
             <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
             <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
             <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
-            <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>Flags: </b><span>{{flags}}</span></span></div>
+            <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
           </div>
+          <div class="propname">
+              <span>Status</span>
+            </div>
+            <div class="prop">
+              <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
+              <div><span><b>Logger State:</b> {{loggerState}}</span></div>
+              <div><span><b>IMU State:</b> {{imuState}}</span></div>
+              <div><span><b>GPS State:</b> {{gpsState}}</span></div>
+              <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
+            </div>
         </nb-card-body>
 
       </nb-card>
