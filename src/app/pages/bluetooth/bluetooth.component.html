@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col-sm">
       <button type="button" class="btn btn-outline-primary btn-block" [disabled]="connected" (click)="connect()">Connect</button>
-      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected">Start</button>
-      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">Pause</button>
-      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">Stop</button>
+      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()">Start Logging</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">Pause Browser</button>
+      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">Stop Logging</button>
       <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected">Add Tag</button>
       <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected">Download</button>
 
@@ -16,17 +16,26 @@
             <span>Acceleration</span>
           </div>
           <div class="prop">
-            <div><span><b>X: </b><span>{{ accx }}</span></span></div>
-            <div><span><b>Y: </b><span>{{ accy }}</span></span></div>
-            <div><span><b>Z: </b><span>{{ accz }}</span></span></div>
+            <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
+            <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+            <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
           </div>
+          <div class="propname">
+              <span>Rotational Velocity</span>
+            </div>
+            <div class="prop">
+              <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
+            </div>
           <div class="propname">
             <span>Location</span>
           </div>
           <div class="prop">
-            <div><span><b>Latitude: </b><span>{{lat}}</span> Degrees</span></div>
-            <div><span><b>Longitude: </b><span>{{lon}}</span> Degrees</span></div>
-            <div><span><b>Altitude: </b><span>{{alt}}</span> m</span></div>
+            <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
+            <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
+            <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
+            <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>Flags: </b><span>{{flags}}</span></span></div>
           </div>
         </nb-card-body>
 

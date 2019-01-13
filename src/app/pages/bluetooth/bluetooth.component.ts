@@ -44,12 +44,21 @@ export class BluetoothComponent implements OnInit {
  
   
   private static step:number = 0.0;
-  public accx:string = 0.0.toString();
-  public accy:string = 0.0.toString();
-  public accz:string = 0.0.toString();
-  public lon:string = 0.0.toString();
-  public lat:string = 0.0.toString();
-  public alt:string = 0.0.toString();
+  public accx:number = 0.0;
+  public accy:number = 0.0;
+  public accz:number = 0.0;
+  public rotx:number = 0.0;
+  public roty:number = 0.0;
+  public rotz:number = 0.0;
+  public lon:number = 0.0;
+  public lat:number = 0.0;
+  public alt:number = 0.0;
+  public q0:number = 0.0;
+  public q1:number = 0.0;
+  public q2:number = 0.0;
+  public q3:number = 0.0;
+  public fix:number = 0;
+  public flags:number = 0;
 
   public constructor(){
   }
@@ -97,10 +106,7 @@ export class BluetoothComponent implements OnInit {
         .then(()=>{
           this.stop = false;
           this.pause = false;
-          // this.imuQuaternionCharacteristic.addEventListener('characteristicvaluechanged',this.handleIMU);
-          // this.magnetometerCharacteristic.addEventListener('characteristicvaluechanged',this.handleMagnetometer);
-          // this.gpsCharacteristic.addEventListener('characteristicvaluechanged',this.handleGPS)
-          timer(1000).subscribe(()=>this.pollforUpdates());
+          this.pollforUpdates();
         })
         .catch(error=>{
           console.log(error);
@@ -114,69 +120,39 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private handleBattery(event){
-    console.log(
-      event.target.value.getUint8(0)
-    );
-  }
-
-  private inc(){
-    this.accx=Date.now().toString();
-  }
-
   private handleMagnetometer(component:BluetoothComponent,event:DataView) {
-    component.accx = (event.getInt16(0,true)/1e3).toString();
-    component.accy = (event.getInt16(2,true)/1e3).toString();
-    component.accz = (event.getInt16(4,true)/1e3).toString();
-
-
-    console.log(
-      component.accx,
-      component.accy,
-      component.accz,
-      event.getInt16(6,true),
-      event.getInt16(8,true),
-      event.getInt16(10,true),
-      );
+    component.accx = (event.getInt16(0,true)/1e3)*9.81;
+    component.accy = (event.getInt16(2,true)/1e3)*9.81;
+    component.accz = (event.getInt16(4,true)/1e3)*9.81;
+    component.rotx = (event.getInt16(6,true));
+    component.roty = (event.getInt16(8,true));
+    component.rotz = (event.getInt16(10,true));
   }
 
-  private handleIMU(event) {
-    console.log(
-      event.target.value.getFloat32(0,true),
-      event.target.value.getFloat32(4,true),
-      event.target.value.getFloat32(8,true),
-      event.target.value.getFloat32(12,true),
-      );
+  private handleIMU(component:BluetoothComponent,event:DataView) {
+    component.q0 = (event.getFloat32(0,true));
+    component.q1 = (event.getFloat32(4,true));
+    component.q2 = (event.getFloat32(8,true));
+    component.q3 = (event.getFloat32(12,true));
   }
 
-  private handleGPS(event) {
-    this.lon = (event.target.value.getInt32(0,true)/1e7).toString();
-    this.lat = (event.target.value.getInt32(4,true)/1e7).toString();
-    this.alt = (event.target.value.getInt32(8,true)/1e7).toString();
-    console.log(
-      this.lon,
-      this.lat,
-      this.alt,
-      event.target.value.getUint8(12,true)/1e3,
-      );
+  private handleGPS(component:BluetoothComponent,event:DataView) {
+    component.lon = (event.getInt32(0,true)/1e7);
+    component.lat = (event.getInt32(4,true)/1e7);
+    component.alt = (event.getInt32(8,true)/1e7);
+    component.fix = event.getUint8(12);
+    component.flags = 0x03&event.getUint8(13);
   }
 
-  public setAccx(value){
-    this.accx = value;
+  private startLogging(){
+    this.pause= false;
+    this.stop = false;
+    if (this.device.gatt.connected){
+      this.controlCharacteristic.writeValue(new Uint8Array([0x01])).catch(error=>{
+        console.log(error);
+      });
+    }
   }
-
-  public getAccx(){
-    return this.accx;
-  }
-
-  public setLon(value){
-    this.lon = value;
-  }
-
-  public getLon(){
-    return this.lon;
-  }
-
   
   private pauseLogging(){
     this.pause= !this.pause;
@@ -184,26 +160,35 @@ export class BluetoothComponent implements OnInit {
 
   private stopLogging(){
     this.stop = true;
+    if (this.device.gatt.connected){
+      this.controlCharacteristic.writeValue(new Uint8Array([0x02])).catch(error=>{
+        console.log(error);
+      });
+    }
   }
   
   private pollforUpdates(){
     try{
       if (this.device.gatt.connected){
-        if (this.stop) return;
+        this.connected = true;
         if (this.pause) {
           timer(1000).subscribe(()=>this.pollforUpdates());
           return;
         };
         return Promise.all([
         this.magnetometerCharacteristic.readValue().then(m=>this.handleMagnetometer(this,m)),
-        this.imuQuaternionCharacteristic.readValue(),
-        this.gpsCharacteristic.readValue()
-        ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates()))
+        this.imuQuaternionCharacteristic.readValue().then(m=>this.handleIMU(this,m)),
+        this.gpsCharacteristic.readValue().then(m=>this.handleGPS(this,m))
+        ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates())).catch(error=>{
+          console.log(error);
+        })
       } else {
+        this.connected = false;
         this.deviceName = BluetoothComponent.NO_CONNECTION;
       }
     } catch(error)  {
       console.log('Argh! ' + error);
+      this.connected = false;
       this.deviceName = BluetoothComponent.NO_CONNECTION;
     }
     
