@@ -1,12 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm">
-      <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()">{{connected ? "Disconnect":"Connect"}}</button>
-      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()">Start Logging</button>
-      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">Pause Browser</button>
-      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">Stop Logging</button>
-      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected">Add Tag</button>
-      <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected">Download</button>
+    <div class="col-2">
+      <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"><i class="ion ion-bluetooth"></i> {{connected ? "Disconnect":"Connect"}}</button>
+      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()"><i class="ion ion-play"></i> Start Logging</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()"><i class="ion ion-pause"></i> Pause Browser</button>
+      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()"><i class="ion ion-stop"></i> Stop Logging</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected"><i class="ion ion-pricetag"></i> Add Tag</button>
+      <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected"><i class="ion ion-ios-cloud-download"></i> Download</button>
 
     </div>
     <div class="col-sm">
@@ -48,7 +48,6 @@
               <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
             </div>
         </nb-card-body>
-
       </nb-card>
     </div>
     <div class="col-sm" size="large">
