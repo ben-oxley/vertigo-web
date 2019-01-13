@@ -6,6 +6,7 @@ import { timer } from 'rxjs';
 import { LivemapComponent } from '../../maps/livemap/livemap.component'
 import { context } from 'cubism-es';
 import { EventListener } from '@angular/core/src/debug/debug_node';
+import { MethodFn } from '@angular/core/src/reflection/types';
 
 @Component({
   selector: 'bluetooth',
@@ -124,7 +125,10 @@ export class BluetoothComponent implements OnInit {
         .then(()=>{
           this.stop = false;
           this.pause = false;
-          this.pollforUpdates();
+          this.pollforUpdates(this.magnetometerCharacteristic,this.handleMagnetometer,1);
+          this.pollforUpdates(this.gpsCharacteristic,this.handleGPS,1000);
+          this.pollforUpdates(this.statusCharacteristic,this.handleState,1000);
+          this.pollforUpdates(this.imuQuaternionCharacteristic,this.handleIMU,1);
         })
         .catch(error=>{
           console.log(error);
@@ -273,21 +277,22 @@ export class BluetoothComponent implements OnInit {
       });
     }
   }
+
   
-  private pollforUpdates(){
+  
+  private pollforUpdates(charateristic:BluetoothRemoteGATTCharacteristic,handler:Function,delay:number){
     try{
       if (this.device.gatt.connected){
         this.connected = true;
         if (this.pause) {
-          timer(1000).subscribe(()=>this.pollforUpdates());
+          timer(1000).subscribe(()=>this.pollforUpdates(charateristic,handler,delay));
           return;
         };
-        return Promise.all([
-          this.magnetometerCharacteristic.readValue().then(m=>this.handleMagnetometer(this,m)),
-          this.imuQuaternionCharacteristic.readValue().then(m=>this.handleIMU(this,m)),
-          this.gpsCharacteristic.readValue().then(m=>this.handleGPS(this,m)),
-          this.statusCharacteristic.readValue().then(m=>this.handleState(this,m))
-        ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates())).catch(error=>{
+        charateristic.readValue()
+        .then((v)=>{
+          handler(this,v)
+        }).then(()=>timer(delay).subscribe(()=>this.pollforUpdates(charateristic,handler,delay)))
+        .catch(error=>{
           console.log(error);
           this.handleBluetoothError();
         })
@@ -298,8 +303,6 @@ export class BluetoothComponent implements OnInit {
       console.log('Argh! ' + error);
       this.handleBluetoothError();
     }
-    
-    
   }
 
   private handleBluetoothError(){
