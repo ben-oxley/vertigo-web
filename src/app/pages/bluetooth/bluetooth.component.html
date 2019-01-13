@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm">
-      <button type="button" class="btn btn-outline-primary btn-block" [disabled]="connected" (click)="connect()">Connect</button>
+      <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()">{{connected ? "Disconnect":"Connect"}}</button>
       <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()">Start Logging</button>
       <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">Pause Browser</button>
       <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">Stop Logging</button>

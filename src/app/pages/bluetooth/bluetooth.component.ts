@@ -5,6 +5,7 @@ import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { timer } from 'rxjs';
 import { LivemapComponent } from '../../maps/livemap/livemap.component'
 import { context } from 'cubism-es';
+import { EventListener } from '@angular/core/src/debug/debug_node';
 
 @Component({
   selector: 'bluetooth',
@@ -66,6 +67,16 @@ export class BluetoothComponent implements OnInit {
 
   public async connect(){
     if (this.supported){
+      if (this.connected && this.device){
+        try {
+          this.device.gatt.disconnect();
+          this.handleBluetoothDisconnect(this);
+          return;
+        } catch(error)  {
+          console.log('Argh! ' + error);
+          this.handleBluetoothError();
+        }
+      }
       let options:RequestDeviceOptions = {
         // filters: [
         //   {services: [BluetoothComponent.batteryID]}
@@ -86,6 +97,7 @@ export class BluetoothComponent implements OnInit {
         this.connected = true;
         this.device = device;
         device.gatt.connect().then(server=>{
+          this.device.addEventListener('gattserverdisconnected', ()=>this.handleBluetoothDisconnect(this));
           this.server = server;
           return server.getPrimaryService(BluetoothComponent.serviceID);
         })
@@ -110,12 +122,12 @@ export class BluetoothComponent implements OnInit {
         })
         .catch(error=>{
           console.log(error);
+          this.handleBluetoothError();
         })
         
       } catch(error)  {
         console.log('Argh! ' + error);
-        this.deviceName = BluetoothComponent.NO_CONNECTION;
-        this.connected = false;
+        this.handleBluetoothError();
       }
     }
   }
@@ -150,6 +162,7 @@ export class BluetoothComponent implements OnInit {
     if (this.device.gatt.connected){
       this.controlCharacteristic.writeValue(new Uint8Array([0x01])).catch(error=>{
         console.log(error);
+        this.handleBluetoothError();
       });
     }
   }
@@ -161,8 +174,9 @@ export class BluetoothComponent implements OnInit {
   private stopLogging(){
     this.stop = true;
     if (this.device.gatt.connected){
-      this.controlCharacteristic.writeValue(new Uint8Array([0x02])).catch(error=>{
+        this.controlCharacteristic.writeValue(new Uint8Array([0x02])).catch(error=>{
         console.log(error);
+        this.handleBluetoothError();
       });
     }
   }
@@ -181,18 +195,28 @@ export class BluetoothComponent implements OnInit {
         this.gpsCharacteristic.readValue().then(m=>this.handleGPS(this,m))
         ]).then(()=>timer(10).subscribe(()=>this.pollforUpdates())).catch(error=>{
           console.log(error);
+          this.handleBluetoothError();
         })
       } else {
-        this.connected = false;
-        this.deviceName = BluetoothComponent.NO_CONNECTION;
+        this.handleBluetoothError();
       }
     } catch(error)  {
       console.log('Argh! ' + error);
-      this.connected = false;
-      this.deviceName = BluetoothComponent.NO_CONNECTION;
+      this.handleBluetoothError();
     }
     
     
+  }
+
+  private handleBluetoothError(){
+    this.handleBluetoothDisconnect(this);
+  }
+
+  private handleBluetoothDisconnect(component:BluetoothComponent){
+    console.log('disconnected');
+    component.deviceName = BluetoothComponent.NO_CONNECTION;
+    component.stop = true;
+    component.connected=false;
   }
 
 
