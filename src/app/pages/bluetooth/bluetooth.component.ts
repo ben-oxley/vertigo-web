@@ -181,7 +181,7 @@ export class BluetoothComponent implements OnInit {
     component.atmosphericState = this.lookupAtmosphericState(event.getInt8(10));
   }
 
-  private startLogging(){
+  public startLogging(){
     this.pause= false;
     this.stop = false;
     if (this.device.gatt.connected){
@@ -264,11 +264,11 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private pauseLogging(){
+  public pauseLogging(){
     this.pause= !this.pause;
   }
 
-  private stopLogging(){
+  public stopLogging(){
     this.stop = true;
     if (this.device.gatt.connected){
         this.controlCharacteristic.writeValue(new Uint8Array([0x02])).catch(error=>{
