@@ -57,7 +57,7 @@
     "classlist.js": "1.1.20150312",
     "core-js": "2.5.1",
     "csv-parse": "^4.2.0",
-    "cubism-es": "^1.1.1",
+    "cubism": "^1.6.0",
     "eva-icons": "^1.1.0",
     "font-awesome": "^4.7.0",
     "intl": "1.2.5",
