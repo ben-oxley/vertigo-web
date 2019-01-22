@@ -4,6 +4,7 @@ import { ElementRef, Renderer2 } from '@angular/core';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { timer } from 'rxjs';
 import { LivemapComponent } from '../../maps/livemap/livemap.component'
+import { CubismComponent } from '../../graphs/cubism/cubism.component'
 import * as cubism from 'cubism';
 import * as d3 from 'd3';
 import { EventListener } from '@angular/core/src/debug/debug_node';
@@ -324,54 +325,12 @@ export class BluetoothComponent implements OnInit {
     return service.getCharacteristic(charteristicID)
   }
 
-  private createGraphs(): void {
-    var context = cubism.context()
-    .serverDelay(0)
-    .clientDelay(0)
-    .step(1e2);
-    var random = function random(name) {
-      var value = 0,
-          values = [],
-          i = 0,
-          last;
-      return context.metric(function(start, stop, step, callback) {
-        start = +start, stop = +stop;
-        if (isNaN(last)) last = start;
-        while (last < stop) {
-          last += step;
-          value = Math.max(-10, Math.min(10, value + .8 * Math.random() - .4 + .2 * Math.cos(i += .2)));
-          values.push(value);
-        }
-        callback(null, values = values.slice((start - stop) / step));
-      }, name);
-    }
-
-var foo = random("foo"),
-    bar = random("bar");
-
-d3.select("#cubism").call(function(div) {
-
-  div.append("div")
-      .attr("class", "axis")
-      .call(context.axis().orient("top"));
-
-  div.selectAll(".horizon")
-      .data([foo, bar, foo.add(bar), foo.subtract(bar)])
-    .enter().append("div")
-      .attr("class", "horizon")
-      .call(context.horizon().extent([-20, 20]));
-
-  div.append("div")
-      .attr("class", "rule")
-      .call(context.rule());
-
-});
-  }
+ 
 
   
 
   ngOnInit(): void {
-    this.createGraphs();
+
     if (navigator.bluetooth) {
       this.supported = true;
       console.log('bluetooth supported');

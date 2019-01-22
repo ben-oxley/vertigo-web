@@ -16,7 +16,7 @@ export class LivemapComponent implements OnInit, OnChanges {
 
   public options = {
     layers: [
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
     ],
     zoom: 5,
     center: L.latLng({ lat: this.lat, lng: this.lon }),
@@ -27,8 +27,8 @@ export class LivemapComponent implements OnInit, OnChanges {
 
   public layersControl = {
     baseLayers: {
-      'Open Street Map': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
-      'Open Cycle Map': L.tileLayer('http://{s}.tile.opencyclemap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
+      'Open Street Map': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
+      'Open Cycle Map': L.tileLayer('https://{s}.tile.opencyclemap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
     },
     overlays: {
       'Big Circle': L.circle([46.95, -122], { radius: 5000 }),

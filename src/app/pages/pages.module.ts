@@ -11,6 +11,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LivemapComponent } from '../maps/livemap/livemap.component'
 import { MapsModule } from '../maps/maps.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { GraphsModule } from '../graphs/graphs.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -26,6 +27,7 @@ const PAGES_COMPONENTS = [
     MiscellaneousModule,
     MapsModule,
     LeafletModule.forRoot(),
+    GraphsModule,
     AngularFontAwesomeModule
   ],
   declarations: [
