@@ -71,6 +71,13 @@ export class BluetoothComponent implements OnInit {
   public atmosphericState: string = "Not detected";
   public loggerState: string = "Not detected";
 
+  public graphData = [
+    ()=>this.accx,
+    ()=>this.accy,
+    ()=>this.accz,
+  ]
+
+
   public constructor() {
   }
 

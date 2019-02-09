@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import * as cubism from 'cubism';
 import * as d3 from 'd3';
 
@@ -14,21 +14,23 @@ export class CubismComponent implements OnInit {
 
   private context: any;
 
-  constructor() { }
+  constructor(private el:ElementRef) { }
 
   onResize(event) {
     //console.log(event.target.innerWidth);
-    //this.context.size(event.target.innerWidth/2)
+    this.createGraphs(this.el.nativeElement.clientWidth)
   }
 
-  private createGraphs(): void {
+
+  private createGraphs(width): void {
     this.context = cubism.context()
       .serverDelay(0)
       .clientDelay(0)
-      .step(1e2)
-      .size(960);
+      .step(1e1)
+      .size(width);
     var context = this.context;
-    var random = function random(name) {
+    var data = this.data;
+    var valueGet = function random(name,idx) {
       var value = 0,
         values = [],
         i = 0,
@@ -38,16 +40,20 @@ export class CubismComponent implements OnInit {
         if (isNaN(last)) last = start;
         while (last < stop) {
           last += step;
-          value = Math.max(-10, Math.min(10, value + .8 * Math.random() - .4 + .2 * Math.cos(i += .2)));
+          value = 0;
+          if(data[idx]()) value = data[idx]();
           values.push(value);
         }
         callback(null, values = values.slice((start - stop) / step));
       }, name);
     }
 
-    var foo = random("foo"),
-      bar = random("bar");
-
+    var accx = valueGet("Acc x",0),
+      accy = valueGet("Acc y",1),
+      accz= valueGet("Acc z",2);
+      d3.selectAll(".axis").remove();
+      d3.selectAll(".horizon").remove();
+      d3.selectAll(".rule").remove();
     d3.select("#cubism").call(function (div) {
 
       div.append("div")
@@ -55,7 +61,7 @@ export class CubismComponent implements OnInit {
         .call(context.axis().orient("top"));
 
       div.selectAll(".horizon")
-        .data([foo, bar, foo.add(bar), foo.subtract(bar)])
+        .data([accx, accy, accz])
         .enter().append("div")
         .attr("class", "horizon")
         .call(context.horizon().extent([-20, 20]));
@@ -68,7 +74,7 @@ export class CubismComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createGraphs();
+    this.createGraphs(this.el.nativeElement.clientWidth);
   }
 
 }
