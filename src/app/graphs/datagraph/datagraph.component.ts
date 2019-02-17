@@ -10,8 +10,14 @@ import { CommonModule } from '@angular/common';
 export class DataGraphComponent {
   public graph = {
       data: [
-          { x: Array.from(Array(100000).keys()), y:Array.from(Array(100000).keys()).map(a=>Math.sin(a)), type: 'scatter', mode: 'lines+points', marker: {color: 'red'} },
+          { x: Array.from(Array(100).keys()), y:Array.from(Array(100).keys()).map(a=>Math.sin(a)), type: 'scatter', mode: 'lines+points', marker: {color: 'red'} },
       ],
-      layout: {autosize: true, title: 'A Fancy Plot'}, 
+      yaxis: {
+        automargin: true,
+      },
+      xaxis: {
+        automargin: true,
+      },
+      layout: {autosize: true}, 
   };
 }
