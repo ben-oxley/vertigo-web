@@ -1,0 +1,8 @@
+<nb-tabset>
+    <nb-tab tabTitle="Time">
+      <span>Time (Seconds)</span>
+    </nb-tab>
+    <nb-tab *ngFor="let type of Dataspec.Types" tabTitle="{{type.name}}">
+      <p *ngFor="let column of type.columns">{{column.name}}</p>
+    </nb-tab>
+  </nb-tabset>
