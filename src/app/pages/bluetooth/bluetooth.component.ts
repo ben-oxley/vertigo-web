@@ -75,6 +75,9 @@ export class BluetoothComponent implements OnInit {
     ()=>this.accx,
     ()=>this.accy,
     ()=>this.accz,
+    ()=>this.rotx,
+    ()=>this.roty,
+    ()=>this.rotz,
   ]
 
 
