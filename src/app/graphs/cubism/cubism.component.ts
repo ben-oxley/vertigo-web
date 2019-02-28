@@ -61,6 +61,7 @@ export class CubismComponent implements OnInit {
       rotx = valueGet("Deg/s x",3),
       roty = valueGet("Deg/s y",4),
       rotz = valueGet("Deg/s z",5);
+      
       d3.selectAll(".axis").remove();
       d3.selectAll(".horizon").remove();
       d3.selectAll(".rule").remove();

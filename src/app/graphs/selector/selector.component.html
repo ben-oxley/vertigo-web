@@ -1,8 +1,12 @@
-<nb-tabset>
-    <nb-tab tabTitle="Time">
-      <span>Time (Seconds)</span>
-    </nb-tab>
-    <nb-tab *ngFor="let type of Dataspec.Types" tabTitle="{{type.name}}">
-      <p *ngFor="let column of type.columns">{{column.name}}</p>
-    </nb-tab>
-  </nb-tabset>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Options</label>
+    </div>
+    <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue">
+      <option value="time" selected>Time (Seconds)</option>
+      <optgroup *ngFor="let type of Dataspec.Types" label="{{type.name}}">
+        <option *ngFor="let column of type.columns" value="{{type.name}} {{column.name}}">{{column.name}}</option>
+      </optgroup>
+    </select>
+  </div>
+  

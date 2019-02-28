@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Dataspec } from '../../@processing/dataspec';
-import {TabsModule} from "ngx-tabs";
+
 
 
 @Component({
@@ -13,6 +13,7 @@ export class SelectorComponent implements OnInit {
   constructor() { }
 
   public Dataspec:Dataspec = new Dataspec();
+  public SelectedValue:any = {columns:[]}
 
   ngOnInit() {
   }
