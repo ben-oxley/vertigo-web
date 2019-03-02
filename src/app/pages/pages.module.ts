@@ -12,6 +12,7 @@ import { LivemapComponent } from '../maps/livemap/livemap.component'
 import { MapsModule } from '../maps/maps.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { GraphsModule } from '../graphs/graphs.module';
+import { ControlsModule } from '../controls/controls.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -23,6 +24,7 @@ const PAGES_COMPONENTS = [
 @NgModule({
   imports: [
     PagesRoutingModule,
+    ControlsModule,
     ThemeModule,
     MiscellaneousModule,
     MapsModule,

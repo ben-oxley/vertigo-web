@@ -1,47 +1,51 @@
 {
     "dataTypes":[
             {
+                "id":"gps",
                 "name":"gps",
                 "identifier":1,
                 "columns":[
                 
-                    {"name":"longitude","units":"Decimal Degrees x 1e7"},
-                    {"name":"latitude","units":"Decimal Degrees x 1e7"},
-                    {"name":"altitude","units":"mm"},
-                    {"name":"north velocity","units":"mm/s"},
-                    {"name":"east velocity","units":"mm/s"},
-                    {"name":"down velocity","units":"mm/s"},
-                    {"name":"horizontal accuracy","units":"mm"},
-                    {"name":"vertical accuracy","units":"mm"}
+                    {"id":"lon","name":"longitude","units":"Decimal Degrees x 1e7"},
+                    {"id":"lat","name":"latitude","units":"Decimal Degrees x 1e7"},
+                    {"id":"alt","name":"altitude","units":"mm"},
+                    {"id":"veln","name":"north velocity","units":"mm/s"},
+                    {"id":"vele","name":"east velocity","units":"mm/s"},
+                    {"id":"veld","name":"down velocity","units":"mm/s"},
+                    {"id":"acch","name":"horizontal accuracy","units":"mm"},
+                    {"id":"accv","name":"vertical accuracy","units":"mm"}
                 ]
             },
             {
+                "id":"imu",
                 "name":"imu",
                 "identifier":2,
                 "columns":[
-                    {"name":"ax","units":"g"},
-                    {"name":"ay","units":"g"},
-                    {"name":"az","units":"g"},
-                    {"name":"rx","units":"deg/s"},
-                    {"name":"ry","units":"deg/s"},
-                    {"name":"rz","units":"deg/s"}
+                    {"id":"ax","name":"ax","units":"g"},
+                    {"id":"ay","name":"ay","units":"g"},
+                    {"id":"az","name":"az","units":"g"},
+                    {"id":"rx","name":"rx","units":"deg/s"},
+                    {"id":"ry","name":"ry","units":"deg/s"},
+                    {"id":"rz","name":"rz","units":"deg/s"}
                 ]
             },
             {
+                "id":"ahrs",
                 "name":"ahrs",
                 "identifier":3,
                 "columns":[
-                    {"name":"q0","units":"1"},
-                    {"name":"q1","units":"i"},
-                    {"name":"q2","units":"j"},
-                    {"name":"q3","units":"k"}
+                    {"id":"q0","name":"q0","units":"1"},
+                    {"id":"q1","name":"q1","units":"i"},
+                    {"id":"q2","name":"q2","units":"j"},
+                    {"id":"q3","name":"q3","units":"k"}
                 ]
             },
             {
+                "id":"atmospheric",
                 "name":"atmospheric",
                 "identifier":4,
                 "columns":[
-                    {"name":"pressure","units":"kPa"}
+                    {"id":"press","name":"pressure","units":"kPa"}
                 ]
             }
     ]
