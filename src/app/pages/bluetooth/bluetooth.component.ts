@@ -175,8 +175,8 @@ export class BluetoothComponent implements OnInit {
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
     component.alt = (event.getInt32(8, true) / 1e7);
-    component.fix = this.lookupGPSFix(event.getUint8(12));
-    component.flags = this.lookupGPSvalidity(event.getUint8(13));
+    component.fix = component.lookupGPSFix(event.getUint8(12));
+    component.flags = component.lookupGPSvalidity(event.getUint8(13));
   }
 
   private handleState(component: BluetoothComponent, event: DataView) {
@@ -188,10 +188,10 @@ export class BluetoothComponent implements OnInit {
       String.fromCharCode(event.getInt8(5)) +
       String.fromCharCode(event.getInt8(6));
 
-    component.loggerState = this.lookupLoggerState(event.getInt8(7));
-    component.imuState = this.lookupIMUState(event.getInt8(8));
-    component.gpsState = this.lookupGPSState(event.getInt8(9));
-    component.atmosphericState = this.lookupAtmosphericState(event.getInt8(10));
+    component.loggerState = component.lookupLoggerState(event.getInt8(7));
+    component.imuState = component.lookupIMUState(event.getInt8(8));
+    component.gpsState = component.lookupGPSState(event.getInt8(9));
+    component.atmosphericState = component.lookupAtmosphericState(event.getInt8(10));
   }
 
   public startLogging() {
