@@ -75,7 +75,7 @@ export class CubismComponent implements OnInit {
         .data([accx, accy, accz, rotx, roty, rotz])
         .enter().append("div")
         .attr("class", "horizon")
-        .call(context.horizon().extent([-100, 100]));
+        .call(context.horizon().extent([-100, 100]).height(100));
 
       div.append("div")
         .attr("class", "rule")

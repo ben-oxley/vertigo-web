@@ -38,12 +38,18 @@ export class LivemapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes:SimpleChanges): void {
     this.options.center = L.latLng({ lat: this.lat, lng: this.lon })
-    this.layers[0] = L.marker([this.lat,  this.lon]);
+    this.layers[0] = L.marker([this.lat,  this.lon],{
+      iconSize: [ 25, 41 ],
+      iconAnchor: [ 13, 41 ],
+      iconUrl: 'assets/img/markers/marker-icon.png',
+      shadowUrl: 'assets/img/markers/marker-shadow.png'
+    });
   }
 
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
