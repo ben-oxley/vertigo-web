@@ -3,9 +3,10 @@ import { DataListener } from './listener';
 
 export interface DataBlock{
     
-
-    Data():Data[];
+    Headers():string[];
     
+    Data():Data[];
+
     AddListener(Listener:DataListener);
 
     Load(data:Data);

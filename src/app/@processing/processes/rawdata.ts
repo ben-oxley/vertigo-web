@@ -6,6 +6,11 @@ import { AbstractDataBlock } from "./abstractdatablock";
 
 export class RawData extends AbstractDataBlock{
 
+    constructor(headers:string[]){
+        super();
+        this.headers = headers;
+    }
+    
     public Load(data:Data){
         this.data.push(data);
         this.notifyListeners([data],[]);

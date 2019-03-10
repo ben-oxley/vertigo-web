@@ -4,6 +4,7 @@ import { DataListener } from "../listener";
 
 export abstract class AbstractDataBlock implements DataBlock{
     
+    public Headers:string[] = [];
     protected data:Data[] = [];
     private listeners:DataListener[] = [];
 
