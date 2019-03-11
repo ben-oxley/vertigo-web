@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RawData } from '../../@processing/processes/rawdata';
 import { DataBlock } from '../../@processing/datablock';
 import { Data } from '../../@processing/data';
 import { parse, ParseResult } from 'papaparse';
 import * as vertigospec from '../../@processing/vertigo-spec.json'
 import { stringify } from '@angular/compiler/src/util';
+import { VertigoRawData } from '../../@processing/vertigo-data';
 
 @Component({
   selector: 'loader',
@@ -14,15 +15,16 @@ import { stringify } from '@angular/compiler/src/util';
 export class LoaderComponent implements OnInit {
 
 
-  private typeMap:Map<string,RawData>;
+  @Input() VertigoRawData:VertigoRawData;
+  @Output() loaded = new EventEmitter<VertigoRawData>();
 
   constructor() {
-    this.typeMap = new Map<string,RawData>();
+    this.VertigoRawData = new VertigoRawData();
     let types:any[] = (<any>vertigospec).dataTypes;
     types.forEach(t=>{
-      let specIdentifier:string = t.identifier;
+      let specIdentifier:number = t.identifier;
       let rawData:RawData = new RawData((<any[]>t.columns).map(c=><string>c.id));
-      this.typeMap.set(specIdentifier,rawData);
+      this.VertigoRawData.DataTypes.set(specIdentifier,rawData);
     });
       
   }
@@ -47,9 +49,9 @@ export class LoaderComponent implements OnInit {
       console.log("Loaded file");
       fileText.split('\n').forEach(line => {
         let result: ParseResult = parse(line);
-        let data: Data = new Data(result.data);
-        let identifier:string = result.data[1];
-        this.typeMap.get(identifier).Load(data);
+        let data: Data = new Data(result.data[0]);
+        let identifier:number = +result.data[0][1];
+        this.VertigoRawData.DataTypes.get(identifier).Load(data);
       });
       console.log('Finished loading file');
     };
