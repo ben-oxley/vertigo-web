@@ -49,10 +49,14 @@ export class LoaderComponent implements OnInit {
       console.log("Loaded file");
       fileText.split('\n').forEach(line => {
         let result: ParseResult = parse(line);
-        let data: Data = new Data(result.data[0]);
-        let identifier:number = +result.data[0][1];
-        this.VertigoRawData.DataTypes.get(identifier).Load(data);
+        if (result.data[0]){
+          let data: Data = new Data(result.data[0]);
+          let identifier:number = +result.data[0][1];
+          this.VertigoRawData.DataTypes.get(identifier).Load(data);
+        }
+        
       });
+      this.loaded.emit(this.VertigoRawData);
       console.log('Finished loading file');
     };
     reader.readAsText(fileName);
