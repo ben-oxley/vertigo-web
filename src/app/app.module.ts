@@ -1,52 +1,41 @@
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from './@core/core.module';
 
 import { AppComponent } from './app.component';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
-
-import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
-import { AsideToggleDirective } from './shared/aside.directive';
-import { BreadcrumbsComponent } from './shared/breadcrumb.component';
-import { ControlsComponent } from './shared/controls.component';
-
-import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
-import { MapsAPILoader } from '@agm/core';
-
-// Routing Module
-import { AppRoutingModule } from './app.routing';
-
-// Layouts
-import { FullLayoutComponent } from './layouts/full-layout.component';
-import { SimpleLayoutComponent } from './layouts/simple-layout.component';
+import { AppRoutingModule } from './app-routing.module';
+import { ThemeModule } from './@theme/theme.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { ControlsModule } from './controls/controls.module';
 
 @NgModule({
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule
+    ControlsModule,
+
+    NgbModule.forRoot(),
+    ThemeModule.forRoot(),
+    CoreModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    SimpleLayoutComponent,
-    NAV_DROPDOWN_DIRECTIVES,
-    BreadcrumbsComponent,
-    ControlsComponent,
-    SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-  ],
+  bootstrap: [AppComponent],
   providers: [
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy
-    }
+    { provide: APP_BASE_HREF, useValue: '/' },
   ],
-  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+}

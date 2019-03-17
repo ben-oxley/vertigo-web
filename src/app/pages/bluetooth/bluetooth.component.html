@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+        <nb-card>
+            <nb-card-body>
+      <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"><i class="ion ion-bluetooth"></i> {{connected ? "Disconnect":"Connect"}}</button>
+      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()"><i class="ion ion-play"></i> Start Logging</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()"><i class="ion ion-pause"></i> Pause Browser</button>
+      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()"><i class="ion ion-stop"></i> Stop Logging</button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected"><i class="ion ion-pricetag"></i> Add Tag</button>
+      <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected"><i class="ion ion-ios-cloud-download"></i> Download</button>
+    </nb-card-body>
+  </nb-card>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <nb-card>
+        <nb-card-body>
+          <div class="propname">
+            <span>Acceleration</span>
+          </div>
+          <div class="prop">
+            <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
+            <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+            <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+            <div><span><b>Absolute Magnitude: </b><span>{{ acc2 | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+          </div>
+          <div class="propname">
+              <span>Rotational Velocity</span>
+            </div>
+            <div class="prop">
+              <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
+            </div>
+          <div class="propname">
+            <span>Location</span>
+          </div>
+          <div class="prop">
+            <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
+            <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
+            <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
+            <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
+          </div>
+          <div class="propname">
+              <span>Status</span>
+            </div>
+            <div class="prop">
+              <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
+              <div><span><b>Logger State:</b> {{loggerState}}</span></div>
+              <div><span><b>IMU State:</b> {{imuState}}</span></div>
+              <div><span><b>GPS State:</b> {{gpsState}}</span></div>
+              <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
+            </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+  </div>
+  <div class="row">
+  
+      <div class="col-12">
+          <nb-card>
+              <nb-card-body>
+        <live-map [lat]="lat" [lon]="lon"></live-map>
+      </nb-card-body>
+    </nb-card>
+      </div>
+    </div>
+  <div class="row">
+  
+    <div class="col-12">
+      <nb-card>
+        <cubism [data]="graphData"></cubism>
+      </nb-card>
+    </div>
+  </div>
+</div>

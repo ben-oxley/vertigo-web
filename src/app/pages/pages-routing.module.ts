@@ -1,52 +1,38 @@
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
-import { P404Component } from './404.component';
-import { P500Component } from './500.component';
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
+import { PagesComponent } from './pages.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LiveComponent } from './live/live.component';
+import { BluetoothComponent } from './bluetooth/bluetooth.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    data: {
-      title: 'Example Pages'
+const routes: Routes = [{
+  path: '',
+  component: PagesComponent,
+  children: [
+    {
+      path: 'dashboard',
+      component: DashboardComponent,
     },
-    children: [
-      {
-        path: '404',
-        component: P404Component,
-        data: {
-          title: 'Page 404'
-        }
-      },
-      {
-        path: '500',
-        component: P500Component,
-        data: {
-          title: 'Page 500'
-        }
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
-        data: {
-          title: 'Login Page'
-        }
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
-        data: {
-          title: 'Register Page'
-        }
-      }
-    ]
-  }
-];
+    {
+      path: 'live',
+      component: LiveComponent,
+    },
+    {
+      path: 'bluetooth',
+      component: BluetoothComponent,
+    },
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full',
+    },
+  ],
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule {
+}
