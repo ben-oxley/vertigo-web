@@ -1,10 +1,15 @@
 import * as spec from "./vertigo-spec.json"
+import { DataType } from "./datatype";
 
 export class Dataspec{
     
-    public Types:any;
+    
+
+    public RawTypes:any[];
+    public Types:DataType[];
 
     public constructor(){
-        this.Types = (<any>spec).dataTypes;
+        this.RawTypes = (<any>spec).dataTypes;
+        this.Types = (<any[]>this.RawTypes).map(t=>new DataType().parse(t));
     }
 }

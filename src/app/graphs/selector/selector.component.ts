@@ -1,6 +1,8 @@
-import { Component, OnInit, SimpleChanges, Input, Output } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { Dataspec } from '../../@processing/dataspec';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Column } from '../../@processing/column';
+import { DataType } from '../../@processing/datatype';
 
 
 
@@ -14,21 +16,33 @@ export class SelectorComponent implements OnInit {
   constructor() { }
 
   public Dataspec:Dataspec = new Dataspec();
-  @Output() SelectedValue:any = {columns:[]}
+  public SelectedValues:DataType[] = [];
+  @Output() SelectionChanged = new EventEmitter<DataType[]>();
 
   ngOnInit() {
   }
   
   ngOnChanges(changes: SimpleChanges){
-    console.log(this.SelectedValue);
+    //console.log(this.SelectedValue);
   }
 
   public selectionChanged(event:any){
-    console.log(Object.values(event).map(v=>{
+    let DataTypes:DataType[] = [];
+    Object.values(event).forEach(v=>{
       let key:any = (<any>v).value.split(":")[1].trim().replace('\'','').replace('\'','').split(",");
-      let group:any = this.Dataspec.Types.find(t=>t.id===key[0]);
-      return group.columns.find(d=>d.name===key[1]);
-    }));
+      let group:DataType = this.Dataspec.Types.find(t=>t.Id===key[0]);
+      let col:Column = group.Columns.find(d=>d.Id===key[1]);
+      if (DataTypes.find(t=>t.Id===key[0])){
+        DataTypes.find(t=>t.Id===key[0]).Columns.push(col);
+      } else {
+        let newDataType:DataType = new DataType().from(group);
+        newDataType.Columns = [];
+        newDataType.Columns.push(col);
+        DataTypes.push(newDataType);
+      }
+    });
+    this.SelectedValues = DataTypes;
+    this.SelectionChanged.emit(this.SelectedValues);
   }
 
 }

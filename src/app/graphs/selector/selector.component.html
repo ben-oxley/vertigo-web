@@ -4,8 +4,8 @@
     </div>
     <select multiple class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" (change)="selectionChanged($event.target.selectedOptions)">
       <option value="time" selected>Time (Seconds)</option>
-      <optgroup *ngFor="let type of Dataspec.Types" label="{{type.name}}">
-        <option *ngFor="let column of type.columns" value="{{type.name}},{{column.name}}">{{column.name}}</option>
+      <optgroup *ngFor="let type of Dataspec.Types" label="{{type.Name}}">
+        <option *ngFor="let column of type.Columns" value="{{type.Id}},{{column.Id}}">{{column.Name}}</option>
       </optgroup>
     </select>
   </div>
