@@ -16,6 +16,7 @@ export class SelectorComponent implements OnInit {
   constructor() { }
 
   public Dataspec:Dataspec = new Dataspec();
+  public SelectedValue:any;
   public SelectedValues:DataType[] = [];
   @Output() SelectionChanged = new EventEmitter<DataType[]>();
 
