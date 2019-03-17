@@ -64,6 +64,7 @@ export class BluetoothComponent implements OnInit {
   public q1: number = 0.0;
   public q2: number = 0.0;
   public q3: number = 0.0;
+  public Quaternion = {q0:this.q0,q1:this.q1,q2:this.q2,q3:this.q3}
   public fix: string = "Not detected";
   public flags: string = "Not detected";
   public versionNumber: string = "Not detected";
@@ -171,6 +172,12 @@ export class BluetoothComponent implements OnInit {
     component.q1 = (event.getFloat32(4, true));
     component.q2 = (event.getFloat32(8, true));
     component.q3 = (event.getFloat32(12, true));
+    component.Quaternion = {
+      q0:component.q0,
+      q1:component.q1,
+      q2:component.q2,
+      q3:component.q3
+    };
   }
 
   private handleGPS(component: BluetoothComponent, event: DataView) {

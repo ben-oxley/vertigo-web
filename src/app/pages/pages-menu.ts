@@ -19,19 +19,19 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Pendulum',
-        link: '/auth/login',
+        link: '/pages/pendulum',
       },
       {
         title: 'Circular Motion',
-        link: '/auth/register',
+        link: '/pages/circular-motion',
       },
       {
-        title: 'Velocity/time',
-        link: '/auth/request-password',
+        title: 'Sprinting',
+        link: '/pages/sprinting',
       },
       {
         title: 'Trampoline',
-        link: '/auth/reset-password',
+        link: '/pages/trampoline',
       },
     ],
   },

@@ -1,0 +1,51 @@
+<h1>Circular Motion</h1>
+
+<p>The aim of this lesson is to support pupil understanding of circular motion and in
+  particular centripetal force. Data should be taken outside, although there are options
+  for lab-based experiments. Best outcomes are achieved when a constant radius, uniform
+  speed circle is followed. This may be achieved by a pupil running, a pupil on a bicycle
+  or other suitable vehicle.</p>
+
+<p>The beginner section looks at the speed and velocity of the vertigo unit as it travels
+  in a circle. The data presented in Distance/ time and a s a quiver plot.</p>
+
+<p>The intermediate section looks at the same data but introduces the concept of
+  acceleration.</p>
+
+<p>The advanced section investigates the angle between the acceleration and the
+  Velocity.</p>
+<h1>Beginner</h1>
+<h2>Set-up</h2>
+
+<p>Suitably attached the Vertigo unit to the person or object that will be travelling in a
+  circle. If possible, vertigo should be placed away from metal parts and be positioned
+  such that its movement is as smooth as practically possible. (The metal may have some
+  ferromagnetism that would affect vertigo’s the onboard magnetometer and any additional
+  oscillatory motion would make pupil analysis more challenging)</p>
+<ul>
+  <li>Turn Vertigo on and wait for the second LED to stop flashing – Vertigo has a GPS signal.</li>
+
+  <li>Press the log button and ask the operator to perform circular motion for around 1
+    minute. Stop Vertigo’s logging.</li>
+</ul>
+<h1>Analysis</h1>
+<ul>
+  <li>Remove the sd card from Vertigo and place it into a suitable sd card reader</li>
+
+  <li>Click the load file button below and load the file from vertigo.</li>
+
+  <li>A graph similar to the one below will appear</li>
+</ul>
+
+<loader (loaded)="onLoaded($event)"></loader>
+<data-graph [InputData]="GraphData"></data-graph>
+
+<p>This shows how the angle Vertigo was orientated at changed through time. The most 
+  important in this instance is Yaw. It shows the angle Vertigo has moved through, around 
+  an imaginary vertical axis heading into the Earth. In this graph, it can be seen that 
+  Vertigo was travelling with a fairly constant angular velocity. (Notice that to make the 
+  graph easier to fit on a scale -180 degrees is converted into 180 degrees)</p>
+
+   <p> In the graph, Vertigo completes six full rotations – with a little wobble at 35 
+     seconds. In order to keep the data as clean as possible for the pupils, it will is 
+     easier to look at one or two rotations only.</p>

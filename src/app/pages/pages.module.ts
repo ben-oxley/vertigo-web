@@ -13,12 +13,20 @@ import { MapsModule } from '../maps/maps.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { GraphsModule } from '../graphs/graphs.module';
 import { ControlsModule } from '../controls/controls.module';
+import { SprintingComponent } from './sprinting/sprinting.component';
+import { PendulumComponent } from './pendulum/pendulum.component';
+import { CircularMotionComponent } from './circular-motion/circular-motion.component';
+import { TrampolineComponent } from './trampoline/trampoline.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
   LiveComponent,
   BluetoothComponent,
-  DashboardComponent
+  DashboardComponent,
+  SprintingComponent,
+  PendulumComponent,
+  CircularMotionComponent,
+  TrampolineComponent,
 ];
 
 @NgModule({
@@ -30,10 +38,11 @@ const PAGES_COMPONENTS = [
     MapsModule,
     LeafletModule.forRoot(),
     GraphsModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,
+
   ],
 })
 export class PagesModule {
