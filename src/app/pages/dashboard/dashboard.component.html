@@ -1,8 +1,9 @@
 <div class="row">
   <div class="col-12">
     <loader (loaded)="onLoaded($event)"></loader>
-      <data-graph [InputData]="GraphData"></data-graph>
+    <data-graph [InputData]="GraphData"></data-graph>
+    <selector (SelectionChanged)="seriesChanged($event)"></selector>
   </div>
   
 </div>
-<selector (SelectionChanged)="seriesChanged($event)"></selector>
+
