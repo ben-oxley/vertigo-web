@@ -2,6 +2,7 @@ import { Component, SimpleChanges } from '@angular/core';
 import { VertigoRawData } from '../../@processing/vertigo-data';
 import { DataType } from '../../@processing/datatype';
 import { Data } from '../../@processing/data';
+import { Dataspec } from '../../@processing/dataspec';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -11,6 +12,8 @@ export class DashboardComponent {
   public VertigoRawData:VertigoRawData;
   public GraphData:any;
   public SelectedValues:any = {columns:[]}
+  private SelectedSeries:DataType[] = [];
+
   
 
   public constructor(){
@@ -29,9 +32,11 @@ export class DashboardComponent {
     this.GraphData = this.flatMap(event,dt=>{
       let data:Data[] = this.VertigoRawData.DataTypes.get(dt.Identifier).Data();
       return dt.Columns.map(c=>{
+        let t0 = data[0].Data[0];
         return <any>{
-          x:data.map(datum=>datum.Data[0]),
+          x:data.map(datum=>(datum.Data[0]-t0)/1000.0),
           y:data.map(datum=>datum.Data[c.Identifier]),
+          name: c.Name,
           yaxis:c.Id
         }
       });
@@ -48,18 +53,14 @@ export class DashboardComponent {
 
   public onLoaded(event:VertigoRawData){
     this.VertigoRawData = event;
-    let time:any = this.VertigoRawData.DataTypes.get(2).Data().map(d=>d.Data[0]);
-    this.GraphData= [{
-      x:time,
-      y:this.VertigoRawData.DataTypes.get(2).Data().map(d=>d.Data[2])
-    },
-    {
-      x:time,
-      y:this.VertigoRawData.DataTypes.get(2).Data().map(d=>d.Data[3])
-    },
-    {
-      x:time,
-      y:this.VertigoRawData.DataTypes.get(2).Data().map(d=>d.Data[4])
-    }]
+    if (this.flatMap(this.SelectedSeries,dt=>dt.Columns).length==0){
+      let spec:Dataspec = new Dataspec();
+      spec.Types[1].Columns = spec.Types[1].Columns.slice(0,3);
+      spec.Types = [spec.Types[1]];
+      this.seriesChanged(spec.Types);
+    } else {
+      this.seriesChanged(this.SelectedSeries)
+    }
+    
   }
 }

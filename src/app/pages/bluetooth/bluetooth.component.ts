@@ -53,6 +53,7 @@ export class BluetoothComponent implements OnInit {
   public accx: number = 0.0;
   public accy: number = 0.0;
   public accz: number = 0.0;
+  public acc2: number = 0.0;
   public rotx: number = 0.0;
   public roty: number = 0.0;
   public rotz: number = 0.0;
@@ -159,6 +160,7 @@ export class BluetoothComponent implements OnInit {
     component.accx = (event.getInt16(0, true) / 1e3) * 9.81;
     component.accy = (event.getInt16(2, true) / 1e3) * 9.81;
     component.accz = (event.getInt16(4, true) / 1e3) * 9.81;
+    component.acc2 = Math.sqrt(Math.pow(component.accx,2)+Math.pow(component.accy,2)+Math.pow(component.accz,2));
     component.rotx = (event.getInt16(6, true));
     component.roty = (event.getInt16(8, true));
     component.rotz = (event.getInt16(10, true));

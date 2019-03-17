@@ -15,7 +15,7 @@ export class DataGraphComponent {
   private configOptions:any = {
     type: 'scatter', 
     mode: 'lines+points', 
-    marker: {color: 'red'} 
+    marker: {color: 'red'} ,
   };
 
   private seriesColours:string[]=['red','green','blue'];
