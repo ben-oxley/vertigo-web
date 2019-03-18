@@ -33,7 +33,7 @@ export class ThreeDComponent implements OnInit  {
 			var light = new THREE.DirectionalLight( 0xffffff );
 			light.position.set( 0, 1, 0 );
 			scene.add( light );
-			var map = new THREE.TextureLoader().load( '/assets/images/board-top-rotated.png' );
+			var map = new THREE.TextureLoader().load( 'assets/images/board-top-rotated.png' );
 			map.wrapS = map.wrapT = THREE.RepeatWrapping;
 			map.anisotropy = 16;
 			var geometry = new THREE.BoxGeometry( 1.3, 0.05, 0.5 );
@@ -79,9 +79,9 @@ export class ThreeDComponent implements OnInit  {
 			this.Quaternion.q2,
 		  this.Quaternion.q0
 		);
-      this.cube.setRotationFromQuaternion(quaternion);
+    if (this.cube)  this.cube.setRotationFromQuaternion(quaternion);
 
-    this.renderer.render(this.scene, this.camera);
+    if (this.renderer) this.renderer.render(this.scene, this.camera);
   }
 
 }

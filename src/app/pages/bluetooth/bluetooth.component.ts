@@ -184,8 +184,8 @@ export class BluetoothComponent implements OnInit {
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
     component.alt = (event.getInt32(8, true) / 1e7);
-    component.fix = component.lookupGPSFix(event.getUint8(12));
-    component.flags = component.lookupGPSvalidity(event.getUint8(13));
+    component.fix = BluetoothComponent.lookupGPSFix(event.getUint8(12));
+    component.flags = BluetoothComponent.lookupGPSvalidity(event.getUint8(13));
   }
 
   private handleState(component: BluetoothComponent, event: DataView) {
@@ -197,10 +197,10 @@ export class BluetoothComponent implements OnInit {
       String.fromCharCode(event.getInt8(5)) +
       String.fromCharCode(event.getInt8(6));
 
-    component.loggerState = component.lookupLoggerState(event.getInt8(7));
-    component.imuState = component.lookupIMUState(event.getInt8(8));
-    component.gpsState = component.lookupGPSState(event.getInt8(9));
-    component.atmosphericState = component.lookupAtmosphericState(event.getInt8(10));
+    component.loggerState = BluetoothComponent.lookupLoggerState(event.getInt8(7));
+    component.imuState = BluetoothComponent.lookupIMUState(event.getInt8(8));
+    component.gpsState = BluetoothComponent.lookupGPSState(event.getInt8(9));
+    component.atmosphericState = BluetoothComponent.lookupAtmosphericState(event.getInt8(10));
   }
 
   public startLogging() {
@@ -214,7 +214,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupLoggerState(byte): string {
+  private static lookupLoggerState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "No SD card present";
@@ -227,7 +227,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSFix(byte): string {
+  private static lookupGPSFix(byte): string {
     switch (byte) {
       case 0: return "No Fix";
       case 2: return "2D Fix";
@@ -235,7 +235,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSvalidity(byte): string {
+  private static lookupGPSvalidity(byte): string {
     switch (0x4 & byte) {
       case 0x00: return "No valid time information";
       case 0x01: return "Valid date";
@@ -256,7 +256,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupIMUState(byte): string {
+  private static lookupIMUState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
@@ -266,7 +266,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSState(byte): string {
+  private static lookupGPSState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
@@ -276,7 +276,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupAtmosphericState(byte): string {
+  private static lookupAtmosphericState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
