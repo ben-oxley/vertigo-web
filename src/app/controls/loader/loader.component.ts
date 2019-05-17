@@ -50,6 +50,9 @@ export class LoaderComponent implements OnInit {
       fileText.split('\n').forEach(line => {
         let result: ParseResult = parse(line);
         if (result.data[0]){
+          if (!Number.isInteger(result.data[0][0])){
+            result.data[0][0] = Date.parse(result.data[0][0]);
+          }
           let data: Data = new Data(result.data[0]);
           let identifier:number = +result.data[0][1];
           this.VertigoRawData.DataTypes.get(identifier).Load(data);
