@@ -11,9 +11,10 @@ export class SmoothedData extends AbstractDataBlock{
     private numberInBuffer:number = 0;
     private combinedValue:Data;
 
-    public constructor(bufferSize:number){
+    public constructor(headers:string[],bufferSize:number){
         super();
         this.bufferSize = bufferSize;
+        this.headers = headers;
     }
 
     private add(data:Data):Data{

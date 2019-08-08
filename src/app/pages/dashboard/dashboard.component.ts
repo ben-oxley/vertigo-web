@@ -1,5 +1,5 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { VertigoRawData } from '../../@processing/vertigo-data';
+import { VertigoRawData, VertigoProcessedData } from '../../@processing/vertigo-data';
 import { DataType } from '../../@processing/datatype';
 import { Data } from '../../@processing/data';
 import { Dataspec } from '../../@processing/dataspec';
@@ -10,6 +10,7 @@ import { Dataspec } from '../../@processing/dataspec';
 })
 export class DashboardComponent {
   public VertigoRawData:VertigoRawData;
+  public VertigoProcessedData:VertigoProcessedData;
   public GraphData:any;
   public SelectedValues:any = {columns:[]}
   private SelectedSeries:DataType[] = [];
@@ -30,16 +31,20 @@ export class DashboardComponent {
 
   public seriesChanged(event:DataType[]){
     this.GraphData = this.flatMap(event,dt=>{
-      let data:Data[] = this.VertigoRawData.DataTypes.get(dt.Identifier).Data();
-      return dt.Columns.map(c=>{
-        let t0 = data[0].Data[0];
-        return <any>{
-          x:data.map(datum=>(datum.Data[0]-t0)/1000.0),
-          y:data.map(datum=>datum.Data[c.Identifier]),
-          name: c.Name,
-          yaxis:c.Id
+      if (this.VertigoRawData.DataTypes &&this.VertigoRawData.DataTypes.has(dt.Identifier)){
+        let data:Data[] = this.VertigoRawData.DataTypes.get(dt.Identifier).Data();
+        if (data && data.length>0){
+          return dt.Columns.map(c=>{
+            let t0 = data[0].Data[0];
+            return <any>{
+              x:data.map(datum=>(datum.Data[0]-t0)/1000.0),
+              y:data.map(datum=>datum.Data[c.Identifier]),
+              name: c.Name,
+              yaxis:c.Id
+            }
+          });
         }
-      });
+      }
     });
     return;
   }
@@ -59,7 +64,20 @@ export class DashboardComponent {
       spec.Types = [spec.Types[1]];
       this.seriesChanged(spec.Types);
     } else {
-      this.seriesChanged(this.SelectedSeries)
+      this.seriesChanged(this.SelectedSeries);
+    }
+    
+  }
+
+  public onProcessedLoaded(event:VertigoProcessedData){
+    this.VertigoProcessedData = event;
+    if (this.flatMap(this.SelectedSeries,dt=>dt.Columns).length==0){
+      let spec:Dataspec = new Dataspec();
+      spec.Types[1].Columns = spec.Types[1].Columns.slice(0,3);
+      spec.Types = [spec.Types[1]];
+      this.seriesChanged(spec.Types);
+    } else {
+      this.seriesChanged(this.SelectedSeries);
     }
     
   }

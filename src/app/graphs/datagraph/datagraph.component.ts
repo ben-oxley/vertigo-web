@@ -38,11 +38,15 @@ export class DataGraphComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     let i = 0;
-    this.GraphData = changes.InputData.currentValue.map(d=>{
-      d.type = this.configOptions.type;
-      d.marker = {color:this.seriesColours[i++]}
-      d.mode = this.configOptions.mode;
+    if (changes.InputData.currentValue) this.GraphData = changes.InputData.currentValue.filter(d=>d!=null).map(d=>{
+      if (d){
+        d.type = this.configOptions.type;
+        d.marker = {color:this.seriesColours[i++]}
+        d.mode = this.configOptions.mode;
+      }
       return d;
     });
+    else this.GraphData = null;
+    
   }
 }
