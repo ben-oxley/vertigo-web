@@ -72,7 +72,7 @@
       @include nb-rtl(border, none);
     }
 
-    .header-container /deep/ ngx-theme-switcher .dropdown-toggle {
+    .header-container ::ng-deep ngx-theme-switcher .dropdown-toggle {
       color: nb-theme(color-white);
       background: transparent;
     }
@@ -94,7 +94,7 @@
     }
   }
 
-  .toggle-layout /deep/ a {
+  .toggle-layout ::ng-deep a {
     display: block;
     text-decoration: none;
     line-height: 1;
@@ -130,15 +130,7 @@
   }
 
   @include keyframes(pulse) {
-    0% {
-      box-shadow: 0 0 1px 0 rgba(nb-theme(color-fg-highlight), 0);
-    }
-    20% {
-      box-shadow: 0 0 3px 10px rgba(nb-theme(color-fg-highlight), 0.4);
-    }
-    100% {
-      box-shadow: 0 0 5px 20px rgba(nb-theme(color-fg-highlight), 0);
-    }
+
   }
 
   @include keyframes(pulse-light) {
@@ -178,7 +170,7 @@
 
   @include media-breakpoint-down(sm) {
 
-    nb-user /deep/ .user-name {
+    nb-user ::ng-deep .user-name {
       display: none;
     }
   }
@@ -205,7 +197,7 @@
   }
 
   @include media-breakpoint-down(xs) {
-    .right /deep/ {
+    .right ::ng-deep {
       display: none;
     }
   }

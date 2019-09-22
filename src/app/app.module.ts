@@ -27,7 +27,7 @@ import { ControlsModule } from './controls/controls.module';
     AppRoutingModule,
     ControlsModule,
 
-    NgbModule.forRoot(),
+    NgbModule,
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

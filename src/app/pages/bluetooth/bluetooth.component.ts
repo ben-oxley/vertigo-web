@@ -7,8 +7,6 @@ import { LivemapComponent } from '../../maps/livemap/livemap.component'
 import { CubismComponent } from '../../graphs/cubism/cubism.component'
 import * as cubism from 'cubism';
 import * as d3 from 'd3';
-import { EventListener } from '@angular/core/src/debug/debug_node';
-import { MethodFn } from '@angular/core/src/reflection/types';
 
 @Component({
   selector: 'bluetooth',
