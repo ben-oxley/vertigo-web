@@ -9,6 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MapsModule } from './maps/maps.module';
 import { GraphsModule } from './graphs/graphs.module';
 import { ControlsModule } from './controls/controls.module';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { PlotlyModule } from 'angular-plotly.js';
+
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
   declarations: [
@@ -20,7 +24,8 @@ import { ControlsModule } from './controls/controls.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
     ControlsModule,
-    GraphsModule
+    GraphsModule,
+    PlotlyModule
   ],
   providers: [],
   bootstrap: [AppComponent]
