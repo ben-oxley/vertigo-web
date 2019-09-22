@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CubismComponent } from './cubism/cubism.component';
 import { DataGraphComponent } from './datagraph/datagraph.component';
 import { PlotlyModule } from 'angular-plotly.js';
 import { SelectorComponent } from './selector/selector.component';
@@ -9,7 +8,6 @@ import { ThemeModule } from '../@theme/theme.module';
 
 @NgModule({
   declarations: [
-    CubismComponent,
     DataGraphComponent,
     SelectorComponent  
   ],
@@ -20,7 +18,6 @@ import { ThemeModule } from '../@theme/theme.module';
     TabsModule
   ],
   exports: [
-    CubismComponent,
     DataGraphComponent,
     SelectorComponent
   ]
