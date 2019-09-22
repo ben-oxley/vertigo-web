@@ -1,9 +1,6 @@
 <div class="row">
-    <div class="col-10">
-        <input #fileInput id="fileselector" class="custom-file-input" type="file">
-        <label class="custom-file-label" for="fileselector">Choose file...</label>
-    </div>
-    <div class="col-2">
-        <button type="button" class="btn btn-info" for="fileselector" (click)="triggerFile(fileInput)">Upload</button>
+    <div class="col-12">
+        <input #fileInput id="fileselector" class="custom-file-input" (change)="triggerFile(fileInput)" type="file">
+        <label class="custom-file-label" for="customFile">Choose file</label>
     </div>
 </div>

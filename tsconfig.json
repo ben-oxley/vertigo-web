@@ -1,5 +1,10 @@
 {
   "compileOnSave": false,
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "**/*.worker.ts"
+  ],
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

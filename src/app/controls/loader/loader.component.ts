@@ -15,18 +15,19 @@ import { VertigoRawData } from '../../@processing/vertigo-data';
 export class LoaderComponent implements OnInit {
 
 
-  @Input() VertigoRawData:VertigoRawData;
+  @Input() VertigoRawData: VertigoRawData;
   @Output() loaded = new EventEmitter<VertigoRawData>();
+  @Output() loadingProgress = new EventEmitter<Number>();
 
   constructor() {
     this.VertigoRawData = new VertigoRawData();
-    let types:any[] = (<any>vertigospec).dataTypes;
-    types.forEach(t=>{
-      let specIdentifier:number = t.identifier;
-      let rawData:RawData = new RawData((<any[]>t.columns).map(c=><string>c.id));
-      this.VertigoRawData.DataTypes.set(specIdentifier,rawData);
+    const types: any[] = (<any>vertigospec).dataTypes;
+    types.forEach(t => {
+      const specIdentifier: number = t.identifier;
+      const rawData: RawData = new RawData((<any[]>t.columns).map(c => <string>c.id));
+      this.VertigoRawData.DataTypes.set(specIdentifier, rawData);
     });
-      
+
   }
 
   ngOnInit() {
@@ -36,28 +37,35 @@ export class LoaderComponent implements OnInit {
     this.asynchronousReadFile(inputField);
   }
 
+  
+
   public asynchronousReadFile(inputField) {
-    var fileName = inputField.files[0];
+    const fileName = inputField.files[0];
     if (!fileName) {
-      alert("No file selected");
+      alert('No file selected');
       return;
     }
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = file => {
-      var contents: any = file.target;
-      var fileText: string = contents.result;
-      console.log("Loaded file");
-      fileText.split('\n').forEach(line => {
-        let result: ParseResult = parse(line);
-        if (result.data[0]){
-          if (!Number.isInteger(result.data[0][0])){
+      const contents: any = file.target;
+      const fileText: string = contents.result;
+      console.log("Loaded file, starting parsing");
+      const lines = fileText.split('\n');
+      const numberOfLines: number = lines.length;
+      let linesProcessed: number = 0;
+      lines.forEach(line => {
+        linesProcessed = linesProcessed + 1;
+        const result: ParseResult = parse(line);
+        this.loadingProgress.emit(linesProcessed / numberOfLines);
+        if (result.data[0]) {
+          if (!Number.isInteger(result.data[0][0])) {
             result.data[0][0] = Date.parse(result.data[0][0]);
           }
-          let data: Data = new Data(result.data[0]);
-          let identifier:number = +result.data[0][1];
+          const data: Data = new Data(result.data[0]);
+          const identifier: number = +result.data[0][1];
           this.VertigoRawData.DataTypes.get(identifier).Load(data);
         }
-        
+
       });
       this.loaded.emit(this.VertigoRawData);
       console.log('Finished loading file');
@@ -67,15 +75,15 @@ export class LoaderComponent implements OnInit {
   }
 
   public loadFile(fileForm, field, submitBtn) {
-    var file = fileForm.files[0];
+    const file = fileForm.files[0];
     if (!file) {
       alert("No file selected");
       return;
     }
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = f => {
-      var contents: any = f.target;
-      var fileText: string = contents.result;
+      const contents: any = f.target;
+      const fileText: string = contents.result;
       field.value = fileText;
       submitBtn.disabled = false;
     };

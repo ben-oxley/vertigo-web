@@ -64,6 +64,8 @@ import {
 import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
+import { LoaderComponent } from './components/loader/loader.component';
+import { ProgressViewComponent } from './components/progress-view/progress-view.component';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
@@ -105,6 +107,7 @@ const COMPONENTS = [
   LayoutDirectionSwitcherComponent,
   ThemeSwitcherComponent,
   ThemeSwitcherListComponent,
+  ProgressViewComponent,
   HeaderComponent,
   FooterComponent,
   SearchInputComponent,
@@ -145,7 +148,7 @@ const NB_THEME_PROVIDERS = [
 @NgModule({
   imports: [...BASE_MODULES, ...NB_MODULES],
   exports: [...BASE_MODULES, ...NB_MODULES, ...COMPONENTS, ...PIPES],
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...PIPES, LoaderComponent, ProgressViewComponent],
   entryComponents: [...ENTRY_COMPONENTS],
 })
 export class ThemeModule {
