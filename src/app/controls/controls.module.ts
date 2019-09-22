@@ -8,6 +8,9 @@ import { LoaderComponent } from './loader/loader.component';
   declarations: [LoaderComponent],
   imports: [
     CommonModule
+  ],
+  exports: [
+    LoaderComponent
   ]
 })
 export class ControlsModule { }
