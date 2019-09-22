@@ -1,0 +1,12 @@
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Options</label>
+    </div>
+    <select multiple class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" (change)="selectionChanged($event.target.selectedOptions)">
+      <option value="time" selected>Time (Seconds)</option>
+      <optgroup *ngFor="let type of Dataspec.Types" label="{{type.Name}}">
+        <option *ngFor="let column of type.Columns" value="{{type.Id}},{{column.Id}}">{{column.Name}}</option>
+      </optgroup>
+    </select>
+  </div>
+  
