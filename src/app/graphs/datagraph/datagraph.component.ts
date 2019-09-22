@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, Output, SimpleChanges } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Data } from '../../@processing/data';
+import { Data } from '../../processing/data';
 
 @Component({
   selector: 'data-graph',

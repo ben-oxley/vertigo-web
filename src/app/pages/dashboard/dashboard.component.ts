@@ -1,8 +1,8 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { VertigoRawData, VertigoProcessedData } from '../../@processing/vertigo-data';
-import { DataType } from '../../@processing/datatype';
-import { Data } from '../../@processing/data';
-import { Dataspec } from '../../@processing/dataspec';
+import { VertigoRawData, VertigoProcessedData } from '../../processing/vertigo-data';
+import { DataType } from '../../processing/datatype';
+import { Data } from '../../processing/data';
+import { Dataspec } from '../../processing/dataspec';
 
 @Component({
   selector: 'ngx-dashboard',
