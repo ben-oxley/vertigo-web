@@ -1,4 +1,4 @@
-import * as spec from "./vertigo-spec.json"
+import spec from "./vertigo-spec.json"
 import { DataType } from "./datatype";
 
 export class Dataspec{

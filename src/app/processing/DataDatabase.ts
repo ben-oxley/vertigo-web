@@ -1,7 +1,4 @@
 import Dexie from 'dexie';
-import { timestamp } from 'rxjs/operators';
-import { type } from 'os';
-import * as spec from "./vertigo-spec.json"
 
 interface Data{
     timestamp: number;
