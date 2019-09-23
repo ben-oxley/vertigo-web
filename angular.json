@@ -29,9 +29,13 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "./node_modules/bootswatch/dist/darkly/bootstrap.css",              
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
