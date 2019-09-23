@@ -34,7 +34,13 @@ export class DataGraphComponent {
   public yaxis:any = {
     automargin: true,
   };
-  public layout:any = {autosize: true};
+  public layout:any = {autosize: true,margin: {
+    l: 50,
+    r: 0,
+    b: 50,
+    t: 0,
+    pad: 4
+  },};
 
   ngOnChanges(changes: SimpleChanges) {
     let i = 0;
