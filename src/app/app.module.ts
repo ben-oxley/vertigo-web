@@ -25,7 +25,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     BrowserAnimationsModule,
     ControlsModule,
     GraphsModule,
-    PlotlyModule
+    PlotlyModule,
+    MapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
