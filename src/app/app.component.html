@@ -31,7 +31,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"></loader>
+      <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)" (loadingProgress)="loading($event)"></loader>
       <div class="row align-items-center">
         <div class="col-1">
           <a href="#carouselExampleControls" role="button" data-slide="prev">
@@ -167,14 +167,14 @@
 </div>
 
   
-  <div id="nb-global-loader" class="loader" *ngIf="Progress!=1.0">
+  <div id="nb-global-loader" class="loader" *ngIf="Progress!=100.0">
   
     <div class="blob blob-0"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
     <div class="blob blob-4"></div>
     <div class="blob blob-5"></div>
-    <p class="cent" style="color: white; text-align: center">Loading: {{Progress}}</p>
+    <p class="cent" style="color: white; text-align: center">Loading: {{Progress}}%</p>
   </div>
 
 <router-outlet></router-outlet>

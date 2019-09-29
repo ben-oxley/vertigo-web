@@ -3,7 +3,7 @@ import { RawData } from '../../processing/processes/rawdata';
 import { DataBlock } from '../../processing/datablock';
 import { Data } from '../../processing/data';
 import { parse, ParseResult } from 'papaparse';
-import * as vertigospec from '../../processing/vertigo-spec.json'
+import * as vertigospec from '../../processing/vertigo-spec.json';
 import { stringify } from '@angular/compiler/src/util';
 import { VertigoRawData, VertigoProcessedData } from '../../processing/vertigo-data';
 import { AbstractDataBlock } from '../../processing/processes/abstractdatablock';
@@ -23,6 +23,7 @@ export class LoaderComponent implements OnInit {
   @Input() VertigoProcessedData: VertigoProcessedData;
   @Output() loaded = new EventEmitter<VertigoRawData>();
   @Output() loadedProcessedData = new EventEmitter<VertigoProcessedData>();
+  @Output() loadingProgress = new EventEmitter<number>();
 
   constructor() {
 
@@ -33,23 +34,39 @@ export class LoaderComponent implements OnInit {
   }
 
   public triggerFile(inputField: Element) {
-    this.asynchronousReadFile(inputField);
+    this.workerReadFile((inputField as any).files[0]);
   }
 
-  public asynchronousReadFile(inputField) {
+  public workerReadFile(fileName: Blob){
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      const worker = new Worker('./loader.worker', { type: 'module' });
+      worker.onmessage = ({ data }) => {
+        this.loadingProgress.emit(data.progress);
+        if (data.progress === 1.0 && data.data) {
+          this.loaded.emit(data);
+        }
+      };
+      worker.postMessage(fileName);
+    } else {
+      this.asynchronousReadFile(fileName);
+    }
+  }
+
+  public asynchronousReadFile(inputField: Blob) {
     this.VertigoRawData = new VertigoRawData();
     this.VertigoProcessedData = new VertigoProcessedData();
-    let types: any[] = (<any>vertigospec).dataTypes;
+    const types: any[] = (vertigospec as any).dataTypes;
     types.forEach(t => {
-      let specIdentifier: number = t.identifier;
-      let rawData: RawData = new RawData((<any[]>t.columns).map(c => <string>c.id));
+      const specIdentifier: number = t.identifier;
+      const rawData: RawData = new RawData((<any[]>t.columns).map(c => <string>c.id));
       this.VertigoRawData.DataTypes.set(specIdentifier, rawData);
-      let processedData: AbstractDataBlock = new SmoothedData((<any[]>t.columns).map(c => <string>c.id), 100);
+      const processedData: AbstractDataBlock = new SmoothedData((t.columns as any[]).map(c => c.id as string), 100);
       this.VertigoProcessedData.DataTypes.set(specIdentifier, processedData);
     });
     this.loaded.emit(this.VertigoRawData);
     this.loadedProcessedData.emit(this.VertigoProcessedData);
-    var fileName = inputField.files[0];
+    var fileName = inputField;
     if (!fileName) {
       alert("No file selected");
       return;
