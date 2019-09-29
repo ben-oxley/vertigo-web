@@ -30,7 +30,8 @@
             ],
             "styles": [
               "./node_modules/bootswatch/dist/darkly/bootstrap.css",              
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
