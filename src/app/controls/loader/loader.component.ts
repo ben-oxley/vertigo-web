@@ -44,13 +44,28 @@ export class LoaderComponent implements OnInit {
       worker.onmessage = ({ data }) => {
         this.loadingProgress.emit(data.progress);
         if (data.progress === 1.0 && data.data) {
-          this.loaded.emit(data);
+          const rawDataClass: VertigoRawData = this.prepareRawDataClass();
+          data.data.DataTypes.forEach((value, key) => {
+            rawDataClass.DataTypes.set(key, RawData.Cast(value));
+          });
+          this.loaded.emit(rawDataClass);
         }
       };
       worker.postMessage(fileName);
     } else {
       this.asynchronousReadFile(fileName);
     }
+  }
+
+  private prepareRawDataClass(): VertigoRawData {
+    const rawDataClass: VertigoRawData = new VertigoRawData();
+    const types: any[] = (vertigospec as any).dataTypes;
+    types.forEach(t => {
+      const specIdentifier: number = t.identifier;
+      const rawData: RawData = new RawData((t.columns as any[]).map(c => c.id as string));
+      rawDataClass.DataTypes.set(specIdentifier, rawData);
+    });
+    return rawDataClass;
   }
 
   public asynchronousReadFile(inputField: Blob) {

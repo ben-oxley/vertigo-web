@@ -3,6 +3,7 @@ import { VertigoRawData, VertigoProcessedData } from './processing/vertigo-data'
 import { DataType } from './processing/datatype';
 import { Data } from './processing/data';
 import { Dataspec } from './processing/dataspec';
+import { RawData } from './processing/processes/rawdata';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,7 @@ export class AppComponent {
   public seriesChanged(event: DataType[]) {
     this.GraphData = this.flatMap(event, dt => {
       if (this.VertigoRawData.DataTypes && this.VertigoRawData.DataTypes.has(dt.Identifier)) {
-        const data: Data[] = this.VertigoRawData.DataTypes.get(dt.Identifier).Data();
+        const data: Data[] = RawData.Cast(this.VertigoRawData.DataTypes.get(dt.Identifier)).Data();
         if (data && data.length > 0) {
           return dt.Columns.map(c => {
             const t0 = data[0].Data[0];

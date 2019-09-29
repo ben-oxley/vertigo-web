@@ -43,8 +43,9 @@
           data-interval="false">
           <div class="carousel-inner">
             <div class="carousel-item active">
+                <selector (SelectionChanged)="seriesChanged($event)"></selector>
               <data-graph [InputData]="GraphData"></data-graph>
-              <selector (SelectionChanged)="seriesChanged($event)"></selector>
+              
             </div>
             <div class="carousel-item">
               <h1>MAP</h1>
