@@ -63,7 +63,7 @@ export class LoaderComponent implements OnInit {
   public trim(event) {
     const rawDataClass: VertigoRawData = this.prepareRawDataClass();
     this.vertigoPreviewData.DataTypes.forEach((value, key) => {
-            if (event.autoscale) {
+            if (event.autorange) {
               rawDataClass.DataTypes.set(key, value);
             } else {
               const d: RawData = new RawData(value.Headers());
