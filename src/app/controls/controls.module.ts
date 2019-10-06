@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
+import { TrimSliderComponent } from './trim-slider/trim-slider.component';
+import { PlotlyModule } from 'angular-plotly.js';
 
 
 
 @NgModule({
-  declarations: [LoaderComponent],
+  declarations: [LoaderComponent, TrimSliderComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    PlotlyModule
   ],
   exports: [
     LoaderComponent

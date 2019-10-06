@@ -6,7 +6,6 @@ export class Data{
         this.Data = data.slice();
     }
 
-
     public AddData(data:Data){
         if (data.Data.length!==this.Data.length)  throw new Error("Data arrays must be the same length");
         for (let index = 0; index < this.Data.length; index++) {

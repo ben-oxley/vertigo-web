@@ -25,6 +25,8 @@ export class LoaderComponent implements OnInit {
   @Output() loadedProcessedData = new EventEmitter<VertigoProcessedData>();
   @Output() loadingProgress = new EventEmitter<number>();
 
+  vertigoPreviewData: VertigoRawData = null;
+
   constructor() {
 
 
@@ -48,6 +50,7 @@ export class LoaderComponent implements OnInit {
           data.data.DataTypes.forEach((value, key) => {
             rawDataClass.DataTypes.set(key, RawData.Cast(value));
           });
+          this.vertigoPreviewData = rawDataClass;
           this.loaded.emit(rawDataClass);
         }
       };
@@ -55,6 +58,20 @@ export class LoaderComponent implements OnInit {
     } else {
       this.asynchronousReadFile(fileName);
     }
+  }
+
+  public trim(event) {
+    const rawDataClass: VertigoRawData = this.prepareRawDataClass();
+    this.vertigoPreviewData.DataTypes.forEach((value, key) => {
+            if (event.autoscale) {
+              rawDataClass.DataTypes.set(key, value);
+            } else {
+              const d: RawData = new RawData(value.Headers());
+              d.LoadAll(value.Trim(event.xmin, event.xmax));
+              rawDataClass.DataTypes.set(key, d);
+            }
+          });
+    this.loaded.emit(rawDataClass);
   }
 
   private prepareRawDataClass(): VertigoRawData {

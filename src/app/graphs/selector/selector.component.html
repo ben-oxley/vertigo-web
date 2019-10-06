@@ -8,7 +8,7 @@
       <div class="input-group-prepend">
         <label class="input-group-text" for="inputGroupSelect01">Options</label>
       </div>
-      <select multiple class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue"
+      <select multiple class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" size="10"
         (change)="selectionChanged($event.target.selectedOptions)">
         <option value="time" selected>Time (Seconds)</option>
         <optgroup *ngFor="let type of Dataspec.Types" label="{{type.Name}}">

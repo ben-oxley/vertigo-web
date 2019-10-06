@@ -9,17 +9,17 @@ import { Dataspec } from '../../processing/dataspec';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  public VertigoRawData:VertigoRawData;
-  public VertigoProcessedData:VertigoProcessedData;
-  public GraphData:any;
-  public SelectedValues:any = {columns:[]}
-  private SelectedSeries:DataType[] = [];
+  public VertigoRawData: VertigoRawData;
+  public VertigoProcessedData: VertigoProcessedData;
+  public GraphData: any;
+  public SelectedValues: any = {columns:[]}
+  private SelectedSeries: DataType[] = [];
 
   
 
   public constructor(){
     this.GraphData = [{
-      x: Array.from(Array(100).keys()), 
+      x: Array.from(Array(100).keys()),
       y: Array.from(Array(100).keys()).map(a=>Math.sin(a))
     }]
   }

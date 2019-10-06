@@ -1,4 +1,5 @@
 <div>
     <input #fileInput id="fileselector" class="custom-file-input" (change)="triggerFile(fileInput)" type="file">
     <label class="custom-file-label" for="fileselector">Choose file...</label>
+    <app-trim-slider [data]="vertigoPreviewData" (scaled)="trim($event)"></app-trim-slider>
 </div>
