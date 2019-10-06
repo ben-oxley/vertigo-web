@@ -24,6 +24,7 @@ export class LoaderComponent implements OnInit {
   @Output() loaded = new EventEmitter<VertigoRawData>();
   @Output() loadedProcessedData = new EventEmitter<VertigoProcessedData>();
   @Output() loadingProgress = new EventEmitter<number>();
+  public showtrim = false;
 
   vertigoPreviewData: VertigoRawData = null;
 
@@ -37,6 +38,10 @@ export class LoaderComponent implements OnInit {
 
   public triggerFile(inputField: Element) {
     this.workerReadFile((inputField as any).files[0]);
+  }
+
+  public toggleTrimControls(){
+    this.showtrim = !this.showtrim;
   }
 
   public workerReadFile(fileName: Blob){

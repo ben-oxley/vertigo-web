@@ -1,5 +1,13 @@
 <div>
-    <input #fileInput id="fileselector" class="custom-file-input" (change)="triggerFile(fileInput)" type="file">
-    <label class="custom-file-label" for="fileselector">Choose file...</label>
-    <app-trim-slider [data]="vertigoPreviewData" (scaled)="trim($event)"></app-trim-slider>
+    <div class="input-group">
+        <div class="custom-file">
+            <input #fileInput id="fileselector" class="custom-file-input" (change)="triggerFile(fileInput)" type="file">
+            <label class="custom-file-label" for="fileselector" size="60">Choose file...</label>
+        </div>
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off"
+                (click)="toggleTrimControls()">Trim</button>
+        </div>
+    </div>
+    <app-trim-slider  *ngIf="showtrim" [data]="vertigoPreviewData" (scaled)="trim($event)"></app-trim-slider>
 </div>
