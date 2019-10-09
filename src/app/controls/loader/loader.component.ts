@@ -90,82 +90,35 @@ export class LoaderComponent implements OnInit {
     return rawDataClass;
   }
 
-  public asynchronousReadFile(inputField: Blob) {
-    this.VertigoRawData = new VertigoRawData();
-    this.VertigoProcessedData = new VertigoProcessedData();
-    const types: any[] = (vertigospec as any).dataTypes;
-    types.forEach(t => {
-      const specIdentifier: number = t.identifier;
-      const rawData: RawData = new RawData((<any[]>t.columns).map(c => <string>c.id));
-      this.VertigoRawData.DataTypes.set(specIdentifier, rawData);
-      const processedData: AbstractDataBlock = new SmoothedData((t.columns as any[]).map(c => c.id as string), 100);
-      this.VertigoProcessedData.DataTypes.set(specIdentifier, processedData);
-    });
-    this.loaded.emit(this.VertigoRawData);
-    this.loadedProcessedData.emit(this.VertigoProcessedData);
-    var fileName = inputField;
+  public asynchronousReadFile(inputField) {
+    const fileName = inputField.files[0];
     if (!fileName) {
-      alert("No file selected");
+      alert('No file selected');
       return;
     }
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = file => {
-      var contents: any = file.target;
-      var fileText: string = contents.result;
-      console.log("Loading file");
-      if (!('indexedDB' in window)) {
-        console.log('This browser doesn\'t support IndexedDB');
-        return;
-      }
-      let db: DataDataBase = new DataDataBase();
-      try{
-        db.build();
-      } catch{
-        console.log('Raw data types table already existed.');
-      }
-      db.transaction('rw', db.data, async () => {
-        fileText.split('\n').forEach(line => {
-          let result: ParseResult = parse(line);
-          if (result.data[0]) {
-            if (!Number.isInteger(result.data[0][0])) {
-              result.data[0][0] = Date.parse(result.data[0][0]);
-            }
-
-            let data: Data = new Data(result.data[0]);
-            let identifier: number = +result.data[0][1];
-            if (!db.storedData.where(["dataType", "processing"]).anyOf([identifier, 0])) {
-              db.transaction('rw', db.storedData, async () => {
-                for (let i = 2; i < result.data.length; i++) {
-                  db.storedData.add({ column: i, dataType: identifier, processing: 0 });
-                }
-              }).catch(e => {
-                alert(e.stack || e);
-              });
-            }
-
-            // for (let i = 2; i < result.data[0].length; i++) {
-            //   db.data.add({ timestamp: result.data[0][0], type: identifier, column: i, value: result.data[0][i] });
-            // }
-
-            this.VertigoRawData.DataTypes.get(identifier).Load(data);
-            this.VertigoProcessedData.DataTypes.get(identifier).Load(data);
+      const contents: any = file.target;
+      const fileText: string = contents.result;
+      console.log("Loaded file, starting parsing");
+      const lines = fileText.split('\n');
+      const numberOfLines: number = lines.length;
+      let linesProcessed: number = 0;
+      lines.forEach(line => {
+        linesProcessed = linesProcessed + 1;
+        const result: ParseResult = parse(line);
+        this.loadingProgress.emit(linesProcessed / numberOfLines);
+        if (result.data[0]) {
+          if (!Number.isInteger(result.data[0][0])) {
+            result.data[0][0] = Date.parse(result.data[0][0]);
           }
-          // let items:Data[] = [];
-          // data.forEach(item => {
-          //   for (let i = 2; i < item.data.length; i++) {
-          //     items.push({ timestamp: item[0], type: item[1], column: i, value: result.data[0][i] });
-          //   }
-          // });
-          
-          // db.data.bulkAdd()
+          const data: Data = new Data(result.data[0]);
+          const identifier: number = +result.data[0][1];
+          this.VertigoRawData.DataTypes.get(identifier).Load(data);
+        }
 
-        });
-      }).catch(e => {
-        alert(e.stack || e);
       });
-
       this.loaded.emit(this.VertigoRawData);
-      this.loadedProcessedData.emit(this.VertigoProcessedData);
       console.log('Finished loading file');
     };
     reader.readAsText(fileName);
