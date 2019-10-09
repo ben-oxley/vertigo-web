@@ -3,6 +3,7 @@ import { DataListener } from './listener';
 import { AbstractDataBlock } from './processes/abstractdatablock';
 import { DataType } from './datatype';
 import { DataStoreListener } from './DataStoreListener';
+import { DataBlock } from './datablock';
 
 export interface VertigoDataStore {
 
@@ -10,7 +11,9 @@ export interface VertigoDataStore {
 
     AddListener(Listener: DataStoreListener);
 
-    Load(type: DataType, data: AbstractDataBlock);
+    Load(type: DataType, data: DataBlock);
+
+    Get(type: DataType):DataBlock;
 
     Clear(dataType: DataType);
 
