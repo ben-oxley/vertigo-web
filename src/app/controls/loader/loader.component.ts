@@ -10,6 +10,10 @@ import { AbstractDataBlock } from '../../processing/processes/abstractdatablock'
 import { SmoothedData } from '../../processing/processes/smootheddata';
 import Dexie from 'dexie';
 import { DataDataBase } from '../../processing/DataDatabase';
+import { VertigoDataStoreManager } from 'src/app/processing/VertigoDataStoreManager';
+import { VertigoDataStore } from 'src/app/processing/VertigoDataStore';
+import { Dataspec } from 'src/app/processing/dataspec';
+import { DataType } from 'src/app/processing/datatype';
 
 @Component({
   selector: 'loader',
@@ -54,6 +58,12 @@ export class LoaderComponent implements OnInit {
           const rawDataClass: VertigoRawData = this.prepareRawDataClass();
           data.data.DataTypes.forEach((value, key) => {
             rawDataClass.DataTypes.set(key, RawData.Cast(value));
+          });
+          let store:VertigoDataStore = VertigoDataStoreManager.GetDataStore();
+          let spec: Dataspec = new Dataspec();
+          rawDataClass.DataTypes.forEach((v,k)=>{
+            let type: DataType = spec.Types.find(t=>t.Identifier==k);
+            store.Load(type, v);
           });
           this.vertigoPreviewData = rawDataClass;
           this.loaded.emit(rawDataClass);

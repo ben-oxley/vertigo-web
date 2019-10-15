@@ -11,6 +11,8 @@ import { GraphsModule } from './graphs/graphs.module';
 import { ControlsModule } from './controls/controls.module';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
+import { PagesModule } from './pages/pages.module';
+import { CommonModule } from '@angular/common';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -20,13 +22,15 @@ PlotlyModule.plotlyjs = PlotlyJS;
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
     ControlsModule,
     GraphsModule,
     PlotlyModule,
-    MapsModule
+    MapsModule,
+    PagesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

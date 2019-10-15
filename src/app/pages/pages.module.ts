@@ -9,6 +9,7 @@ import { LivemapComponent } from '../maps/livemap/livemap.component'
 import { MapsModule } from '../maps/maps.module';
 import { GraphsModule } from '../graphs/graphs.module';
 import { ControlsModule } from '../controls/controls.module';
+import { CommonModule } from '@angular/common';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -23,6 +24,7 @@ const PAGES_COMPONENTS = [
     ControlsModule,
     MapsModule,
     GraphsModule,
+    CommonModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,

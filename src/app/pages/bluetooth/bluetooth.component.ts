@@ -31,21 +31,12 @@ export class BluetoothComponent implements OnInit {
   private static statusCharacteristicID: string = 'c70617b6-993d-481f-b02a-7fcfbb3d2133';
   // CONTROL (“CTRL”)
   private static controlCharacteristicID: string = 'c771b990-055f-11e9-8eb2-f2801f1b9fd1';
-  private static batteryID: string = 'battery_service';
-  private static levelCharateristicID: string = 'battery_level'
-  private server: BluetoothRemoteGATTServer;
   private device: BluetoothDevice;
-  private service: BluetoothRemoteGATTService;
   private imuQuaternionCharacteristic: BluetoothRemoteGATTCharacteristic;
   private magnetometerCharacteristic: BluetoothRemoteGATTCharacteristic;
   private gpsCharacteristic: BluetoothRemoteGATTCharacteristic;
   private statusCharacteristic: BluetoothRemoteGATTCharacteristic;
   private controlCharacteristic: BluetoothRemoteGATTCharacteristic;
-  private cubismContext: any;
-
-
-
-  private static step: number = 0.0;
   public accx: number = 0.0;
   public accy: number = 0.0;
   public accz: number = 0.0;
@@ -69,18 +60,58 @@ export class BluetoothComponent implements OnInit {
   public loggerState: string = "Not detected";
 
   public graphData = [
-    ()=>this.accx,
-    ()=>this.accy,
-    ()=>this.accz,
-    ()=>this.rotx,
-    ()=>this.roty,
-    ()=>this.rotz,
+    () => this.accx,
+    () => this.accy,
+    () => this.accz,
+    () => this.rotx,
+    () => this.roty,
+    () => this.rotz,
   ]
-
 
   public constructor() {
   }
 
+  public async reconnect(component: BluetoothComponent) {
+    console.log('disconnected');
+    component.deviceName = BluetoothComponent.NO_CONNECTION;
+    component.connected = false;
+    if (this.stop! && this.device) {
+      await this.tryConnect();
+    }
+  }
+
+  public async tryConnect() {
+    return this.device.gatt.connect().then(server => {
+      this.device.addEventListener('gattserverdisconnected', () => this.reconnect(this));
+      return server.getPrimaryService(BluetoothComponent.serviceID);
+    })
+      .then(service => {
+        return Promise.all([
+          this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
+            .then(charteristic => this.imuQuaternionCharacteristic = charteristic),
+          this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
+            .then(charteristic => this.magnetometerCharacteristic = charteristic),
+          this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
+            .then(charteristic => this.gpsCharacteristic = charteristic),
+          this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
+            .then(charteristic => this.controlCharacteristic = charteristic),
+          this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
+            .then(charteristic => this.statusCharacteristic = charteristic),
+        ])
+      })
+      .then(() => {
+        this.stop = false;
+        this.pause = false;
+        this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
+        this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1000);
+        this.pollforUpdates(this.statusCharacteristic, this.handleState, 1000);
+        this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
+      })
+      .catch(error => {
+        console.log(error);
+        this.handleBluetoothError();
+      })
+  }
 
   public async connect() {
     if (this.supported) {
@@ -90,14 +121,11 @@ export class BluetoothComponent implements OnInit {
           this.handleBluetoothDisconnect(this);
           return;
         } catch (error) {
-          console.log('Argh! ' + error);
+          console.log('Connection failed ' + error);
           this.handleBluetoothError();
         }
       }
       let options: RequestDeviceOptions = {
-        // filters: [
-        //   {services: [BluetoothComponent.batteryID]}
-        // ],
         acceptAllDevices: true,
         optionalServices: [
           BluetoothComponent.serviceID
@@ -113,38 +141,7 @@ export class BluetoothComponent implements OnInit {
         this.deviceName = device.name;
         this.connected = true;
         this.device = device;
-        device.gatt.connect().then(server => {
-          this.device.addEventListener('gattserverdisconnected', () => this.handleBluetoothDisconnect(this));
-          this.server = server;
-          return server.getPrimaryService(BluetoothComponent.serviceID);
-        })
-          .then(service => {
-            return Promise.all([
-              this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
-                .then(charteristic => this.imuQuaternionCharacteristic = charteristic),
-              this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
-                .then(charteristic => this.magnetometerCharacteristic = charteristic),
-              this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
-                .then(charteristic => this.gpsCharacteristic = charteristic),
-              this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
-                .then(charteristic => this.controlCharacteristic = charteristic),
-              this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
-                .then(charteristic => this.statusCharacteristic = charteristic),
-            ])
-          })
-          .then(() => {
-            this.stop = false;
-            this.pause = false;
-            this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
-            this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1000);
-            this.pollforUpdates(this.statusCharacteristic, this.handleState, 1000);
-            this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
-          })
-          .catch(error => {
-            console.log(error);
-            this.handleBluetoothError();
-          })
-
+        await this.tryConnect();
       } catch (error) {
         console.log('Argh! ' + error);
         this.handleBluetoothError();
@@ -156,7 +153,7 @@ export class BluetoothComponent implements OnInit {
     component.accx = (event.getInt16(0, true) / 1e3) * 9.81;
     component.accy = (event.getInt16(2, true) / 1e3) * 9.81;
     component.accz = (event.getInt16(4, true) / 1e3) * 9.81;
-    component.acc2 = Math.sqrt(Math.pow(component.accx,2)+Math.pow(component.accy,2)+Math.pow(component.accz,2));
+    component.acc2 = Math.sqrt(Math.pow(component.accx, 2) + Math.pow(component.accy, 2) + Math.pow(component.accz, 2));
     component.rotx = (event.getInt16(6, true));
     component.roty = (event.getInt16(8, true));
     component.rotz = (event.getInt16(10, true));
@@ -185,7 +182,6 @@ export class BluetoothComponent implements OnInit {
       String.fromCharCode(event.getInt8(4)) +
       String.fromCharCode(event.getInt8(5)) +
       String.fromCharCode(event.getInt8(6));
-
     component.loggerState = component.lookupLoggerState(event.getInt8(7));
     component.imuState = component.lookupIMUState(event.getInt8(8));
     component.gpsState = component.lookupGPSState(event.getInt8(9));
@@ -289,8 +285,6 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-
-
   private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) {
     try {
       if (this.device.gatt.connected) {
@@ -327,15 +321,9 @@ export class BluetoothComponent implements OnInit {
     component.connected = false;
   }
 
-
   public async registerToServices(service: BluetoothRemoteGATTService, charteristicID: string): Promise<BluetoothRemoteGATTCharacteristic> {
-    this.service = service;
     return service.getCharacteristic(charteristicID)
   }
-
- 
-
-  
 
   ngOnInit(): void {
 
