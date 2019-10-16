@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PagesRoutingModule } from './pages-routing.module';
 import { LiveComponent } from './live/live.component';
 import { BluetoothComponent } from './bluetooth/bluetooth.component';
 import { LivemapComponent } from '../maps/livemap/livemap.component'
@@ -20,7 +19,6 @@ const PAGES_COMPONENTS = [
 
 @NgModule({
   imports: [
-    PagesRoutingModule,
     ControlsModule,
     MapsModule,
     GraphsModule,

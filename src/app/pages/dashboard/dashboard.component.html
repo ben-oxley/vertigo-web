@@ -72,20 +72,6 @@
                 <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
                 <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
                 <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
-                <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b> Flags: </b><span>{{flags}}</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="propname">
-                <span>Status</span>
-              </div>
-              <div class="prop">
-                <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
-                <div><span><b>Logger State:</b> {{loggerState}}</span></div>
-                <div><span><b>IMU State:</b> {{imuState}}</span></div>
-                <div><span><b>GPS State:</b> {{gpsState}}</span></div>
-                <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
               </div>
             </div>
           </div>
@@ -108,18 +94,7 @@
           data-interval="false">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"><i
-                  class="ion ion-bluetooth"></i> {{connected ? "Disconnect":"Connect"}}</button>
-              <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected"
-                (click)="startLogging()"><i class="ion ion-play"></i> Start Logging</button>
-              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected"
-                (click)="pauseLogging()"><i class="ion ion-pause"></i> Pause Browser</button>
-              <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected"
-                (click)="stopLogging()"><i class="ion ion-stop"></i> Stop Logging</button>
-              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected"><i
-                  class="ion ion-pricetag"></i> Add Tag</button>
-              <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected"><i
-                  class="ion ion-ios-cloud-download"></i> Download</button>
+
             </div>
             <div class="carousel-item">
 

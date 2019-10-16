@@ -15,6 +15,20 @@ export class DashboardComponent {
   public VertigoProcessedData: VertigoProcessedData;
   public GraphData: any;
   public SelectedValues: any = { columns: [] }
+  public accx: number = 0.0;
+  public accy: number = 0.0;
+  public accz: number = 0.0;
+  public acc2: number = 0.0;
+  public rotx: number = 0.0;
+  public roty: number = 0.0;
+  public rotz: number = 0.0;
+  public lon: number = 1.0;
+  public lat: number = 50.0;
+  public alt: number = 0.0;
+  public q0: number = 0.0;
+  public q1: number = 0.0;
+  public q2: number = 0.0;
+  public q3: number = 0.0;
   private SelectedSeries: DataType[] = [];
 
   public constructor() {

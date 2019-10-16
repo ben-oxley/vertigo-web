@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VertigoDataStoreManager } from './VertigoDataStoreManager';
-import { VertigoInMemoryDataStore } from './VertigoInMemoryDataStore';
-
 
 @NgModule({
   declarations: [],
@@ -10,8 +7,6 @@ import { VertigoInMemoryDataStore } from './VertigoInMemoryDataStore';
     CommonModule
   ],
   exports: [
-    VertigoDataStoreManager,
-    VertigoInMemoryDataStore
   ]
 })
 export class ProcessingModule { }
