@@ -13,6 +13,10 @@ import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
 import { PagesModule } from './pages/pages.module';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule, FaIconLibrary, FaConfig } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -30,9 +34,17 @@ PlotlyModule.plotlyjs = PlotlyJS;
     GraphsModule,
     PlotlyModule,
     MapsModule,
-    PagesModule
+    PagesModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary, faConfig: FaConfig) {
+    // Add an icon to the library for convenient access in other components
+    library.addIconPacks(fas, fab, far);
+    faConfig.defaultPrefix = 'far';
+  }
+ }
+

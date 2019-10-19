@@ -105,7 +105,7 @@
           data-interval="false">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"><i class="ion ion-bluetooth"></i> {{connected ? "Disconnect":"Connect"}}</button>
+              <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"> {{connected ? "Disconnect":"Connect"}}<fa-icon [icon]="['fab', 'bluetooth']"></fa-icon></button>
               <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()"><i class="ion ion-play"></i> Start Logging</button>
               <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()"><i class="ion ion-pause"></i> Pause Browser</button>
               <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()"><i class="ion ion-stop"></i> Stop Logging</button>
