@@ -71,15 +71,18 @@ export class LivemapComponent implements OnInit, OnChanges {
             polyLine.addLatLng([+dp.Data[latId.Identifier], +dp.Data[lonId.Identifier]]);
           });
       });
+      
       const data: Data[] = rawData.Data();
-      const t0 = data[0].Data[0];
-      const latlngs: [number, number][] = data.map(datum => [+datum.Data[latId.Identifier], +datum.Data[lonId.Identifier]]);
-      const path: L.Polyline = L.polyline(latlngs);
-      this.layers[1] = path;
-      this.map.fitBounds(path.getBounds());
-      this.lat = latlngs[latlngs.length - 1][0];
-      this.lon = latlngs[latlngs.length - 1][1];
-      this.layers[2] = L.marker(latlngs[latlngs.length - 1], { icon: this.markerIcon });
+      if (data.length>0) {
+        const t0 = data[0].Data[0];
+        const latlngs: [number, number][] = data.map(datum => [+datum.Data[latId.Identifier], +datum.Data[lonId.Identifier]]);
+        const path: L.Polyline = L.polyline(latlngs);
+        this.layers[1] = path;
+        this.map.fitBounds(path.getBounds());
+        this.lat = latlngs[latlngs.length - 1][0];
+        this.lon = latlngs[latlngs.length - 1][1];
+        this.layers[2] = L.marker(latlngs[latlngs.length - 1], { icon: this.markerIcon });
+      }
     }
   }
 
@@ -92,7 +95,7 @@ export class LivemapComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.lat && this.lon) {
       this.options.center = L.latLng({ lat: this.lat, lng: this.lon });
-      
+      this.layers[1] = this.layers[1];
       this.layers[2] = L.marker([this.lat, this.lon], { icon: this.markerIcon });
     }
   }

@@ -3,7 +3,7 @@ import { DataType } from "./datatype";
 
 export class Dataspec{
     
-    
+    public static Spec: Dataspec = new Dataspec();
 
     public RawTypes:any[];
     public Types:DataType[];

@@ -11,13 +11,12 @@
         <div id="carouselExampleControls" class="carousel col-10" data-wrap="true" data-ride="false"
           data-interval="false">
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <selector (SelectionChanged)="seriesChanged($event)"></selector>
-              <data-graph [InputData]="GraphData"></data-graph>
+            <div class="carousel-item active h-100">
+              <graph-control-selection [VertigoRawData]="VertigoRawData" [VertigoProcessedData]="VertigoProcessedData"></graph-control-selection>
             </div>
             <div #mapDiv class="carousel-item">
               <h1>MAP</h1>
-              <live-map [lat]="lat" [lon]="lon"></live-map>
+              <live-map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
             </div>
             <div class="carousel-item">
               <h1>3D View</h1>
