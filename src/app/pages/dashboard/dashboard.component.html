@@ -1,17 +1,17 @@
 <div class="container-fluid">
   <div class="row no-gutters">
-    <div class="col-12">
+    <div class="col-12 h-50">
       <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
         (loadingProgress)="loading($event)"></loader>
-      <div class="row align-items-center no-gutters">
-        <a href="#carouselExampleControls" role="button" data-slide="prev" class="col-1 btn btn-primary" >
+      <div class="row align-items-center no-gutters h-100">
+        <a href="#carouselExampleControls" role="button" data-slide="prev" class="col-1 btn btn-primary h-100" >
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <div id="carouselExampleControls" class="carousel col-10" data-wrap="true" data-ride="false"
+        <div id="carouselExampleControls" class="carousel col-10 h-100" data-wrap="true" data-ride="false"
           data-interval="false">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
+          <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
               <graph-control-selection [VertigoRawData]="VertigoRawData" [VertigoProcessedData]="VertigoProcessedData"></graph-control-selection>
             </div>
             <div #mapDiv class="carousel-item">

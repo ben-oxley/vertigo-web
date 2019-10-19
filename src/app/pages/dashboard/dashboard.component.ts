@@ -8,6 +8,7 @@ import { RawData } from 'src/app/processing/processes/rawdata';
 @Component({
   selector: 'ngx-dashboard',
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
   @Input() Progress = 100.0;
