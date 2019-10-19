@@ -20,6 +20,7 @@ export class BluetoothComponent implements OnInit {
   public deviceName: string = BluetoothComponent.NO_CONNECTION;
   public supported: boolean = false;
   public title: string = "Connected Device";
+  private useNotifications: boolean = true;
   private static serviceID: string = 'd7a7fc0a-b32e-4bda-933f-49cbd9cfe2dc';
   //Altitude & Heading Reference System (“AHRS”)
   private static imuQuaternionCharacteristicID: string = '45ae0807-2233-4026-b264-045a933fa973';
@@ -68,7 +69,7 @@ export class BluetoothComponent implements OnInit {
     () => this.rotz,
   ]
 
-  public constructor() {
+  public constructor(private zone: NgZone) {
   }
 
   public async reconnect(component: BluetoothComponent) {
@@ -170,22 +171,30 @@ export class BluetoothComponent implements OnInit {
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
     component.alt = (event.getInt32(8, true) / 1e7);
-    component.fix = component.lookupGPSFix(event.getUint8(12));
-    component.flags = component.lookupGPSvalidity(event.getUint8(13));
+    component.fix = BluetoothComponent.lookupGPSFix(event.getUint8(12));
+    component.flags = BluetoothComponent.lookupGPSvalidity(event.getUint8(13));
   }
 
   private handleState(component: BluetoothComponent, event: DataView) {
-    component.versionNumber = String.fromCharCode(event.getInt8(0)) +
+    if (event.byteLength === 11) {
+      component.versionNumber = String.fromCharCode(event.getInt8(0)) +
       String.fromCharCode(event.getInt8(1)) +
       String.fromCharCode(event.getInt8(2)) +
       String.fromCharCode(event.getInt8(3)) +
       String.fromCharCode(event.getInt8(4)) +
       String.fromCharCode(event.getInt8(5)) +
       String.fromCharCode(event.getInt8(6));
-    component.loggerState = component.lookupLoggerState(event.getInt8(7));
-    component.imuState = component.lookupIMUState(event.getInt8(8));
-    component.gpsState = component.lookupGPSState(event.getInt8(9));
-    component.atmosphericState = component.lookupAtmosphericState(event.getInt8(10));
+      component.loggerState = BluetoothComponent.lookupLoggerState(event.getInt8(7));
+      component.imuState = BluetoothComponent.lookupIMUState(event.getInt8(8));
+      component.gpsState = BluetoothComponent.lookupGPSState(event.getInt8(9));
+      component.atmosphericState = BluetoothComponent.lookupAtmosphericState(event.getInt8(10));
+    } else {
+      component.loggerState = BluetoothComponent.lookupLoggerState(event.getInt8(0));
+      component.imuState = BluetoothComponent.lookupIMUState(event.getInt8(1));
+      component.gpsState = BluetoothComponent.lookupGPSState(event.getInt8(2));
+      component.atmosphericState = BluetoothComponent.lookupAtmosphericState(event.getInt8(3));
+    }
+    
   }
 
   public startLogging() {
@@ -199,7 +208,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupLoggerState(byte): string {
+  public static lookupLoggerState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "No SD card present";
@@ -212,7 +221,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSFix(byte): string {
+  public static lookupGPSFix(byte): string {
     switch (byte) {
       case 0: return "No Fix";
       case 2: return "2D Fix";
@@ -220,7 +229,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSvalidity(byte): string {
+  public static lookupGPSvalidity(byte): string {
     switch (0x4 & byte) {
       case 0x00: return "No valid time information";
       case 0x01: return "Valid date";
@@ -241,7 +250,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupIMUState(byte): string {
+  public static lookupIMUState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
@@ -251,7 +260,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupGPSState(byte): string {
+  public static lookupGPSState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
@@ -261,7 +270,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private lookupAtmosphericState(byte): string {
+  public static lookupAtmosphericState(byte): string {
     switch (byte) {
       case 0x00: return "Unconfigured";
       case 0x01: return "Initialisation failed";
@@ -288,14 +297,25 @@ export class BluetoothComponent implements OnInit {
   private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) {
     try {
       if (this.device.gatt.connected) {
+        if (this.useNotifications){
+          const controller: BluetoothComponent = this;
+          charateristic.oncharacteristicvaluechanged = (e) => {
+            if (this.pause) { return; }
+            const evt: any = e.target;
+            const data: DataView = evt.value;
+            controller.zone.run(() => handler(controller, data));
+          };
+          charateristic.startNotifications();
+          return;
+        }
         this.connected = true;
         if (this.pause) {
           timer(1000).subscribe(() => this.pollforUpdates(charateristic, handler, delay));
           return;
-        };
+        }
         charateristic.readValue()
           .then((v) => {
-            handler(this, v)
+            handler(this, v);
           }).then(() => timer(delay).subscribe(() => this.pollforUpdates(charateristic, handler, delay)))
           .catch(error => {
             console.log(error);
