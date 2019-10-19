@@ -4,12 +4,10 @@
       <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
         (loadingProgress)="loading($event)"></loader>
       <div class="row align-items-center no-gutters">
-        <div class="col-1">
-          <a href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </div>
+        <a href="#carouselExampleControls" role="button" data-slide="prev" class="col-1 btn btn-primary" >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
         <div id="carouselExampleControls" class="carousel col-10" data-wrap="true" data-ride="false"
           data-interval="false">
           <div class="carousel-inner">

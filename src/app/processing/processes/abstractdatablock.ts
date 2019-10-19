@@ -1,9 +1,9 @@
-import { DataBlock } from "../datablock";
-import { Data } from "../data";
-import { DataListener } from "../listener";
+import { DataBlock } from '../datablock';
+import { Data } from '../data';
+import { DataListener } from '../listener';
 
-export abstract class AbstractDataBlock implements DataBlock{
-    
+export abstract class AbstractDataBlock implements DataBlock {
+
     protected data: Data[] = [];
     protected headers: string[] = [];
     private listeners: DataListener[] = [];
@@ -11,17 +11,17 @@ export abstract class AbstractDataBlock implements DataBlock{
     Headers(): string[] {
         return this.headers;
     }
-    
+
     Data(): Data[] {
         return this.data;
-    }    
-    
+    }
+
     AddListener(listener: DataListener) {
         this.listeners.push(listener);
     }
 
-    protected notifyListeners(added: Data[], removed: Data[]){
-        this.listeners.forEach(l => l.DataChanged(added, removed))
+    protected notifyListeners(added: Data[], removed: Data[]) {
+        this.listeners.forEach(l => l(added, removed));
     }
 
     abstract Load(data: Data);

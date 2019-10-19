@@ -1,8 +1,3 @@
-import {Data} from './data'
+import {Data} from './data';
 
-export interface DataListener{
-    /**
-     * DataChanged
-     */
-    DataChanged(added:Data[],remove:Data[]);
-}
+export type DataListener = (added: Data[], remove: Data[]) => void;

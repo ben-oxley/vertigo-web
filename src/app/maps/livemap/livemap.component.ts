@@ -7,6 +7,7 @@ import { RawData } from 'src/app/processing/processes/rawdata';
 import { Dataspec } from '../../processing/dataspec';
 import { DataType } from 'src/app/processing/datatype';
 import { Column } from 'src/app/processing/column';
+import { DataListener } from 'src/app/processing/listener';
 
 
 @Component({
@@ -20,17 +21,22 @@ export class LivemapComponent implements OnInit, OnChanges {
 
   constructor() { }
   private static dataSpec: Dataspec = new Dataspec();
-  private latlngs: [number, number][] = [
-      [45.51, -122.68],
-      [37.77, -122.43],
-      [34.04, -118.2]
-  ];
+
+  private markerIcon: L.Icon = L.icon({
+    iconSize:     [32, 32], // size of the icon
+    shadowSize:   [32, 25], // size of the shadow
+    iconAnchor:   [16, 32], // point of the icon which will correspond to marker's location
+    shadowAnchor: [13, 25],  // the same for the shadow
+    iconUrl: 'assets/map/map-marker.png',
+    shadowUrl: 'assets/map/marker-shadow.png'
+  });
   @Input() lat = 0;
   @Input() lon = 0;
   public options = {
     layers: [
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '...' }),
-      L.polyline(this.latlngs),
+      L.polyline([[]]),
+      L.marker([0, 0], { icon: this.markerIcon })
     ],
     zoom: 5,
     center: L.latLng({ lat: this.lat, lng: this.lon }),
@@ -48,7 +54,7 @@ export class LivemapComponent implements OnInit, OnChanges {
       })
     }
   };
-  public layers = [];
+  public layers = this.options.layers;
   private vertigoRawData: VertigoRawData;
   private map: L.Map;
 
@@ -57,13 +63,23 @@ export class LivemapComponent implements OnInit, OnChanges {
     const gpsSpecId = LivemapComponent.dataSpec.Types.find(s => s.Id === "gps");
     const latId: Column = gpsSpecId.Columns.find(c => c.Id === "lat");
     const lonId: Column = gpsSpecId.Columns.find(c => c.Id === "lon");
-    if (this.vertigoRawData){
-      const data: Data[] = RawData.Cast(this.vertigoRawData.DataTypes.get(gpsSpecId.Identifier)).Data();
+    if (this.vertigoRawData) {
+      const rawData: RawData = this.vertigoRawData.DataTypes.get(gpsSpecId.Identifier);
+      rawData.AddListener((a,r)=>{
+          a.forEach(dp=>{
+            const polyLine: L.Polyline = this.layers[1] as L.Polyline;
+            polyLine.addLatLng([+dp.Data[latId.Identifier], +dp.Data[lonId.Identifier]]);
+          });
+      });
+      const data: Data[] = rawData.Data();
       const t0 = data[0].Data[0];
       const latlngs: [number, number][] = data.map(datum => [+datum.Data[latId.Identifier], +datum.Data[lonId.Identifier]]);
       const path: L.Polyline = L.polyline(latlngs);
-      this.layers.push(path);
+      this.layers[1] = path;
       this.map.fitBounds(path.getBounds());
+      this.lat = latlngs[latlngs.length - 1][0];
+      this.lon = latlngs[latlngs.length - 1][1];
+      this.layers[2] = L.marker(latlngs[latlngs.length - 1], { icon: this.markerIcon });
     }
   }
 
@@ -75,14 +91,9 @@ export class LivemapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.lat && this.lon) {
-      this.options.center = L.latLng({ lat: this.lat, lng: this.lon })
-      const markerIcon = L.icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'assets/img/markers/marker-icon.png',
-        shadowUrl: 'assets/img/markers/marker-shadow.png'
-      });
-      this.layers[0] = L.marker([this.lat, this.lon], { icon: markerIcon });
+      this.options.center = L.latLng({ lat: this.lat, lng: this.lon });
+      
+      this.layers[2] = L.marker([this.lat, this.lon], { icon: this.markerIcon });
     }
   }
 
