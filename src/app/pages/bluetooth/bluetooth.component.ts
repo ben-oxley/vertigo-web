@@ -229,7 +229,7 @@ export class BluetoothComponent implements OnInit {
   }
 
   private handleMagnetometer(component: BluetoothComponent, event: DataView) {
-    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id = "imu").Identifier);
+    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "imu").Identifier);
     component.accx = (event.getInt16(0, true) / 1e3) * 9.81;
     component.accy = (event.getInt16(2, true) / 1e3) * 9.81;
     component.accz = (event.getInt16(4, true) / 1e3) * 9.81;
@@ -257,7 +257,7 @@ export class BluetoothComponent implements OnInit {
   }
 
   private handleGPS(component: BluetoothComponent, event: DataView) {
-    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id = "gps").Identifier);
+    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "gps").Identifier);
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
     component.alt = (event.getInt32(8, true) / 1e7);

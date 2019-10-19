@@ -46,7 +46,9 @@ export class GraphControlComponent {
                 x: data.map(datum => (datum.Data[0] - t0) / 1000.0),
                 y: data.map(datum => datum.Data[c.Identifier]),
                 name: c.Name,
-                yaxis: c.Id
+                yaxis: c.Id,
+                typeid: dt.Identifier,
+                colid: c.Id,
               } as any;
             });
           }
@@ -65,6 +67,20 @@ export class GraphControlComponent {
 
   public onLoaded(event: VertigoRawData) {
     this.vertigoRawData = event;
+    this.vertigoRawData.DataTypes.forEach((dt,key)=>{
+      dt.AddListener((a,r)=>{
+        const type = this.selectedSeries.find(s=>s.Identifier===key);
+        if (type){
+          type.Columns.forEach(col=>{
+            let series = this.GraphData.find(series=>series.typeid === key);
+            const t0 = series.x[0]*1000.0;
+            series.x.push(a.map(datum => (datum.Data[0] - t0) / 1000.0));
+            series.y.push(a.map(datum => datum.Data[col.Identifier]));
+          });
+        }
+      });
+    });
+
     if (this.flatMap(this.selectedSeries, dt => dt.Columns).length === 0) {
       const spec: Dataspec = new Dataspec();
       spec.Types[1].Columns = spec.Types[1].Columns.slice(0, 3);
