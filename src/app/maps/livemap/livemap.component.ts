@@ -1,6 +1,12 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
 import 'style-loader!leaflet/dist/leaflet.css';
+import { VertigoRawData } from 'src/app/processing/vertigo-data';
+import { Data } from 'src/app/processing/data';
+import { RawData } from 'src/app/processing/processes/rawdata';
+import { Dataspec } from '../../processing/dataspec';
+import { DataType } from 'src/app/processing/datatype';
+import { Column } from 'src/app/processing/column';
 
 
 @Component({
@@ -10,21 +16,25 @@ import 'style-loader!leaflet/dist/leaflet.css';
 })
 export class LivemapComponent implements OnInit, OnChanges {
 
+  
 
+  constructor() { }
+  private static dataSpec: Dataspec = new Dataspec();
+  private latlngs: [number, number][] = [
+      [45.51, -122.68],
+      [37.77, -122.43],
+      [34.04, -118.2]
+  ];
   @Input() lat = 0;
   @Input() lon = 0;
-  private map:L.Map;
   public options = {
     layers: [
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '...' }),
+      L.polyline(this.latlngs),
     ],
     zoom: 5,
     center: L.latLng({ lat: this.lat, lng: this.lon }),
   };
-
-  public layers = [];
-
-
   public layersControl = {
     baseLayers: {
       'Open Street Map': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
@@ -38,8 +48,26 @@ export class LivemapComponent implements OnInit, OnChanges {
       })
     }
   };
+  public layers = [];
+  private vertigoRawData: VertigoRawData;
+  private map: L.Map;
 
-  reload(){
+  @Input() set RawData(vertigoRawData: VertigoRawData) {
+    this.vertigoRawData = vertigoRawData;
+    const gpsSpecId = LivemapComponent.dataSpec.Types.find(s => s.Id === "gps");
+    const latId: Column = gpsSpecId.Columns.find(c => c.Id === "lat");
+    const lonId: Column = gpsSpecId.Columns.find(c => c.Id === "lon");
+    if (this.vertigoRawData){
+      const data: Data[] = RawData.Cast(this.vertigoRawData.DataTypes.get(gpsSpecId.Identifier)).Data();
+      const t0 = data[0].Data[0];
+      const latlngs: [number, number][] = data.map(datum => [+datum.Data[latId.Identifier], +datum.Data[lonId.Identifier]]);
+      const path: L.Polyline = L.polyline(latlngs);
+      this.layers.push(path);
+      this.map.fitBounds(path.getBounds());
+    }
+  }
+
+  reload() {
     setTimeout(() => {
       this.map.invalidateSize();
     }, 0);
@@ -57,8 +85,6 @@ export class LivemapComponent implements OnInit, OnChanges {
       this.layers[0] = L.marker([this.lat, this.lon], { icon: markerIcon });
     }
   }
-
-  constructor() { }
 
   ngOnInit() {
 
