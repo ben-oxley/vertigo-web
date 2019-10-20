@@ -8,6 +8,8 @@ import { VertigoRawData } from "src/app/processing/vertigo-data";
 import { Dataspec } from 'src/app/processing/dataspec';
 import { RawData } from 'src/app/processing/processes/rawdata';
 import { Data } from 'src/app/processing/data';
+import { Quat2EulData } from 'src/app/processing/processes/quat2euldata';
+
 
 
 @Component({
@@ -267,7 +269,8 @@ export class BluetoothComponent implements OnInit {
       component.accz,
       component.rotx,
       component.roty,
-      component.rotz
+      component.rotz,
+      0, 0, 0, 0, 0, 0
     ]));
   }
 
@@ -284,10 +287,14 @@ export class BluetoothComponent implements OnInit {
   }
 
   private handleIMU(component: BluetoothComponent, event: DataView) {
+    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "ahrs").Identifier);
     component.q0 = (event.getFloat32(0, true));
     component.q1 = (event.getFloat32(4, true));
     component.q2 = (event.getFloat32(8, true));
     component.q3 = (event.getFloat32(12, true));
+    let arr: number[] = [component.q0, component.q1, component.q2, component.q3];
+    const rpy: number[] = Quat2EulData.toEuler(arr);
+    dataArray.Load(new Data([Date.now(), 0, component.q0, component.q1, component.q2, component.q3, rpy[0], rpy[1], rpy[2]]));
   }
 
   private handleGPS(component: BluetoothComponent, event: DataView) {

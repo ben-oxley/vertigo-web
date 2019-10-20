@@ -1,1 +1,15 @@
-<p>processor works!</p>
+<div class="dropdown w-100">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" size="5"
+            (change)="selectionChanged($event.target.selectedOptions)">
+            <option value="time" selected>Time (Seconds)</option>
+            <optgroup *ngFor="let type of Dataspec.Types" label="{{type.Name}}">
+                <option *ngFor="let column of type.Columns" value="{{type.Id}},{{column.Id}}">{{column.Name}}
+                </option>
+            </optgroup>
+        </select>
+    </div>
+</div>

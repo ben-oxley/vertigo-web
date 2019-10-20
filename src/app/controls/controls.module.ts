@@ -4,6 +4,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { TrimSliderComponent } from './trim-slider/trim-slider.component';
 import { PlotlyModule } from 'angular-plotly.js';
 import { ProcessorComponent } from './processor/processor.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -11,10 +12,12 @@ import { ProcessorComponent } from './processor/processor.component';
   declarations: [LoaderComponent, TrimSliderComponent, ProcessorComponent],
   imports: [
     CommonModule,
-    PlotlyModule
+    PlotlyModule,
+    FormsModule
   ],
   exports: [
-    LoaderComponent
+    LoaderComponent,
+    ProcessorComponent
   ]
 })
 export class ControlsModule { }
