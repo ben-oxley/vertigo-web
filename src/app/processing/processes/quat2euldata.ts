@@ -1,4 +1,4 @@
-import { AbstractDataBlock } from './abstractdatablock'
+import { AbstractDataBlock } from './abstractdatablock';
 import { Data } from '../data';
 
 export class Quat2EulData extends AbstractDataBlock {
@@ -87,6 +87,29 @@ export class Quat2EulData extends AbstractDataBlock {
         output.push(q[0] * r[2] + r[0] * q[2] + q[3] * r[1] - q[1] * r[3]);
         output.push(q[0] * r[3] + r[0] * q[3] + q[1] * r[2] - q[2] * r[1]);
         return output;
+    }
+
+    private toEuler(q: Array<number>): Array<number> {
+        const t0 = -2 * (q[2] * q[2] + q[3] * q[3]) + 1;
+        const t1 = 2 * (q[1] * q[2] - q[0] * q[3]);
+        let t2 = -2 * (q[1] * q[3] + q[0] * q[2]);
+        const t3 = 2 * (q[2] * q[3] - q[0] * q[1]);
+        const t4 = -2 * (q[1] * q[1] + q[2] * q[2]) + 1;
+        if (t2 > 1) {
+            t2 = 1;
+        }
+
+        if (t2 < -1) {
+            t2 = -1;
+        }
+
+        let pitch = Math.asin(t2) * 2;
+        let roll = Math.atan2(t3, t4);
+        let yaw = Math.atan2(t1, t0);
+        pitch = pitch * (180.0 / Math.PI);
+        roll = roll * (180.0 / Math.PI);
+        yaw = yaw * (180.0 / Math.PI);
+        return [pitch, roll, yaw];
     }
 
 }
