@@ -32,7 +32,7 @@
                     {"identifier":10,"id":"waz","name":"world frame az","units":"g"},
                     {"identifier":11,"id":"wrx","name":"world frame rx","units":"deg/s"},
                     {"identifier":12,"id":"wry","name":"world frame ry","units":"deg/s"},
-                    {"identifier":14,"id":"wrz","name":"world frame rz","units":"deg/s"}
+                    {"identifier":13,"id":"wrz","name":"world frame rz","units":"deg/s"}
                 ]
             },
             {
