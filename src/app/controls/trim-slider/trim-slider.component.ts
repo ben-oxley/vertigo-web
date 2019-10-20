@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, Output, SimpleChanges, OnChanges, EventEmitter } from '@angular/core';
-import { VertigoRawData } from 'src/app/processing/vertigo-data';
+import { VertigoRawData } from "src/app/processing/vertigo-data";
 import { Dataspec } from 'src/app/processing/dataspec';
 import { DataType } from 'src/app/processing/datatype';
 import { Data } from 'src/app/processing/data';

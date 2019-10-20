@@ -13,7 +13,7 @@ export interface VertigoDataStore {
 
     Load(type: DataType, data: DataBlock);
 
-    Get(type: DataType):DataBlock;
+    Get(type: DataType): DataBlock;
 
     Clear(dataType: DataType);
 

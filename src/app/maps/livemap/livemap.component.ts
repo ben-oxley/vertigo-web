@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
 import 'style-loader!leaflet/dist/leaflet.css';
-import { VertigoRawData } from 'src/app/processing/vertigo-data';
+import { VertigoRawData } from "src/app/processing/vertigo-data";
 import { Data } from 'src/app/processing/data';
 import { RawData } from 'src/app/processing/processes/rawdata';
 import { Dataspec } from '../../processing/dataspec';

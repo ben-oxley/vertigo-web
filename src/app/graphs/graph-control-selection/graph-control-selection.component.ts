@@ -1,5 +1,6 @@
 import { Component, SimpleChanges, Input } from '@angular/core';
-import { VertigoRawData, VertigoProcessedData } from '../../processing/vertigo-data';
+import { VertigoProcessedData } from '../../processing/vertigo-data';
+import { VertigoRawData } from "../../processing/vertigo-data";
 import { DataType } from '../../processing/datatype';
 import { Data } from '../../processing/data';
 import { Dataspec } from '../../processing/dataspec';

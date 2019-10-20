@@ -4,7 +4,7 @@ import { ElementRef, Renderer2 } from '@angular/core';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { timer } from 'rxjs';
 import { LivemapComponent } from '../../maps/livemap/livemap.component';
-import { VertigoRawData } from 'src/app/processing/vertigo-data';
+import { VertigoRawData } from "src/app/processing/vertigo-data";
 import { Dataspec } from 'src/app/processing/dataspec';
 import { RawData } from 'src/app/processing/processes/rawdata';
 import { Data } from 'src/app/processing/data';
@@ -22,6 +22,9 @@ export class BluetoothComponent implements OnInit {
   }
 
   private static NO_CONNECTION = 'No device connected, click the bluetooth button to connect!';
+  private static harwareInfoServiceId = '0000180a-0000-1000-8000-00805f9b34fb';
+  private static serialNumberCharateristicID = '00002a25-0000-1000-8000-00805f9b34fb';
+  private static firwareRevisionCharateristicID = '00002a26-0000-1000-8000-00805f9b34fb';
   private static serviceID = 'd7a7fc0a-b32e-4bda-933f-49cbd9cfe2dc';
   // Altitude & Heading Reference System (“AHRS”)
   private static imuQuaternionCharacteristicID = '45ae0807-2233-4026-b264-045a933fa973';
@@ -46,6 +49,8 @@ export class BluetoothComponent implements OnInit {
   private gpsCharacteristic: BluetoothRemoteGATTCharacteristic;
   private statusCharacteristic: BluetoothRemoteGATTCharacteristic;
   private controlCharacteristic: BluetoothRemoteGATTCharacteristic;
+  private serialNumberCharteristic: BluetoothRemoteGATTCharacteristic;
+  private firmwareVersionCharacteristic: BluetoothRemoteGATTCharacteristic;
   public VertigoRawData: VertigoRawData = new VertigoRawData();
   public accx = 0.0;
   public accy = 0.0;
@@ -64,6 +69,7 @@ export class BluetoothComponent implements OnInit {
   public fix = 'Not detected';
   public flags = 'Not detected';
   public versionNumber = 'Not detected';
+  public serialNumber = 'Not detected';
   public gpsState = 'Not detected';
   public imuState = 'Not detected';
   public atmosphericState = 'Not detected';
@@ -160,11 +166,14 @@ export class BluetoothComponent implements OnInit {
   }
 
   public async tryConnect() {
-    return this.device.gatt.connect().then(server => {
+    return this.device.gatt.connect()
+    .then(server => {
       this.device.addEventListener('gattserverdisconnected', () => this.reconnect(this));
-      return server.getPrimaryService(BluetoothComponent.serviceID);
+      return server.getPrimaryServices();
     })
-      .then(service => {
+      .then(services => {
+        const service: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.serviceID);
+        const deviceService: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.harwareInfoServiceId);
         return Promise.all([
           this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
             .then(charteristic => this.imuQuaternionCharacteristic = charteristic),
@@ -176,6 +185,10 @@ export class BluetoothComponent implements OnInit {
             .then(charteristic => this.controlCharacteristic = charteristic),
           this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
             .then(charteristic => this.statusCharacteristic = charteristic),
+          this.registerToServices(deviceService, BluetoothComponent.firwareRevisionCharateristicID)
+            .then(charteristic => this.firmwareVersionCharacteristic = charteristic),
+          // this.registerToServices(deviceService, BluetoothComponent.serialNumberCharateristicID)
+          //   .then(charteristic => this.serialNumberCharteristic = charteristic)
         ]);
       })
       .then(() => {
@@ -185,6 +198,8 @@ export class BluetoothComponent implements OnInit {
         this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1000);
         this.pollforUpdates(this.statusCharacteristic, this.handleState, 1000);
         this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
+        //this.readOnce(this.serialNumberCharteristic, this.handleSerial);
+        this.readOnce(this.firmwareVersionCharacteristic, this.handleVersion);
       })
       .catch(error => {
         console.log(error);
@@ -207,13 +222,15 @@ export class BluetoothComponent implements OnInit {
       const options: RequestDeviceOptions = {
         acceptAllDevices: true,
         optionalServices: [
-          BluetoothComponent.serviceID
+          BluetoothComponent.serviceID,
+          BluetoothComponent.harwareInfoServiceId
         ]
       };
       try {
         console.log('Requesting Bluetooth Device...');
         console.log('with ' + JSON.stringify(options));
         const device: BluetoothDevice = await navigator.bluetooth.requestDevice(options);
+        this.serialNumber = device.name;
         console.log('> Name:             ' + device.name);
         console.log('> Id:               ' + device.id);
         console.log('> Connected:        ' + device.gatt.connected);
@@ -247,6 +264,18 @@ export class BluetoothComponent implements OnInit {
       component.roty,
       component.rotz
     ]));
+  }
+
+  private handleVersion(component: BluetoothComponent, event: DataView) {
+    component.versionNumber = component.uintToString(event.buffer);
+  }
+
+  private handleSerial(component: BluetoothComponent, event: DataView) {
+    component.serialNumber = component.uintToString(event.buffer);
+  }
+
+  private uintToString(uintArray: ArrayBuffer): string {
+      return String.fromCharCode.apply(null, new Uint8Array(uintArray));
   }
 
   private handleIMU(component: BluetoothComponent, event: DataView) {
@@ -312,6 +341,26 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
+  private readOnce(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function) {
+    try {
+      if (this.device.gatt.connected) {
+        charateristic.readValue()
+          .then((v) => {
+            handler(this, v);
+          })
+          .catch(error => {
+            console.log(error);
+            this.handleBluetoothError();
+          });
+      } else {
+        this.handleBluetoothError();
+      }
+    } catch (error) {
+      console.log('Argh! ' + error);
+      this.handleBluetoothError();
+    }
+  }
+
   private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) {
     try {
       if (this.device.gatt.connected) {
@@ -360,7 +409,9 @@ export class BluetoothComponent implements OnInit {
   }
 
   public async registerToServices(service: BluetoothRemoteGATTService, charteristicID: string): Promise<BluetoothRemoteGATTCharacteristic> {
-    return service.getCharacteristic(charteristicID);
+    return service.getCharacteristic(charteristicID).catch(e=> {
+      throw new Error("Cannot get charateristic "+charteristicID);
+    });
   }
 
   ngOnInit(): void {

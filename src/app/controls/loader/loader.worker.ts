@@ -1,6 +1,6 @@
 import { ParseResult, parse } from 'papaparse';
 import { Data } from 'src/app/processing/data';
-import { VertigoRawData } from 'src/app/processing/vertigo-data';
+import { VertigoRawData } from "src/app/processing/vertigo-data";
 import { RawData } from 'src/app/processing/processes/rawdata';
 import * as vertigospec from '../../processing/vertigo-spec.json';
 
