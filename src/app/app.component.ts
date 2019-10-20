@@ -1,9 +1,4 @@
-import { Component, SimpleChanges, Input } from '@angular/core';
-import { VertigoRawData, VertigoProcessedData } from './processing/vertigo-data';
-import { DataType } from './processing/datatype';
-import { Data } from './processing/data';
-import { Dataspec } from './processing/dataspec';
-import { RawData } from './processing/processes/rawdata';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +7,4 @@ import { RawData } from './processing/processes/rawdata';
 })
 export class AppComponent {
   title = 'vertigo-web';
-  
 }

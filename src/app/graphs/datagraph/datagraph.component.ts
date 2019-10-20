@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, Output, SimpleChanges, OnChanges 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Data } from '../../processing/data';
+import { PlotlyModule } from 'angular-plotly.js';
 
 @Component({
   selector: 'data-graph',
@@ -11,6 +12,8 @@ import { Data } from '../../processing/data';
 export class DataGraphComponent implements OnChanges {
 
   @Input() InputData: any = [];
+
+  private graph:PlotlyModule
 
   private configOptions: any = {
     type: 'scattergl',
