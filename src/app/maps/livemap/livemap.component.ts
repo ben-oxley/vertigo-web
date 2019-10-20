@@ -86,7 +86,7 @@ export class LivemapComponent implements OnInit, OnChanges {
     }
   }
 
-  reload() {
+  public reload() {
     setTimeout(() => {
       this.map.invalidateSize();
     }, 0);
