@@ -22,9 +22,14 @@ export class BluetoothComponent implements OnInit {
   }
 
   private static NO_CONNECTION = 'No device connected, click the bluetooth button to connect!';
+  //Device information service
   private static harwareInfoServiceId = '0000180a-0000-1000-8000-00805f9b34fb';
-  private static serialNumberCharateristicID = '00002a25-0000-1000-8000-00805f9b34fb';
+  //Can't use this charateristic as it is on the gatt blocklist
+  //https://github.com/WebBluetoothCG/registries/blob/master/gatt_blocklist.txt
+  //private static serialNumberCharateristicID = '00002a25-0000-1000-8000-00805f9b34fb';
+  //Firmware version 
   private static firwareRevisionCharateristicID = '00002a26-0000-1000-8000-00805f9b34fb';
+  //IMU information service
   private static serviceID = 'd7a7fc0a-b32e-4bda-933f-49cbd9cfe2dc';
   // Altitude & Heading Reference System (“AHRS”)
   private static imuQuaternionCharacteristicID = '45ae0807-2233-4026-b264-045a933fa973';
