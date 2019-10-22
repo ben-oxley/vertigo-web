@@ -43,10 +43,13 @@ export class GraphControlComponent {
           if (data && data.length > 0) {
             return dt.Columns.map(c => {
               const t0 = data[0].Data[0];
+              const d: Date = new Date(0); // The 0 there is the key, which sets the date to the epoch
+              d.setUTCSeconds(t0/1000.0);
+              const isDate = d < new Date(Date.now()) && d > new Date(0) 
               return {
-                x: data.map(datum => (datum.Data[0] - t0) / 1000.0),
+                x: data.map(datum =>isDate? new Date(datum.Data[0]).toISOString(): (datum.Data[0] - t0) / 1000.0),
                 y: data.map(datum => datum.Data[c.Identifier]),
-                name: c.Name,
+                name: c.Name +' ('+c.Units+')',
                 yaxis: c.Id,
                 typeid: dt.Identifier,
                 colid: c.Id,

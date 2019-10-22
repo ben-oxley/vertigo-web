@@ -43,6 +43,8 @@ export class DataGraphComponent implements OnChanges {
     paper_bgcolor: '#FFF3',
     font: { color: '#afafaf' },
     hovermode: false,
+    showlegend: true,
+    legend: {"orientation": "h"},
     margin: {
       l: 50,
       r: 10,
@@ -50,7 +52,30 @@ export class DataGraphComponent implements OnChanges {
       t: 0,
       pad: 4
     },
+    xaxis: {
+      title: {
+        text: 'Time',
+      },
+    },
+    yaxis: {
+      title: {
+        text: ''
+      }
+    }
   };
+  public config:any={
+    linkText: 'Edit graph',
+    showLink: true,
+    responsive: true
+  }
+
+  @Input() setXAxis(label:String){
+    this.layout.xaxis.title.text = label;
+  }
+
+  @Input() setYAxis(label:String){
+    this.layout.yaxis.title.text = label;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     let i = 0;

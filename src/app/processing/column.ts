@@ -10,7 +10,7 @@ export class Column{
         this.RawType = type;
         this.Id = type.id;
         this.Name = type.name;
-        this.Units = type.Units;
+        this.Units = type.units;
         this.Identifier = type.identifier;
     }
 }
