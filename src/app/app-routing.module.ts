@@ -1,57 +1,25 @@
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import {
-  NbAuthComponent,
-  NbLoginComponent,
-  NbLogoutComponent,
-  NbRegisterComponent,
-  NbRequestPasswordComponent,
-  NbResetPasswordComponent,
-} from '@nebular/auth';
+import { Routes, RouterModule } from '@angular/router';
+import { BluetoothComponent } from './pages/bluetooth/bluetooth.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { VelocitytimeComponent } from './pages/velocitytime/velocitytime.component';
+import { PendulumComponent } from './pages/pendulum/pendulum.component';
+import { CircularmotionComponent } from './pages/circularmotion/circularmotion.component';
+import { TrampolineComponent } from './pages/trampoline/trampoline.component';
+
 
 const routes: Routes = [
-  { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
-  {
-    path: 'auth',
-    component: NbAuthComponent,
-    children: [
-      {
-        path: '',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'login',
-        component: NbLoginComponent,
-      },
-      {
-        path: 'register',
-        component: NbRegisterComponent,
-      },
-      {
-        path: 'logout',
-        component: NbLogoutComponent,
-      },
-      {
-        path: 'request-password',
-        component: NbRequestPasswordComponent,
-      },
-      {
-        path: 'reset-password',
-        component: NbResetPasswordComponent,
-      },
-    ],
-  },
-  { path: '', redirectTo: 'pages', pathMatch: 'full' },
-  { path: '**', redirectTo: 'pages' },
+  { path: 'bluetooth', component: BluetoothComponent},
+  { path: '' , component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent},
+  { path: 'velocity-time', component: VelocitytimeComponent},
+  { path: 'pendulum', component: PendulumComponent},
+  { path: 'circularmotion', component: CircularmotionComponent},
+  { path: 'trampoline', component: TrampolineComponent}
 ];
 
-const config: ExtraOptions = {
-  useHash: true,
-};
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes, config)],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes,{useHash:true})],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }

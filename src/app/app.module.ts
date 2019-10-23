@@ -1,41 +1,50 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
-import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { CoreModule } from './@core/core.module';
 
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ThemeModule } from './@theme/theme.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MapsModule } from './maps/maps.module';
+import { GraphsModule } from './graphs/graphs.module';
 import { ControlsModule } from './controls/controls.module';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { PlotlyModule } from 'angular-plotly.js';
+import { PagesModule } from './pages/pages.module';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule, FaIconLibrary, FaConfig } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
+    CommonModule,
     AppRoutingModule,
-    ControlsModule,
-
-    NgbModule.forRoot(),
-    ThemeModule.forRoot(),
-    CoreModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    BrowserAnimationsModule,
+    ControlsModule,
+    GraphsModule,
+    PlotlyModule,
+    MapsModule,
+    PagesModule,
+    FontAwesomeModule
   ],
-  bootstrap: [AppComponent],
-  providers: [
-    { provide: APP_BASE_HREF, useValue: '/' },
-  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
-}
+  constructor(library: FaIconLibrary, faConfig: FaConfig) {
+    // Add an icon to the library for convenient access in other components
+    library.addIconPacks(fas, fab, far);
+    faConfig.defaultPrefix = 'far';
+  }
+ }
+

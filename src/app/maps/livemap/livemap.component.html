@@ -1,1 +1,2 @@
-<div leaflet [leafletOptions]="options" [leafletLayers]="layers" [leafletLayersControl]="layersControl" style="height: 100%; min-height: 200px;"></div>
+<div leaflet [leafletOptions]="options" [leafletLayers]="layers" [leafletLayersControl]="layersControl" style="min-height: 400px; height: 100%;" (leafletMapReady)="onMapReady($event)" ></div>
+<button (click)="reload()" type="button" class="btn btn-dark w-100">Refresh Map</button>

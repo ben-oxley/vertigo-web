@@ -1,8 +1,7 @@
 import { Component, OnInit, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
-import { Dataspec } from '../../@processing/dataspec';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Column } from '../../@processing/column';
-import { DataType } from '../../@processing/datatype';
+import { Dataspec } from '../../processing/dataspec';
+import { Column } from '../../processing/column';
+import { DataType } from '../../processing/datatype';
 
 
 

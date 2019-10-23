@@ -1,0 +1,77 @@
+<h1 id="circular-motion-1"><a name="Circular"></a>Circular Motion</h1>
+<p>The aim of this lesson is to support pupil understanding of circular motion and in particular centripetal force.
+Data should be taken outside, although there are options for lab-based experiments. Best outcomes are achieved when a constant radius, uniform speed circle is followed. This may be achieved by a pupil running, a pupil on a bicycle or other suitable vehicle.</p>
+<p>The beginner section looks at the speed and velocity of the vertigo unit as it travels in a circle. The data presented in Distance/ time and a s a quiver plot.</p>
+<p>The intermediate section looks at the same data but introduces the concept of acceleration.</p>
+<p>The advanced section investigates the angle between the acceleration and the Velocity.</p>
+<h2 id="beginner-2"><a name="BeginnerC"></a>Beginner</h2>
+<h2 id="set-up-1">Set-up</h2>
+<p>Suitably attached the Vertigo unit to the person or object that will be travelling in a circle. If possible, vertigo should be placed away from metal parts and be positioned such that its movement is as smooth as practically possible. (The metal may have some ferromagnetism that would affect vertigo’s the onboard magnetometer and any additional oscillatory motion would make pupil analysis more challenging)</p>
+<ul>
+<li>
+<p>Turn Vertigo on and wait for the second LED to stop flashing – Vertigo has a GPS signal.</p>
+</li>
+<li>
+<p>Press the log button and ask the operator to perform circular motion for around 1 minute.
+Stop Vertigo’s logging.</p>
+</li>
+</ul>
+<h2 id="analysis-1">Analysis</h2>
+<ul>
+<li>
+<p>Remove the sd card from Vertigo and place it into a suitable sd card reader</p>
+</li>
+<li>
+<p>Open the programme matlab</p>
+</li>
+<li>
+<p>The following files must be downloaded into a single folder <a href="/vertigo-instructions/Circle_link_files.zip">Circle_link_files</a></p>
+</li>
+<li>
+<p>In matlab, click the ‘open’ icon located in the top left of the screen, and navigate to the folder that has been downloaded</p>
+</li>
+<li>
+<p>Open the file Circular_lesson1</p>
+</li>
+<li>
+<p>Click run</p>
+</li>
+</ul>
+<p>A graph similar to the one below will appear</p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle1.jpg" alt="" /></p>
+<p>This shows how the angle Vertigo was orientated at changed through time. The most important in this instance is Yaw. It shows the angle Vertigo has moved through, around an imaginary vertical axis heading into the Earth. In this graph, it can be seen that Vertigo was travelling with a fairly constant angular velocity. (Notice that to make the graph easier to fit on a scale -180 degrees is converted into 180 degrees)</p>
+<p>In the graph, Vertigo completes six full rotations – with a little wobble at 35 seconds.
+In order to keep the data as clean as possible for the pupils, it will is easier to look at one or two rotations only.</p>
+<p>The operator will be asked –</p>
+<p>“What time do you wish to start analysis from?”
+And then</p>
+<p>“What time do you wish to end the analysis?”</p>
+<p>For this data one rotation occurs between 8 and 16 seconds, and two rotations take place between 8 and 23 seconds.</p>
+<p>Choosing between 8 and 16 seconds, the following graphs will appear:
+<img src="https://vertigo.engineering/vertigo-instructions/Circle2.jpg" alt="" /></p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle4.jpg" alt="" /></p>
+<p>The latter shows the velocity of Vertigo at various positions as it travels in a circle. The critical point here is that the velocity is at a tangent to the direction.</p>
+<p>The other graphs show how the speed varies. In this example, the data was taken on a slight slope and so the speed varies accordingly. It should be possible to achieve a fairly constant speed and this could be an activity for the pupils.</p>
+<h2 id="intermediate-2"><a name="IntermediateC"></a>Intermediate</h2>
+<p>This activity looks to investigate the centripetal acceleration of an object travelling in a circle.</p>
+<p>The first method is identical to the Beginner exercise with the addition of a quiver plot which shows acceleration at positions around the circle Vertigo travelled in.</p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle5.jpg" alt="" /></p>
+<p>Ideally, this would point inwards. However, if the speed of the circular motion is not kept constant then there will be a component of acceleration in the direction of this increasing or decreasing speed. Depending on the class’s ability, this may be an interesting topic of discussion.</p>
+<p>If a pure, textbook style centripetal acceleration is required, then Vertigo may be fitted to a fix speed turntable. An old record player works well.</p>
+<p>If this is not available, data can be found <a name="DataC"></a><a href="/vertigo-instructions/Circle_data.zip">here</a></p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle6.jpg" alt="" /></p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle7.jpg" alt="" /></p>
+<h2 id="advanced-2"><a name="AdvancedC"></a>Advanced</h2>
+<p>A more in-depth analysis could investigate the angle between the Velocity and Acceleration Vertigo experiences as it travels in a circle.
+This can be found be using the dot product of the two quiver vectors used in the previous lessons.</p>
+<p>It would be expected that the angle between the velocity and acceleration would always be 90 degrees.
+As can be seen, this analysis reveals the angle to oscillate between 65 and 115 degrees.</p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle8.jpg" alt="" /></p>
+<p>The average though is a little over 89.5 degrees – textbook. Why there is such variation could be an interesting area for investigation.</p>
+<p><img src="https://vertigo.engineering/vertigo-instructions/Circle9.jpg" alt="" /></p>
+<p><br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br /></p>

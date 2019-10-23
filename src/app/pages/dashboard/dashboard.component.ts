@@ -1,26 +1,40 @@
-import { Component, SimpleChanges } from '@angular/core';
-import { VertigoRawData } from '../../@processing/vertigo-data';
-import { DataType } from '../../@processing/datatype';
-import { Data } from '../../@processing/data';
-import { Dataspec } from '../../@processing/dataspec';
+import { Component, SimpleChanges, Input } from '@angular/core';
+import { VertigoProcessedData } from '../../processing/vertigo-data';
+import { VertigoRawData } from "../../processing/vertigo-data";
+import { DataType } from '../../processing/datatype';
+import { Data } from '../../processing/data';
+import { Dataspec } from '../../processing/dataspec';
+import { RawData } from 'src/app/processing/processes/rawdata';
 
 @Component({
   selector: 'ngx-dashboard',
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  @Input() Progress = 100.0;
   public VertigoRawData: VertigoRawData;
+  public VertigoProcessedData: VertigoProcessedData;
   public GraphData: any;
-  public ProgressCounter: Number = 1.0;
   public SelectedValues: any = { columns: [] }
+  public accx: number = 0.0;
+  public accy: number = 0.0;
+  public accz: number = 0.0;
+  public acc2: number = 0.0;
+  public rotx: number = 0.0;
+  public roty: number = 0.0;
+  public rotz: number = 0.0;
+  public lon: number = 1.0;
+  public lat: number = 50.0;
+  public alt: number = 0.0;
+  public q0: number = 0.0;
+  public q1: number = 0.0;
+  public q2: number = 0.0;
+  public q3: number = 0.0;
   private SelectedSeries: DataType[] = [];
-
-
 
   public constructor() {
     this.GraphData = [{
-      x: Array.from(Array(100).keys()),
-      y: Array.from(Array(100).keys()).map(a => Math.sin(a))
     }]
   }
 
@@ -31,16 +45,20 @@ export class DashboardComponent {
 
   public seriesChanged(event: DataType[]) {
     this.GraphData = this.flatMap(event, dt => {
-      let data: Data[] = this.VertigoRawData.DataTypes.get(dt.Identifier).Data();
-      return dt.Columns.map(c => {
-        let t0 = data[0].Data[0];
-        return <any>{
-          x: data.map(datum => (datum.Data[0] - t0) / 1000.0),
-          y: data.map(datum => datum.Data[c.Identifier]),
-          name: c.Name,
-          yaxis: c.Id
+      if (this.VertigoRawData.DataTypes && this.VertigoRawData.DataTypes.has(dt.Identifier)) {
+        const data: Data[] = RawData.Cast(this.VertigoRawData.DataTypes.get(dt.Identifier)).Data();
+        if (data && data.length > 0) {
+          return dt.Columns.map(c => {
+            const t0 = data[0].Data[0];
+            return {
+              x: data.map(datum => (datum.Data[0] - t0) / 1000.0),
+              y: data.map(datum => datum.Data[c.Identifier]),
+              name: c.Name,
+              yaxis: c.Id
+            } as any;
+          });
         }
-      });
+      }
     });
     return;
   }
@@ -51,20 +69,32 @@ export class DashboardComponent {
     return concatArray;
   }
 
-  public loading(event: number) {
-   this.ProgressCounter = event;
-  }
 
   public onLoaded(event: VertigoRawData) {
     this.VertigoRawData = event;
-    if (this.flatMap(this.SelectedSeries, dt => dt.Columns).length == 0) {
+    if (this.flatMap(this.SelectedSeries, dt => dt.Columns).length === 0) {
+      const spec: Dataspec = new Dataspec();
+      spec.Types[1].Columns = spec.Types[1].Columns.slice(0, 3);
+      spec.Types = [spec.Types[1]];
+      this.seriesChanged(spec.Types);
+    } else {
+      this.seriesChanged(this.SelectedSeries);
+    }
+  }
+
+  public onProcessedLoaded(event: VertigoProcessedData) {
+    this.VertigoProcessedData = event;
+    if (this.flatMap(this.SelectedSeries, dt => dt.Columns).length === 0) {
       let spec: Dataspec = new Dataspec();
       spec.Types[1].Columns = spec.Types[1].Columns.slice(0, 3);
       spec.Types = [spec.Types[1]];
       this.seriesChanged(spec.Types);
     } else {
-      this.seriesChanged(this.SelectedSeries)
+      this.seriesChanged(this.SelectedSeries);
     }
+  }
 
+  public loading(event: number) {
+    this.Progress = Math.round(event * 100.0);
   }
 }

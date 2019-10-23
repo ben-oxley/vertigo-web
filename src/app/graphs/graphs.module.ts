@@ -1,28 +1,29 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CubismComponent } from './cubism/cubism.component';
 import { DataGraphComponent } from './datagraph/datagraph.component';
 import { PlotlyModule } from 'angular-plotly.js';
 import { SelectorComponent } from './selector/selector.component';
-import {TabsModule} from "ngx-tabs";
-import { ThemeModule } from '../@theme/theme.module';
+import { GraphControlComponent } from './graph-control/graph-control.component';
+import { GraphControlSelectionComponent } from './graph-control-selection/graph-control-selection.component';
 
 @NgModule({
   declarations: [
-    CubismComponent,
     DataGraphComponent,
-    SelectorComponent  
+    SelectorComponent,
+    GraphControlSelectionComponent,
+    GraphControlComponent,
   ],
   imports: [
-    ThemeModule,
     CommonModule,
     PlotlyModule,
-    TabsModule
+    FormsModule
   ],
   exports: [
-    CubismComponent,
     DataGraphComponent,
-    SelectorComponent
+    SelectorComponent,
+    GraphControlSelectionComponent,
+    GraphControlComponent,
   ]
 })
 export class GraphsModule { }
