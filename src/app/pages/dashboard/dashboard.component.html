@@ -4,7 +4,7 @@
       <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
         (loadingProgress)="loading($event)"></loader>
       <div class="row align-items-center no-gutters h-100">
-        <a href="#carouselExampleControls" role="button" data-slide="prev" class="col-1 btn btn-primary h-100 carousel-control-prev-icon" >
+        <a href="#carouselExampleControls" role="button" (click)="map.reload()" data-slide="prev" class="col-1 btn btn-primary h-100 carousel-control-prev-icon" >
           <span class="sr-only">Previous</span>
         </a>
         <div id="carouselExampleControls" class="carousel col-10 h-100" data-wrap="true" data-ride="false"
@@ -15,14 +15,14 @@
             </div>
             <div #mapDiv class="carousel-item">
               <h1>MAP</h1>
-              <live-map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
+              <live-map #map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
             </div>
             <div class="carousel-item">
               <h1>3D View</h1>
             </div>
           </div>
         </div>
-        <a href="#carouselExampleControls" role="button" data-slide="next" class="col-1 btn btn-primary h-100 carousel-control-next-icon" >
+        <a href="#carouselExampleControls" role="button" (click)="map.reload()" data-slide="next" class="col-1 btn btn-primary h-100 carousel-control-next-icon" >
           <span class="sr-only">Next</span>
         </a>
       </div>
