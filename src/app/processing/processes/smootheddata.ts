@@ -29,6 +29,9 @@ export class SmoothedData extends AbstractDataBlock{
             this.numberInBuffer++;
         }
         var smoothedData:Data = Data.Divide(this.combinedValue,this.numberInBuffer);
+        smoothedData.Data[0]=data.Data[0];
+        smoothedData.Data[1]=data.Data[1];
+        smoothedData.Timestamp = data.Timestamp;
         this.data.push(smoothedData);
         return smoothedData;
     }

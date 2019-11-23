@@ -8,52 +8,52 @@ export class Data{
 
     public AddData(data:Data){
         if (data.Data.length!==this.Data.length)  throw new Error("Data arrays must be the same length");
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]+=data.Data[index];
         }
     }
 
     public SubtractData(data:Data){
         if (data.Data.length!==this.Data.length)  throw new Error("Data arrays must be the same length");
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]-=data.Data[index];
         }
     }
 
     public DivideData(data:Data){
         if (data.Data.length!==this.Data.length)  throw new Error("Data arrays must be the same length");
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]/=data.Data[index];
         }
     }
 
     public MultiplyData(data:Data){
         if (data.Data.length!==this.Data.length)  throw new Error("Data arrays must be the same length");
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]*=data.Data[index];
         }
     }
 
     public Add(data:number){
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]+=data;
         }
     }
 
     public Subtract(data:number){
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]-=data;
         }
     }
 
     public Divide(data:number){
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]/=data;
         }
     }
 
     public Multiply(data:number){
-        for (let index = 0; index < this.Data.length; index++) {
+        for (let index = 2; index < this.Data.length; index++) {
             this.Data[index]*=data;
         }
     }

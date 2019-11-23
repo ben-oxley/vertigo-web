@@ -56,8 +56,10 @@ addEventListener('message', ({ data }) => {
             result.data[0] = result.data[0].concat([0,0,0,0,0,0])
           }
         }
-        if (!Number.isInteger(result.data[0][0])) {
+        if (!Number.isInteger(+result.data[0][0])) {
           result.data[0][0] = Date.parse(result.data[0][0]);
+        } else{
+          result.data[0][0] = +result.data[0][0];
         }
         
         const identifier: number = +result.data[0][1];
