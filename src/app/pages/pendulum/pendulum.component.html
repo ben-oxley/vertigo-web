@@ -104,6 +104,9 @@
         </div>
     </div>
 </div>
+<br/>
+<br/>
+<br/>
 <p>In the command window, the operator will be asked</p>
 <p>“Which orientation looks best? - North (1) or East (2)”</p>
 <p>In the graph above the Blue line shows the clearest trend. This depends on which way the pendulum has been
@@ -120,17 +123,18 @@
 <p>A new graph will then appear.</p>
 
 <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
-                    [SelectedSeries]="Graph2Series">
-                </graph-control>
-            </div>
-            <div class="col-6">
-                    <img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph1.jpg" alt="" />
-            </div>
+    <div class="row">
+        <div class="col-6">
+            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                [SelectedSeries]="Graph2Series">
+            </graph-control>
+        </div>
+        <div class="col-6">
+            <img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph1.jpg" alt="" />
         </div>
     </div>
+</div>
+<br/><br/>
 <p>This graph can be used to determine the time-period of the pendulum.</p>
 <p>For very accurate readings, the cursor icon</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/cursor.jpg" alt="" /></p>

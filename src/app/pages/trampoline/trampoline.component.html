@@ -3,54 +3,73 @@
 <h2 id="beginner-3"><a name="BeginnerJ"></a>Beginner</h2>
 <h3 id="measuring-the-forces-acting-on-a-trampolinist">Measuring the forces acting on a trampolinist.</h3>
 <p>For this experiment it will be assumed that the trampolinist is only moving in the vertical direction.<br />
-For consistency, and for ease of understanding, the trampolinist’s weight has been added on to the force charts.</p>
+    For consistency, and for ease of understanding, the trampolinist’s weight has been added on to the force charts.</p>
 <p>Fix Vertigo onto the waist of the trampolinist – it is important that Vertigo is not landed on whilst jumping.</p>
 <p>The GPS antenna is not needed.</p>
 <ul>
-<li>Turn vertigo on and keep it still for 30 seconds</li>
-<li>Press the log button</li>
-<li>Begin jumping</li>
-<li>Once finished, press the log button again to end the data capture.</li>
-<li>Wait until Vertigo’s LED lights stop flashing</li>
+    <li>Turn vertigo on and keep it still for 30 seconds</li>
+    <li>Press the log button</li>
+    <li>Begin jumping</li>
+    <li>Once finished, press the log button again to end the data capture.</li>
+    <li>Wait until Vertigo’s LED lights stop flashing</li>
 </ul>
 <p>The following <a href="tramp_scripts.zip">Scripts</a> need to be downloaded into the same folder</p>
 <ul>
-<li>Open matlab and run the script Trampoline_lesson_1</li>
+    <li>Open matlab and run the script Trampoline_lesson_1</li>
 </ul>
 <p>After a short time, a graph will appear.</p>
 <h3 id="nb">NB</h3>
 <p>The data used here is not from a trampoline, but the scripts have been written for this purpose.</p>
-<p><img src="https://vertigo.engineering/vertigo-instructions/tramp0.jpg" alt="" /></p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+                <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
+                (loadingProgress)="loading($event)"></loader>
+            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                [SelectedSeries]="Graph1Series">
+            </graph-control>
+        </div>
+        <div class="col-6">
+            <img src="https://vertigo.engineering/vertigo-instructions/tramp0.jpg" alt="" />
+        </div>
+    </div>
+</div>
+
 <p>The operator will then be asked</p>
 <ul>
-<li>What time do you wish to start analysis from? In the command window normally found at the bottom of the matlab screen</li>
+    <li>What time do you wish to start analysis from? In the command window normally found at the bottom of the matlab
+        screen</li>
 </ul>
 <p>Looking at the graph, input a suitable start time, in seconds, into the command window</p>
 <p>And then:</p>
 <ul>
-<li>What time do you wish to end the analysis?</li>
+    <li>What time do you wish to end the analysis?</li>
 </ul>
 <p>Chose an end time and enter this in seconds into the command window.</p>
 <p>And finally</p>
 <ul>
-<li>What is the mass of the trampolinist?</li>
+    <li>What is the mass of the trampolinist?</li>
 </ul>
 <p>This is simply required to calculate the force acting on the trampolinist using F=ma.
-Input the trampolinist’s mass in Kilograms.</p>
+    Input the trampolinist’s mass in Kilograms.</p>
 <p>Once this data has been entered, graphs such as the one below will be produced.</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/tramp1.jpg" alt="" /></p>
-<p>An interesting investigation could be to find the relationship between a pupil’s mass, and the maximum force experienced on the trampoline.</p>
+<p>An interesting investigation could be to find the relationship between a pupil’s mass, and the maximum force
+    experienced on the trampoline.</p>
 <h2 id="intermediate-3"><a name="IntermediateJ"></a>Intermediate</h2>
 <h3 id="force-displacement-and-velocity">Force, displacement and velocity</h3>
-<p>It is also possible to investigate the height and velocity of the trampolinist. This is similar to previous investigations.
-The gradient of the distance/ time graph ought to be directly proportional to the velocity.</p>
+<p>It is also possible to investigate the height and velocity of the trampolinist. This is similar to previous
+    investigations.
+    The gradient of the distance/ time graph ought to be directly proportional to the velocity.</p>
 <ul>
-<li>Load the script Tramp_lesson2 and follow the instructions as before.</li>
+    <li>Load the script Tramp_lesson2 and follow the instructions as before.</li>
 </ul>
 <p><img src="https://vertigo.engineering/vertigo-instructions/tramp2.jpg" alt="" /></p>
-<p>The final graph looks at the force that the trampoline exerts on the trampolinist as it is stretched. It is a difficult graph to analyse, if multiple jumps are viewed simultaneously.</p>
+<p>The final graph looks at the force that the trampoline exerts on the trampolinist as it is stretched. It is a
+    difficult graph to analyse, if multiple jumps are viewed simultaneously.</p>
 <ul>
-<li>Adjusting the ‘force window’ required can be achieved by modifying line 137 of the matlab script.</li>
+    <li>Adjusting the ‘force window’ required can be achieved by modifying line 137 of the matlab script.</li>
 </ul>
 <p>ylim([150 300]);</p>
 <p>Change the limits, in the square brackets, to ones more applicable to your investigation.</p>
@@ -59,42 +78,72 @@ The gradient of the distance/ time graph ought to be directly proportional to th
 <h2 id="advanced-3"><a name="AdvancedJ"></a>Advanced</h2>
 <h3 id="measuring-rotation">Measuring rotation</h3>
 <p>When measuring rotational speeds, the frame of reference is all important.
-Similar to concepts in relativity, the need to stipulate the frame used is important.<br />
-Linear speed is most often measured with respect to longitude and latitude coordinates on the Earth’s surface. But this might not be as valuable to a plane or a boat, where speed, in relation to the air or water, is more important.
-The same is true when measuring the rotational speeds for a trampolinist.</p>
+    Similar to concepts in relativity, the need to stipulate the frame used is important.<br />
+    Linear speed is most often measured with respect to longitude and latitude coordinates on the Earth’s surface. But
+    this might not be as valuable to a plane or a boat, where speed, in relation to the air or water, is more important.
+    The same is true when measuring the rotational speeds for a trampolinist.</p>
 <table>
-<thead>
-<tr>
-<th style="text-align: center"><img src="https://vertigo.engineering/vertigo-instructions/tramp5.jpg" alt="" /></th>
-<th style="text-align: center"><img src="https://vertigo.engineering/vertigo-instructions/tramp6.jpg" alt="" /></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center">A ‘NED’ world frame</td>
-<td style="text-align: center">How a Board frame may be assigned</td>
-</tr>
-</tbody>
+    <thead>
+        <tr>
+            <th style="text-align: center"><img src="https://vertigo.engineering/vertigo-instructions/tramp5.jpg"
+                    alt="" /></th>
+            <th style="text-align: center"><img src="https://vertigo.engineering/vertigo-instructions/tramp6.jpg"
+                    alt="" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: center">A ‘NED’ world frame</td>
+            <td style="text-align: center">How a Board frame may be assigned</td>
+        </tr>
+    </tbody>
 </table>
-<p>The diagram on the left shows a ‘world frame’. That is, one that has axes fixed to the Earth. Convention has X,Y and -Z following the directions of North, East and Down (NED).</p>
-<p>The diagram on the right shows rotational axes that rotate with the object. In this particular case, Vertigo will be fixed onto a rotating trampolinist.</p>
-<p>For this investigation, the rotating frame will be most useful. And therefore, for the first, and possible only time, the orientation with which Vertigo is attached to the trampolinist will be important. Especially, if results between trampolinists are to be compared.</p>
+<p>The diagram on the left shows a ‘world frame’. That is, one that has axes fixed to the Earth. Convention has X,Y and
+    -Z following the directions of North, East and Down (NED).</p>
+<p>The diagram on the right shows rotational axes that rotate with the object. In this particular case, Vertigo will be
+    fixed onto a rotating trampolinist.</p>
+<p>For this investigation, the rotating frame will be most useful. And therefore, for the first, and possible only time,
+    the orientation with which Vertigo is attached to the trampolinist will be important. Especially, if results between
+    trampolinists are to be compared.</p>
 <p>Load the script trampoline_lesson3</p>
 <p>Acquire data as before and follow instructions in the command window.
-Several graphs will appear, all with labelled axes to ease understanding.</p>
-<p>Visualising rotations in 3-dimentions can be challenging, and it will take some time to be confident in explaining what the graphs represent.
-The following graphs help to understand the problems involved.</p>
+    Several graphs will appear, all with labelled axes to ease understanding.</p>
+<p>Visualising rotations in 3-dimentions can be challenging, and it will take some time to be confident in explaining
+    what the graphs represent.
+    The following graphs help to understand the problems involved.</p>
 <h3 id="roll-rotations">Roll Rotations</h3>
 <p><img src="https://vertigo.engineering/vertigo-instructions/tramp7.jpg" alt="" /></p>
 <h3 id="pitch-rotations">Pitch Rotations</h3>
 <p><img src="https://vertigo.engineering/vertigo-instructions/tramp8.jpg" alt="" /></p>
-<p>Rotations can be seen in both the world frame and the trampolinist’s frame of reference. What appears to have happened, in this example, is that the board’s X-axis was rotating about an imaginary axis running across the Earth, East to West.</p>
+<p>Rotations can be seen in both the world frame and the trampolinist’s frame of reference. What appears to have
+    happened, in this example, is that the board’s X-axis was rotating about an imaginary axis running across the Earth,
+    East to West.</p>
 <p>The other oscillations are presumably processional.</p>
-<p>The oscillation direction can also be seen from the gyroscope rate. In the graph below, it is clear the most rotations is occurring around the x-axis.</p>
-<p><img src="https://vertigo.engineering/vertigo-instructions/tramp9.jpg" alt="" /></p>
-<p>It should be clear that, if rotations between athletes are to be compared, Vertigo will need to be affixed in a consistent manner.
-Or, the trampoline jumper would need to face the same way each time he/she jumped.</p>
+<p>The oscillation direction can also be seen from the gyroscope rate. In the graph below, it is clear the most
+    rotations is occurring around the x-axis.</p>
+
+<div class="container">
+        <div class="row">
+            <div class="col-6">
+                <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                    [SelectedSeries]="Graph2Series">
+                </graph-control>
+            </div>
+            <div class="col-6">
+                    <img src="https://vertigo.engineering/vertigo-instructions/tramp9.jpg" alt="" />
+            </div>
+        </div>
+    </div>
+    
+    <br/><br/>
+<p>It should be clear that, if rotations between athletes are to be compared, Vertigo will need to be affixed in a
+    consistent manner.
+    Or, the trampoline jumper would need to face the same way each time he/she jumped.</p>
 <h3 id="nb-1">NB</h3>
-<p>The data used here was obtained by throwing a Vertigo upward and then catching it. The first throw was launched with little spin, the second with a higher revolution rate. These rates would be much higher than a trampolinist might achieve.</p>
-<p>Comparing the results, measured with Vertigo, against a video recording of a trampolinist, would be a very interesting exercise.</p>
-<p>Since angular momentum is always conserved, the rate of rotation can be increased as the trampolinist varies their moment of inertia. (This is not the case with the ‘board thrown in the air’ data presented here).</p>
+<p>The data used here was obtained by throwing a Vertigo upward and then catching it. The first throw was launched with
+    little spin, the second with a higher revolution rate. These rates would be much higher than a trampolinist might
+    achieve.</p>
+<p>Comparing the results, measured with Vertigo, against a video recording of a trampolinist, would be a very
+    interesting exercise.</p>
+<p>Since angular momentum is always conserved, the rate of rotation can be increased as the trampolinist varies their
+    moment of inertia. (This is not the case with the ‘board thrown in the air’ data presented here).</p>
