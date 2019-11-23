@@ -53,15 +53,8 @@ export class ProcessorComponent implements OnInit {
     Object.values(event).forEach(v => {
       const key: any = ( v as any).value.replace('\'', '').replace('\'', '').split(',');
       const group: DataType = this.Dataspec.Types.find(t => t.Id === key[0]);
-      const col: Column = group.Columns.find(d => d.Id === key[1]);
-      if (DataTypes.find(t => t.Id === key[0])) {
-        DataTypes.find(t => t.Id === key[0]).Columns.push(col);
-      } else {
-        const newDataType: DataType = new DataType().from(group);
-        newDataType.Columns = [];
-        newDataType.Columns.push(col);
+      const newDataType: DataType = new DataType().from(group);
         DataTypes.push(newDataType);
-      }
     });
     this.SelectedValues = DataTypes;
   }

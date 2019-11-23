@@ -2,6 +2,7 @@ import { ProcessingMethod } from './ProcessingMethod'
 import { SmoothedData } from './smootheddata'
 import { DataBlock } from '../datablock';
 import { DataIntegrator } from './dataintegrator';
+import { Decimator } from './decimator';
 
 
 export class ProcessingMethods{
@@ -16,7 +17,7 @@ export class ProcessingMethods{
         return integrationProcessor;
     },"Integration", [], []);
     public static Decimating:ProcessingMethod = new ProcessingMethod((args:number[])=>{
-        let decimationProcessor:DataBlock = new DataIntegrator();
+        let decimationProcessor:DataBlock = new Decimator();
         decimationProcessor.SetParams(args)
         return decimationProcessor;
     },"Decimation", ["Frequency"], [10]);

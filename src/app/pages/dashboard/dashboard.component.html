@@ -3,7 +3,7 @@
     <div class="col-12">
       <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
         (loadingProgress)="loading($event)"></loader>
-        <app-processor [VertigoRawData]="VertigoRawData" (loadedProcessedData)="onProcessedLoaded($event)"></app-processor>
+        
       <div class="row align-items-center no-gutters h-100">
         <a href="#carouselExampleControls" role="button" (click)="map.reload()" data-slide="prev" class="col-1 btn btn-primary h-100 carousel-control-prev-icon" >
           <span class="sr-only">Previous</span>
@@ -27,7 +27,7 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-      <!--<div class="row align-items-center no-gutters h-25">
+      <div class="row align-items-center no-gutters h-25">
         <a href="#carouselExampleControls2" role="button" data-slide="prev" class="col-1 btn btn-primary h-100 carousel-control-prev-icon" >
           <span class="sr-only">Previous</span>
         </a>
@@ -35,14 +35,14 @@
           data-interval="false">
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <app-processor></app-processor>
+              <app-processor [VertigoRawData]="VertigoRawData" (loadedProcessedData)="onProcessedLoaded($event)"></app-processor>
             </div>
           </div>
         </div>
         <a href="#carouselExampleControls2" role="button" data-slide="next" class="col-1 btn btn-primary h-100 carousel-control-next-icon" >
           <span class="sr-only">Next</span>
         </a>
-      </div>-->
+      </div>
     </div>
   </div>
 </div>

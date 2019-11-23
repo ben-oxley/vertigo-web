@@ -6,12 +6,11 @@ import { AbstractDataBlock } from "./abstractdatablock";
 
 export class Decimator extends AbstractDataBlock{
 
-    private readonly frequency:number;
+    private frequency:number;
     private step:number = 0;
 
-    public constructor(frequency:number){
-        super();
-        this.frequency = frequency;
+    public SetParams(params:number[]){
+        this.frequency = params[0];
     }
 
     public Load(data:Data){
