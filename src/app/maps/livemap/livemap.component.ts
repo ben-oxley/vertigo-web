@@ -102,9 +102,6 @@ export class LivemapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    new ResizeSensor(this.divView.nativeElement, function() {
-      this.map.invalidateSize();
-    });
   }
 
   onMapReady(map: L.Map) {

@@ -12,4 +12,11 @@ export class Dataspec{
         this.RawTypes = (<any>spec).dataTypes;
         this.Types = (<any[]>this.RawTypes).map(t=>new DataType().parse(t));
     }
+
+    public static slice(type,start,take):DataType[]{
+        const spec: Dataspec = new Dataspec();
+        spec.Types[type].Columns = spec.Types[type].Columns.slice(start, start+take);
+        spec.Types = [spec.Types[type]];
+        return spec.Types;
+    }
 }

@@ -96,7 +96,7 @@
             <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
                 (loadingProgress)="loading($event)"></loader>
             <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
-                [SelectedSeries]="SelectedSeries">
+                [SelectedSeries]="Graph1Series">
             </graph-control>
         </div>
         <div class="col-6">
@@ -118,7 +118,19 @@
     seconds.
     Enter these values when prompted.</p>
 <p>A new graph will then appear.</p>
-<p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph1.jpg" alt="" /></p>
+
+<div class="container">
+        <div class="row">
+            <div class="col-6">
+                <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                    [SelectedSeries]="Graph2Series">
+                </graph-control>
+            </div>
+            <div class="col-6">
+                    <img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph1.jpg" alt="" />
+            </div>
+        </div>
+    </div>
 <p>This graph can be used to determine the time-period of the pendulum.</p>
 <p>For very accurate readings, the cursor icon</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/cursor.jpg" alt="" /></p>
