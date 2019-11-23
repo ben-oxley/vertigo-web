@@ -16,8 +16,8 @@ export class PendulumComponent implements OnInit {
   public VertigoProcessedData: VertigoProcessedData;
   public GraphData: any;
   public SelectedValues: any = { columns: [] }
-  private Graph1Series: DataType[] = Dataspec.slice(1,6,3);
-  private Graph2Series: DataType[] = Dataspec.slice(1,6,1);
+  public Graph1Series: DataType[] = Dataspec.slice(1,6,3);
+  public Graph2Series: DataType[] = Dataspec.slice(1,6,1);
   constructor() { 
   }
 

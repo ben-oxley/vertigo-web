@@ -25,6 +25,7 @@ export class ProcessorComponent implements OnInit {
   @Output() loadingProgress = new EventEmitter<number>();
   public Dataspec: Dataspec = new Dataspec();
   public SelectedValue: any;
+  public SelectedValue2: any;
   public SelectedValues: DataType[] = [];
   public ProcessingMethods: ProcessingMethod[] = ProcessingMethods.GetAllMethods();
   public SelectedProcessingMethod: ProcessingMethod;
