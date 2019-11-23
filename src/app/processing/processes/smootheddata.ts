@@ -6,15 +6,13 @@ import { AbstractDataBlock } from "./abstractdatablock";
 
 export class SmoothedData extends AbstractDataBlock{
 
-    public readonly bufferSize:number;
+    private bufferSize:number;
     private buffer:Data[] = [];
     private numberInBuffer:number = 0;
     private combinedValue:Data;
 
-    public constructor(headers:string[],bufferSize:number){
-        super();
-        this.bufferSize = bufferSize;
-        this.headers = headers;
+    public SetParams(params:number[]){
+        this.bufferSize = params[0];
     }
 
     private add(data:Data):Data{

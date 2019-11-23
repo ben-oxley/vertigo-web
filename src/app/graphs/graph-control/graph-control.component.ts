@@ -36,7 +36,30 @@ export class GraphControlComponent {
   }
 
   public seriesChanged(event: DataType[]) {
-    if (this.vertigoRawData){
+    if (this.vertigoProcessedData){
+      this.GraphData = this.flatMap(event, dt => {
+        if (this.vertigoProcessedData.DataTypes && this.vertigoProcessedData.DataTypes.has(dt.Identifier)) {
+          const data: Data[] = RawData.Cast(this.vertigoProcessedData.DataTypes.get(dt.Identifier)).Data();
+          if (data && data.length > 0) {
+            return dt.Columns.map(c => {
+              const t0 = data[0].Data[0];
+              const d: Date = new Date(0); // The 0 there is the key, which sets the date to the epoch
+              d.setUTCSeconds(t0/1000.0);
+              const isDate = d < new Date(Date.now()) && d > new Date(0) 
+              return {
+                x: data.map(datum =>isDate? new Date(datum.Data[0]).toISOString(): (datum.Data[0] - t0) / 1000.0),
+                y: data.map(datum => datum.Data[c.Identifier]),
+                name: c.Name +' ('+c.Units+')',
+                yaxis: c.Id,
+                typeid: dt.Identifier,
+                colid: c.Id,
+              } as any;
+            });
+          }
+        }
+      });
+    }
+    else if (this.vertigoRawData){
       this.GraphData = this.flatMap(event, dt => {
         if (this.vertigoRawData.DataTypes && this.vertigoRawData.DataTypes.has(dt.Identifier)) {
           const data: Data[] = RawData.Cast(this.vertigoRawData.DataTypes.get(dt.Identifier)).Data();
@@ -99,6 +122,22 @@ export class GraphControlComponent {
 
   public onProcessedLoaded(event: VertigoProcessedData) {
     this.vertigoProcessedData = event;
+    if (this.vertigoRawData) {
+      this.vertigoRawData.DataTypes.forEach((dt, key) => {
+        dt.AddListener((a, r) => {
+          const type = this.selectedSeries.find(s => s.Identifier === key);
+          if (type){
+            type.Columns.forEach(col => {
+              let series = this.GraphData.find(series => series.typeid === key);
+              const t0 = series.x[0] * 1000.0;
+              series.x.push(a.map(datum => (datum.Data[0] - t0) / 1000.0));
+              series.y.push(a.map(datum => datum.Data[col.Identifier]));
+            });
+          }
+        });
+      });
+    }
+
     if (this.flatMap(this.selectedSeries, dt => dt.Columns).length === 0) {
       const spec: Dataspec = new Dataspec();
       spec.Types[1].Columns = spec.Types[1].Columns.slice(0, 3);

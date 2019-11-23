@@ -7,9 +7,18 @@ export abstract class AbstractDataBlock implements DataBlock {
     protected data: Data[] = [];
     protected headers: string[] = [];
     private listeners: DataListener[] = [];
+    
 
     Headers(): string[] {
         return this.headers;
+    }
+
+    public SetHeaders(headers:string[])  {
+        this.headers = headers;
+    }
+
+    public SetParams(params:number[]){
+
     }
 
     Data(): Data[] {

@@ -11,5 +11,21 @@
                 </option>
             </optgroup>
         </select>
+        <select class="custom-select" id="processingmethod2" [(ngModel)]="SelectedValue2" size="5"
+        (change)="processingSelectionChanged($event.target.selectedOptions)">
+            <option *ngFor="let type of ProcessingMethods" label="{{type.Name}}" value="{{type.Name}}">
+                {{type.Name}}
+            </option>
+        </select>
     </div>
+    <div *ngIf="Params">
+        <div *ngFor="let param of Params" class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="{{param.Name}}">{{param.Name}}</span>
+                </div>
+                <input type="number" class="form-control" placeholder="{{param.Value}}" [(ngModel)]="param.Value">
+              </div>
+            
+    </div>
+    <button (click)="process()">Go</button>
 </div>

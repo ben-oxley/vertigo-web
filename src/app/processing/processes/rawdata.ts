@@ -6,13 +6,9 @@ import { AbstractDataBlock } from './abstractdatablock';
 
 export class RawData extends AbstractDataBlock {
 
-    constructor(headers: string[]) {
-        super();
-        this.headers = headers;
-    }
-
     public static Cast(object: any): RawData {
-        const rd: RawData = new RawData(object.headers);
+        const rd: RawData = new RawData();
+        rd.SetHeaders = object.headers;
         rd.data = object.data.map(d=>new Data(d.Data));
         rd.data.forEach(d => d.Timestamp = d.Data[0]);
         return rd;

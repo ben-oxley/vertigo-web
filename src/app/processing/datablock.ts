@@ -13,4 +13,8 @@ export interface DataBlock{
 
     LoadAll(data:Data[]);
 
+    SetHeaders(headers:string[]);
+
+    SetParams(params:number[]);
+
 }

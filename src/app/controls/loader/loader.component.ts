@@ -82,7 +82,8 @@ export class LoaderComponent implements OnInit {
             if (event.autorange) {
               rawDataClass.DataTypes.set(key, value);
             } else {
-              const d: RawData = new RawData(value.Headers());
+              const d: RawData = new RawData();
+              d.SetHeaders(value.Headers());
               d.LoadAll(value.Trim(event.xmin, event.xmax));
               rawDataClass.DataTypes.set(key, d);
             }
@@ -95,7 +96,8 @@ export class LoaderComponent implements OnInit {
     const types: any[] = (vertigospec as any).dataTypes;
     types.forEach(t => {
       const specIdentifier: number = t.identifier;
-      const rawData: RawData = new RawData((t.columns as any[]).map(c => c.id as string));
+      const rawData: RawData = new RawData();
+      rawData.SetHeaders((t.columns as any[]).map(c => c.id as string));
       rawDataClass.DataTypes.set(specIdentifier, rawData);
     });
     return rawDataClass;

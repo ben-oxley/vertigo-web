@@ -19,12 +19,4 @@ export class GraphControlSelectionComponent {
   public seriesChanged(event: DataType[]) {
     this.SelectedSeries = event;
   }
-
-  public onLoaded(event: VertigoRawData) {
-    this.VertigoRawData = event;
-  }
-
-  public onProcessedLoaded(event: VertigoProcessedData) {
-    this.VertigoProcessedData = event;
-  }
 }

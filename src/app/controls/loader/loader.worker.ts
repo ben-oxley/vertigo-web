@@ -18,7 +18,8 @@ addEventListener('message', ({ data }) => {
   const types: any[] = (vertigospec as any).dataTypes;
   types.forEach(t => {
     const specIdentifier: number = t.identifier;
-    const rawDataSpec: RawData = new RawData((t.columns as any[]).map(c => c.id as string));
+    const rawDataSpec: RawData = new RawData();
+    rawDataSpec.SetHeaders((t.columns as any[]).map(c => c.id as string));
     rawData.DataTypes.set(specIdentifier, rawDataSpec);
   });
   reader.onload = file => {
@@ -46,16 +47,24 @@ addEventListener('message', ({ data }) => {
           const rpy: number[] = Quat2EulData.toEuler(lastQuat);
           result.data[0] = result.data[0].concat(rpy);
         }
-        if (result.data[0][1] === "2" && lastQuat) {
-          const worldacc: number[] = Quat2EulData.convertToWorldReference(result.data[0].slice(2, 5), lastQuat);
-          const worldAngVel: number[] = Quat2EulData.convertToWorldReference(result.data[0].slice(5, 8), lastQuat);
-          result.data[0] = result.data[0].concat(worldacc).concat(worldAngVel);
+        if (result.data[0][1] === "2") {
+          if (lastQuat){
+            const worldacc: number[] = Quat2EulData.convertToWorldReference(result.data[0].slice(2, 5), lastQuat);
+            const worldAngVel: number[] = Quat2EulData.convertToWorldReference(result.data[0].slice(5, 8), lastQuat);
+            result.data[0] = result.data[0].concat(worldacc).concat(worldAngVel);
+          } else {
+            result.data[0] = result.data[0].concat([0,0,0,0,0,0])
+          }
         }
         if (!Number.isInteger(result.data[0][0])) {
           result.data[0][0] = Date.parse(result.data[0][0]);
         }
-        const loadedData: Data = new Data(result.data[0]);
+        
         const identifier: number = +result.data[0][1];
+        for (let i = 2; i < result.data[0].length; i++){
+          result.data[0][i] = +result.data[0][i];
+        }
+        const loadedData: Data = new Data(result.data[0]);
         rawData.DataTypes.get(identifier).Load(loadedData);
       }
 
