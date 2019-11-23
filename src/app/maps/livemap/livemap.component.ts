@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
 import 'style-loader!leaflet/dist/leaflet.css';
 import { VertigoRawData } from "src/app/processing/vertigo-data";
@@ -8,6 +8,7 @@ import { Dataspec } from '../../processing/dataspec';
 import { DataType } from 'src/app/processing/datatype';
 import { Column } from 'src/app/processing/column';
 import { DataListener } from 'src/app/processing/listener';
+import { ElementQueries, ResizeSensor } from 'css-element-queries'
 
 
 @Component({
@@ -17,8 +18,8 @@ import { DataListener } from 'src/app/processing/listener';
 })
 export class LivemapComponent implements OnInit, OnChanges {
 
-  
-
+  @ViewChild("map", {static: false}) divView: ElementRef; 
+  @Input() InputData: any = [];
   constructor() { }
   private static dataSpec: Dataspec = new Dataspec();
 
@@ -101,7 +102,9 @@ export class LivemapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    new ResizeSensor(this.divView.nativeElement, function() {
+      this.map.invalidateSize();
+    });
   }
 
   onMapReady(map: L.Map) {

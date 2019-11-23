@@ -3,91 +3,120 @@
 <h3 id="curriculum-links-1">Curriculum links</h3>
 <p>Key Stage 4 National Curriculum</p>
 <ul>
-<li>
-<p>interpreting quantitatively graphs of distance, time, and speed</p>
-</li>
-<li>
-<p>acceleration caused by forces; Newton’s First Law</p>
-</li>
-<li>
-<p>amplitude, frequency</p>
-</li>
+    <li>
+        <p>interpreting quantitatively graphs of distance, time, and speed</p>
+    </li>
+    <li>
+        <p>acceleration caused by forces; Newton’s First Law</p>
+    </li>
+    <li>
+        <p>amplitude, frequency</p>
+    </li>
 </ul>
 <h3 id="safety-1">Safety</h3>
 <p>appropriate risk assessment should be made in compliance with departmental requirements</p>
 <h3 id="introduction">Introduction</h3>
 <p>There are many ways to analyse the motion of a pendulum.
-This activity offers three different approaches of increasing complexity.</p>
-<p>The beginner section looks at the acceleration Vertigo has experienced and offers a very simple determination of the Time period of oscillations.</p>
-<p>The intermediate activity gives scope for pupils to investigate the relationship between displacement, velocity and acceleration.</p>
-<p>The advanced analysis converts the data from a time domain into the frequency domain, introducing students to the Fourier transform and a means of presenting data they will likely not have encountered before.</p>
+    This activity offers three different approaches of increasing complexity.</p>
+<p>The beginner section looks at the acceleration Vertigo has experienced and offers a very simple determination of the
+    Time period of oscillations.</p>
+<p>The intermediate activity gives scope for pupils to investigate the relationship between displacement, velocity and
+    acceleration.</p>
+<p>The advanced analysis converts the data from a time domain into the frequency domain, introducing students to the
+    Fourier transform and a means of presenting data they will likely not have encountered before.</p>
 <h1 id="beginner-1"><a name="BeginnerP"></a>Beginner</h1>
-<p>This analysis could fit into a wider study, perhaps investigating the relationship between pendulum length and Time period.
-It could also be used as a means of comparing data gathered by hand and by data loggers. The latter, ought to, in this case, yield a more accurate answer with smaller uncertainties.</p>
+<p>This analysis could fit into a wider study, perhaps investigating the relationship between pendulum length and Time
+    period.
+    It could also be used as a means of comparing data gathered by hand and by data loggers. The latter, ought to, in
+    this case, yield a more accurate answer with smaller uncertainties.</p>
 <h3 id="set-up">Set-up</h3>
 <ul>
-<li>
-<p>Tie Vertigo to a 1 metre length of light inextensible string (cotton thread would be best).<br />
-Although the GPS antenna will not be needed for this investigation, it does provide a convenient point to attach the string to, and so could still be connected to the vertigo board.</p>
-</li>
-<li>
-<p>Using two small pieces of wood, or a split cork, fix the other end of the string into a clamp. The clamp can then be connected to a retort stand as shown below.</p>
-</li>
+    <li>
+        <p>Tie Vertigo to a 1 metre length of light inextensible string (cotton thread would be best).<br />
+            Although the GPS antenna will not be needed for this investigation, it does provide a convenient point to
+            attach the string to, and so could still be connected to the vertigo board.</p>
+    </li>
+    <li>
+        <p>Using two small pieces of wood, or a split cork, fix the other end of the string into a clamp. The clamp can
+            then be connected to a retort stand as shown below.</p>
+    </li>
 </ul>
 <p><img src="https://vertigo.engineering/vertigo-instructions/apparatus.jpg" alt="" /></p>
-<p>The length of the string is not too important but should be between 20cm and 1 metre. Measurng the length of the string should be from the bottom of the split cork to the centre of mass of the vertigo unit. This will involve some uncertainty. It may be useful to have pupils estimate this uncertainty and quote it in their results.</p>
+<p>The length of the string is not too important but should be between 20cm and 1 metre. Measurng the length of the
+    string should be from the bottom of the split cork to the centre of mass of the vertigo unit. This will involve some
+    uncertainty. It may be useful to have pupils estimate this uncertainty and quote it in their results.</p>
 <h3 id="data-capture">Data capture</h3>
 <ul>
-<li>
-<p>Turn the vertigo device on</p>
-</li>
-<li>
-<p>Wait for 30 seconds, keeping vertigo reasonably stationary</p>
-</li>
-<li>
-<p>Press the log button to start logging</p>
-</li>
-<li>
-<p>Displace vertigo to an angle of approximately 30 degrees and release</p>
-</li>
-<li>
-<p>Allow Vertigo to perform 10 full swings</p>
-</li>
-<li>
-<p>Stop the device and press the log button again.</p>
-</li>
+    <li>
+        <p>Turn the vertigo device on</p>
+    </li>
+    <li>
+        <p>Wait for 30 seconds, keeping vertigo reasonably stationary</p>
+    </li>
+    <li>
+        <p>Press the log button to start logging</p>
+    </li>
+    <li>
+        <p>Displace vertigo to an angle of approximately 30 degrees and release</p>
+    </li>
+    <li>
+        <p>Allow Vertigo to perform 10 full swings</p>
+    </li>
+    <li>
+        <p>Stop the device and press the log button again.</p>
+    </li>
 </ul>
-<p>If <a name="DataP"></a>data acquisition fails, sample data is available for this activity <a name="DataJ"></a><a href="/vertigo-instructions/Tramp_data.csv">here</a></p>
+<p>If <a name="DataP"></a>data acquisition fails, sample data is available for this activity <a name="DataJ"></a><a
+        href="/vertigo-instructions/Pendulum_data.csv">here</a></p>
 <h3 id="analysis">Analysis</h3>
 <ul>
-<li>
-<p>Remove the sd card from Vertigo and place it into a suitable sd card reader.</p>
-</li>
-<li>
-<p>Open the programme matlab</p>
-</li>
-<li>
-<p>The following files must be downloaded into a single folder <a href="/vertigo-instructions/Pendulum_scripts.zip">Pendulum_scripts</a></p>
-</li>
-<li>
-<p>In matlab, click the ‘open’ icon located in the top left of the screen, and navigate to the folder that has been downloaded. Open the file Pendulum_lesson.m</p>
-</li>
-<li>
-<p>Click run</p>
-</li>
+    <li>
+        <p>Remove the sd card from Vertigo and place it into a suitable sd card reader.</p>
+    </li>
+    <li>
+        <p>Open the programme matlab</p>
+    </li>
+    <li>
+        <p>The following files must be downloaded into a single folder <a
+                href="/vertigo-instructions/Pendulum_scripts.zip">Pendulum_scripts</a></p>
+    </li>
+
+    <li>
+        <p>In matlab, click the ‘open’ icon located in the top left of the screen, and navigate to the folder that has
+            been downloaded. Open the file Pendulum_lesson.m</p>
+    </li>
+    <li>
+        <p>Click run</p>
+    </li>
 </ul>
 <p>A graph will quickly appear that resembles the graph below:</p>
-<p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph.jpg" alt="" /></p>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
+                (loadingProgress)="loading($event)"></loader>
+            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                [SelectedSeries]="SelectedSeries">
+            </graph-control>
+        </div>
+        <div class="col-6">
+            <img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph.jpg" alt="" />
+        </div>
+    </div>
+</div>
 <p>In the command window, the operator will be asked</p>
 <p>“Which orientation looks best? - North (1) or East (2)”</p>
-<p>In the graph above the Blue line shows the clearest trend. This depends on which way the pendulum has been orientated. There will be a choice of either North or East as the pendulum has most amplitude in these directions.</p>
+<p>In the graph above the Blue line shows the clearest trend. This depends on which way the pendulum has been
+    orientated. There will be a choice of either North or East as the pendulum has most amplitude in these directions.
+</p>
 <p>Please enter, into the command window, a ‘1’ for North or a ‘2’ for East</p>
 <p>The user will then be asked
-“when would you like to start the analysis?”
-Followed by:</p>
+    “when would you like to start the analysis?”
+    Followed by:</p>
 <p>“when would you like to end the analysis?”</p>
-<p>Looking at the graph, it is clear that the less noisy oscillations occur beyond 4 seconds and end at around 16 seconds.
-Enter these values when prompted.</p>
+<p>Looking at the graph, it is clear that the less noisy oscillations occur beyond 4 seconds and end at around 16
+    seconds.
+    Enter these values when prompted.</p>
 <p>A new graph will then appear.</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph1.jpg" alt="" /></p>
 <p>This graph can be used to determine the time-period of the pendulum.</p>
@@ -101,27 +130,35 @@ Enter these values when prompted.</p>
 <p>Giving a frequency of 0.64 Hz</p>
 <p>This corresponds to a length of 60cm -which was exactly the length used.</p>
 <h1 id="intermediate-1"><a name="IntermediateP"></a>Intermediate</h1>
-<p>In addition to investigating the Time period of the pendulum, its movement in the North and or East directions can be analysed.</p>
+<p>In addition to investigating the Time period of the pendulum, its movement in the North and or East directions can be
+    analysed.</p>
 <p>The Pendulum_lesson2 script can be used to produce a graph of displacement, Velocity and acceleration.</p>
 <p>The script contains similar prompts as in the beginner exercise.</p>
 <p>As before, in matlab, open the file Pendulum_lesson2</p>
 <p>The final graph produced looks as follows</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph5.jpg" alt="" /></p>
 <p>One point of interest, in this example, is to investigate the relationship between amplitude and time-period.
-Below is a graph from a second data set taken with the same pendulum but with a much-reduced amplitude. The isochronous nature of pendulums can be a conceptual hurdle, and some pupils find this difficult to overcome – it is very visible here.</p>
+    Below is a graph from a second data set taken with the same pendulum but with a much-reduced amplitude. The
+    isochronous nature of pendulums can be a conceptual hurdle, and some pupils find this difficult to overcome – it is
+    very visible here.</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph6.jpg" alt="" /></p>
 <h1 id="advanced-1"><a name="AdvancedP"></a>Advanced</h1>
 <p>The final analysis is suitable for G&amp;T students in years 11 or above.
-It involves understanding the moving of data from the time domain into the frequency domain.</p>
+    It involves understanding the moving of data from the time domain into the frequency domain.</p>
 <p>The analysis should be used as an extension to the intermediate exercise and not as a stand-alone activity.</p>
-<p>The script required is Pendulum_lesson3. Data should already have been loaded into Matlab with the previous scripts already complete.</p>
-<p>(Note – this analysis gives a more accurate output if the data is recorded over a longer time frame. Leaving the pendulum to oscillate for over a minute would be ideal)</p>
-<p>Notice, here, the peak amplitude occurs at a frequency of approximately 0.64 Hz which was the calculated frequency from earlier examples.</p>
+<p>The script required is Pendulum_lesson3. Data should already have been loaded into Matlab with the previous scripts
+    already complete.</p>
+<p>(Note – this analysis gives a more accurate output if the data is recorded over a longer time frame. Leaving the
+    pendulum to oscillate for over a minute would be ideal)</p>
+<p>Notice, here, the peak amplitude occurs at a frequency of approximately 0.64 Hz which was the calculated frequency
+    from earlier examples.</p>
 <p><img src="https://vertigo.engineering/vertigo-instructions/Pendulum_graph7.jpg" alt="" /></p>
-<p>It is also interesting to note that whilst the pendulum will oscillate in the expected plane, it will also oscillate as a torsional pendulum. These frequencies often show themselves in the Fourier Transform. It may be an area worth investigating.</p>
+<p>It is also interesting to note that whilst the pendulum will oscillate in the expected plane, it will also oscillate
+    as a torsional pendulum. These frequencies often show themselves in the Fourier Transform. It may be an area worth
+    investigating.</p>
 <p><br /><br />
-<br /><br />
-<br /><br /></p>
+    <br /><br />
+    <br /><br /></p>
 <p><br /><br />
-<br /><br />
-<br /><br /></p>
+    <br /><br />
+    <br /><br /></p>
