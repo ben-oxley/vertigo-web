@@ -1,15 +1,15 @@
 <div class="container-fluid">
   <div class="row no-gutters">
     <div class="col-12">
-      <app-tabs>
+      <app-tabs style="margin-bottom: 500px; min-height: 500px;">
         <app-tab [tabTitle]="'Graph'">
           <graph-control-selection [VertigoRawData]="VertigoRawData" ></graph-control-selection>
         </app-tab>
-        <app-tab [tabTitle]="'Map'">
-          <live-map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
+        <app-tab [tabTitle]="'Map'" (selected)="map.reload()">
+          <live-map #map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
         </app-tab>
-        <app-tab [tabTitle]="'3D View'">
-          <app-orientation></app-orientation>
+        <app-tab [tabTitle]="'3D View'" (selected)="orientation.resizeCanvasToDisplaySize()">
+          <app-orientation #orientation [Quat]="quat"></app-orientation>
         </app-tab>
       </app-tabs>
       <div class="row align-items-center no-gutters">

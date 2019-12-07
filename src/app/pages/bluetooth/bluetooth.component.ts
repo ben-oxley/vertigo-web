@@ -74,6 +74,7 @@ export class BluetoothComponent implements OnInit {
   public q1 = 0.0;
   public q2 = 0.0;
   public q3 = 0.0;
+  public quat = {q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3};
   public fix = 'Not detected';
   public flags = 'Not detected';
   public versionNumber = 'Not detected';
@@ -114,6 +115,7 @@ export class BluetoothComponent implements OnInit {
   }
 
   public static lookupGPSvalidity(byte): string {
+    // tslint:disable-next-line: no-bitwise
     switch (0x4 & byte) {
       case 0x00: return 'No valid time information';
       case 0x01: return 'Valid date';
@@ -293,6 +295,7 @@ export class BluetoothComponent implements OnInit {
     component.q1 = (event.getFloat32(4, true));
     component.q2 = (event.getFloat32(8, true));
     component.q3 = (event.getFloat32(12, true));
+    component.quat = {q0: component.q0, q1: component.q1, q2: component.q2, q3: component.q3};
     let arr: number[] = [component.q0, component.q1, component.q2, component.q3];
     const rpy: number[] = Quat2EulData.toEuler(arr);
     dataArray.Load(new Data([Date.now(), 0, component.q0, component.q1, component.q2, component.q3, rpy[0], rpy[1], rpy[2]]));
@@ -422,8 +425,8 @@ export class BluetoothComponent implements OnInit {
   }
 
   public async registerToServices(service: BluetoothRemoteGATTService, charteristicID: string): Promise<BluetoothRemoteGATTCharacteristic> {
-    return service.getCharacteristic(charteristicID).catch(e=> {
-      throw new Error("Cannot get charateristic "+charteristicID);
+    return service.getCharacteristic(charteristicID).catch(e => {
+      throw new Error("Cannot get charateristic " + charteristicID);
     });
   }
 
