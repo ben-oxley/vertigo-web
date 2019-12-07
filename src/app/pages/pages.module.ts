@@ -13,6 +13,7 @@ import { PendulumComponent } from './pendulum/pendulum.component';
 import { CircularmotionComponent } from './circularmotion/circularmotion.component';
 import { VelocitytimeComponent } from './velocitytime/velocitytime.component';
 import { TrampolineComponent } from './trampoline/trampoline.component';
+import { ThreedModule } from '../threed/threed.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -26,7 +27,8 @@ const PAGES_COMPONENTS = [
     MapsModule,
     GraphsModule,
     CommonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ThreedModule
   ],
   declarations: [
     ...PAGES_COMPONENTS,

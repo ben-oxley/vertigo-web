@@ -44,6 +44,8 @@
     "plotly.js": "^1.49.5",
     "popper.js": "^1.15.0",
     "rxjs": "~6.4.0",
+    "three-orbitcontrols-ts-port": "^2.102.2",
+    "three.js": "^0.77.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

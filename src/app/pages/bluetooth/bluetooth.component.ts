@@ -12,6 +12,7 @@ import { Quat2EulData } from 'src/app/processing/processes/quat2euldata';
 
 
 
+
 @Component({
   selector: 'bluetooth',
   templateUrl: './bluetooth.component.html',
