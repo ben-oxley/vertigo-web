@@ -1,6 +1,8 @@
 import { Component, OnInit, NgZone, Input, HostListener, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges, AfterContentInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three-orbitcontrols-ts-port';
+import { Quat2EulData } from 'src/app/processing/processes/quat2euldata';
+import { ThreedModule } from '../threed.module';
 let STLLoader = require('three-stl-loader')(THREE);
 
 
@@ -21,6 +23,7 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
     private scene: THREE.Scene;
     private camera: THREE.PerspectiveCamera;
     private controls: OrbitControls;
+    private arrow: THREE.ArrowHelper;
 
     public constructor(private zone: NgZone) {
 
@@ -73,16 +76,16 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
         const axis = new THREE.AxesHelper(1000);
         this.axis = axis;
         const helper = new THREE.GridHelper(10, 10, 0x888888, 0x888888);
+        this.arrow = new THREE.ArrowHelper(new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,0),0,0x4444aa,0.1,0.1);
         scene.add(helper);
         scene.add(axis);
+        scene.add(this.arrow);
 
         camera.position.x = -2;
         camera.position.y = 1;
 
         this.controls = new OrbitControls(camera, renderer.domElement);
         this.controls.maxPolarAngle = Math.PI / 2;
-        // this.controls.enableZoom = true;
-        // this.controls.enablePan = false;
         (this.controls as any).addEventListener('change', () => this.checkSizeAndAnimate());
 
 
@@ -166,6 +169,22 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
             -quat.q0
         );
         if (this.cube) { this.cube.setRotationFromQuaternion(quaternion); }
+        if (this.renderer) { this.renderer.render(this.scene, this.camera); }
+    }
+
+    @Input() public set Accel(accel) {
+
+        const vector: THREE.Vector3 = new THREE.Vector3(
+            -0.1*accel.x,
+            -0.1*accel.z,
+            0.1*accel.y
+        );
+        
+        if (this.arrow) { 
+            vector.applyQuaternion(this.cube.quaternion)
+            this.arrow.setDirection(vector);
+            this.arrow.setLength(vector.manhattanLength());
+        }
         if (this.renderer) { this.renderer.render(this.scene, this.camera); }
     }
 

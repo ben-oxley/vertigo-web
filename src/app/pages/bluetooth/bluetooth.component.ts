@@ -76,6 +76,7 @@ export class BluetoothComponent implements OnInit {
   public q3 = 0.0;
   public quat = {q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3};
   public rot = {x: this.rotx, y: this.roty, z: this.rotz};
+  public accel = {x: this.accx, y: this.accy, z: this.accz};
   public fix = 'Not detected';
   public flags = 'Not detected';
   public versionNumber = 'Not detected';
@@ -265,6 +266,7 @@ export class BluetoothComponent implements OnInit {
     component.rotx = (event.getInt16(6, true));
     component.roty = (event.getInt16(8, true));
     component.rotz = (event.getInt16(10, true));
+    component.accel = {x: component.accx, y: component.accy, z: component.accz};
     dataArray.Load(new Data([
       Date.now(),
       0,
