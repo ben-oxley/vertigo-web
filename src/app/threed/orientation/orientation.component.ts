@@ -160,33 +160,13 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
 
     @Input() public set Quat(quat) {
         const quaternion: THREE.Quaternion = new THREE.Quaternion(
-            quat.q1,
-            quat.q3,
+            -quat.q1,
+            -quat.q3,
             quat.q2,
-            quat.q0
+            -quat.q0
         );
         if (this.cube) { this.cube.setRotationFromQuaternion(quaternion); }
         if (this.renderer) { this.renderer.render(this.scene, this.camera); }
-    }
-
-    DataPointUpdated(index: number): void {
-        this.resizeCanvasToDisplaySize();
-        let data = null;
-        if (data && data.boardReference) {
-            let localIndex: number = data.boardReference.rx.findIndex(p => p.x >= data.boardReference.ax[index].x);
-            if (localIndex === -1) {
-                localIndex = data.boardReference.rx.length;
-            }
-            const quaternion: THREE.Quaternion = new THREE.Quaternion(
-
-                data.boardReference.q1[localIndex].y,
-                -data.boardReference.q3[localIndex].y, // this is our world z
-                data.boardReference.q2[localIndex].y,
-                data.boardReference.q0[localIndex].y
-            );
-            this.cube.setRotationFromQuaternion(quaternion);
-        }
-        this.renderer.render(this.scene, this.camera);
     }
 
 }

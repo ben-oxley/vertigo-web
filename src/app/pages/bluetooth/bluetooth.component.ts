@@ -75,6 +75,7 @@ export class BluetoothComponent implements OnInit {
   public q2 = 0.0;
   public q3 = 0.0;
   public quat = {q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3};
+  public rot = {x: this.rotx, y: this.roty, z: this.rotz};
   public fix = 'Not detected';
   public flags = 'Not detected';
   public versionNumber = 'Not detected';
@@ -298,6 +299,7 @@ export class BluetoothComponent implements OnInit {
     component.quat = {q0: component.q0, q1: component.q1, q2: component.q2, q3: component.q3};
     let arr: number[] = [component.q0, component.q1, component.q2, component.q3];
     const rpy: number[] = Quat2EulData.toEuler(arr);
+    component.rot = {x:rpy[0],y:rpy[1],z:rpy[2]};
     dataArray.Load(new Data([Date.now(), 0, component.q0, component.q1, component.q2, component.q3, rpy[0], rpy[1], rpy[2]]));
   }
 
