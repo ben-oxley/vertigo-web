@@ -12,6 +12,7 @@
           <live-map #map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
         </app-tab>
       </app-tabs>
+      <br/><br/>
       <app-tabs><!--(click)="map.reload()"-->
         <app-tab [tabTitle]="'Additional Dataseries'">
           <app-processor [VertigoRawData]="VertigoRawData" (loadedProcessedData)="onProcessedLoaded($event)"></app-processor>

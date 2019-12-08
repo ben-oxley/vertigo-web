@@ -12,70 +12,39 @@
           <app-orientation #orientation [Quat]="quat"></app-orientation>
         </app-tab>
       </app-tabs>
-      <div class="row align-items-center no-gutters">
-        <div class="col-1">
-          <a href="#carouselExampleControls1" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </div>
-        <div id="carouselExampleControls1" class="carousel col-10" data-wrap="true" data-ride="false"
-          data-interval="false">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <div class="propname">
-                <span>Acceleration</span>
-              </div>
-              <div class="prop">
-                <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
-                <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-                <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-                <div><span><b>Absolute Magnitude: </b><span>{{ acc2 | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="propname">
-                <span>Rotational Velocity</span>
-              </div>
-              <div class="prop">
-                <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
-                <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
-                <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="propname">
-                <span>Location</span>
-              </div>
-              <div class="prop">
-                <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
-                <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
-                <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
-                <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="propname">
-                <span>Status</span>
-              </div>
-              <div class="prop">
-                <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
-                <div><span><b>Serial Number:</b> {{serialNumber}}</span></div>
-                <div><span><b>Logger State:</b> {{loggerState}}</span></div>
-                <div><span><b>IMU State:</b> {{imuState}}</span></div>
-                <div><span><b>GPS State:</b> {{gpsState}}</span></div>
-                <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-1">
-          <a href="#carouselExampleControls1" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-      </div>
+      <br/>
+      <br/>
+      <app-tabs style="margin-bottom: 500px; min-height: 500px;">
+          <app-tab [tabTitle]="'Acceleration'">
+                  <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
+                  <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+                  <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+                  <div><span><b>Absolute Magnitude: </b><span>{{ acc2 | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+          </app-tab>
+          <app-tab [tabTitle]="'Rotational Velocity'">
+              <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
+              <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
+          </app-tab>
+          <app-tab [tabTitle]="'Location'">
+              <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
+              <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
+              <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
+              <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
+          </app-tab>
+          <app-tab [tabTitle]="'Status'">
+              <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
+              <div><span><b>Serial Number:</b> {{serialNumber}}</span></div>
+              <div><span><b>Logger State:</b> {{loggerState}}</span></div>
+              <div><span><b>IMU State:</b> {{imuState}}</span></div>
+              <div><span><b>GPS State:</b> {{gpsState}}</span></div>
+              <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
+          </app-tab>
+         
+        </app-tabs>
+      
+        
+      
       <div class="row align-items-center no-gutters">
         <div class="col-1">
           <a href="#carouselExampleControls2" role="button" data-slide="prev">
