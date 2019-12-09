@@ -14,6 +14,7 @@ import { CircularmotionComponent } from './circularmotion/circularmotion.compone
 import { VelocitytimeComponent } from './velocitytime/velocitytime.component';
 import { TrampolineComponent } from './trampoline/trampoline.component';
 import { ThreedModule } from '../threed/threed.module';
+import { InstructionsComponent } from './instructions/instructions.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -36,6 +37,7 @@ const PAGES_COMPONENTS = [
     CircularmotionComponent,
     VelocitytimeComponent,
     TrampolineComponent,
+    InstructionsComponent,
   ],
 })
 export class PagesModule {

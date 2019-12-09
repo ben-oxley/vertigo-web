@@ -6,6 +6,7 @@ import { VelocitytimeComponent } from './pages/velocitytime/velocitytime.compone
 import { PendulumComponent } from './pages/pendulum/pendulum.component';
 import { CircularmotionComponent } from './pages/circularmotion/circularmotion.component';
 import { TrampolineComponent } from './pages/trampoline/trampoline.component';
+import { InstructionsComponent } from './pages/instructions/instructions.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'velocity-time', component: VelocitytimeComponent},
   { path: 'pendulum', component: PendulumComponent},
   { path: 'circularmotion', component: CircularmotionComponent},
-  { path: 'trampoline', component: TrampolineComponent}
+  { path: 'trampoline', component: TrampolineComponent},
+  { path: 'instructions', component: InstructionsComponent}
 ];
 
 @NgModule({
