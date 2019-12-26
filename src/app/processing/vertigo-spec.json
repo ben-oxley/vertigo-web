@@ -54,7 +54,9 @@
                 "name":"atmospheric",
                 "identifier":4,
                 "columns":[
-                    {"identifier":2,"id":"press","name":"pressure","units":"kPa"}
+                    {"identifier":2,"id":"press","name":"pressure","units":"kPa"},
+                    {"identifier":3,"id":"temperature","name":"temperature","units":"°C"},
+                    {"identifier":4,"id":"humidity","name":"humidity","units":"%"}
                 ]
             }
     ]

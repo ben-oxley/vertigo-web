@@ -14,8 +14,8 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { PagesModule } from './pages/pages.module';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, FaIconLibrary, FaConfig } from '@fortawesome/angular-fontawesome';
-import {faTag, faCloudDownloadAlt, faStop, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-import {faBluetooth } from '@fortawesome/free-brands-svg-icons'
+import { faTag, faCloudDownloadAlt, faStop, faPause, faPlay, faCompressArrowsAlt } from '@fortawesome/free-solid-svg-icons'
+import { faBluetooth } from '@fortawesome/free-brands-svg-icons'
 // import { fas } from '@fortawesome/free-solid-svg-icons';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
 // import { far } from '@fortawesome/free-regular-svg-icons';
@@ -46,8 +46,8 @@ export class AppModule {
   constructor(library: FaIconLibrary, faConfig: FaConfig) {
     // Add an icon to the library for convenient access in other components
     //library.addIconPacks(fas, fab, far);
-    library.addIcons(faBluetooth,faCloudDownloadAlt,faPause,faPlay,faStop,faTag);
+    library.addIcons(faBluetooth, faCloudDownloadAlt, faPause, faPlay, faStop, faTag, faCompressArrowsAlt);
     faConfig.defaultPrefix = 'far';
   }
- }
+}
 

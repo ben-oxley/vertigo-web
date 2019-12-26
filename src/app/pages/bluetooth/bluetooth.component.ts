@@ -38,6 +38,8 @@ export class BluetoothComponent implements OnInit {
   private static imuQuaternionCharacteristicID = '45ae0807-2233-4026-b264-045a933fa973';
   // Magnetometer/Accelerometer/Rate Gyro (“MARG”)
   private static magnetometerCharacteristicID = '45ae0807-2233-4026-b264-045a933fa974';
+  // Atmospheric / Ambient sensors (“ATMO”)
+  private static atmosphericCharacteristicID = '45ae0807-2233-4026-b264-045a933fa975';
   // Global Navigation Satellite System (“GNSS”)
   private static gpsCharacteristicID = 'f078622c-f2ee-4adb-896f-cef6645e1521';
   // STATUS (“STAT”)
@@ -57,6 +59,7 @@ export class BluetoothComponent implements OnInit {
   private gpsCharacteristic: BluetoothRemoteGATTCharacteristic;
   private statusCharacteristic: BluetoothRemoteGATTCharacteristic;
   private controlCharacteristic: BluetoothRemoteGATTCharacteristic;
+  private atmosphericCharacteristic: BluetoothRemoteGATTCharacteristic;
   private serialNumberCharteristic: BluetoothRemoteGATTCharacteristic;
   private firmwareVersionCharacteristic: BluetoothRemoteGATTCharacteristic;
   public VertigoRawData: VertigoRawData = new VertigoRawData();
@@ -74,6 +77,9 @@ export class BluetoothComponent implements OnInit {
   public q1 = 0.0;
   public q2 = 0.0;
   public q3 = 0.0;
+  public temp = 0.0;
+  public press = 0.0;
+  public humidity = 0.0;
   public quat = {q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3};
   public rot = {x: this.rotx, y: this.roty, z: this.rotz};
   public accel = {x: this.accx, y: this.accy, z: this.accz};
@@ -98,13 +104,15 @@ export class BluetoothComponent implements OnInit {
   public static lookupLoggerState(byte): string {
     switch (byte) {
       case 0x00: return 'Unconfigured';
-      case 0x01: return 'No SD card present';
+      case 0x01: return 'No SD card present';// (will go to “Ready” when detected and mounted)
       case 0x02: return 'Clearing SD card of previous log files';
-      case 0x03: return 'Ready';
-      case 0x04: return 'Initialising';
-      case 0x05: return 'Logging';
-      case 0x06: return 'Finalising';
-      case 0x07: return 'Fatal error';
+      case 0x03: return 'Initialising';// (prepares for logging, opens log file, then moves to “Logging”)
+      case 0x04: return 'Pending config';// (waiting for configuration to be updated before moving to “Ready”)
+      case 0x05: return 'Ready';// (will go to “Initialising” on start request, or to “No SD” if SD card is removed)
+      case 0x06: return 'Logging';// (will go to “Finalise” on stop request)
+      case 0x07: return 'Finalise';// (closing file handles after end of run, will return to “Ready”)
+      case 0x08: return 'Fatal error';//
+
     }
   }
 
@@ -145,6 +153,7 @@ export class BluetoothComponent implements OnInit {
       case 0x02: return 'Armed';
       case 0x03: return 'Generating';
       case 0x04: return 'Finalise';
+      case 0x05: return 'Calibrating';
     }
   }
 
@@ -191,6 +200,9 @@ export class BluetoothComponent implements OnInit {
             .then(charteristic => this.imuQuaternionCharacteristic = charteristic),
           this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
             .then(charteristic => this.magnetometerCharacteristic = charteristic),
+           this.registerToServices(service, BluetoothComponent.atmosphericCharacteristicID)
+             .then(charteristic => this.atmosphericCharacteristic = charteristic).catch(error =>
+              console.log("Atmospheric characteristic not present")),
           this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
             .then(charteristic => this.gpsCharacteristic = charteristic),
           this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
@@ -207,6 +219,7 @@ export class BluetoothComponent implements OnInit {
         this.stop = false;
         this.pause = false;
         this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
+        if (this.atmosphericCharacteristic) this.pollforUpdates(this.atmosphericCharacteristic, this.handleAtmospheric, 1);
         this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1000);
         this.pollforUpdates(this.statusCharacteristic, this.handleState, 1000);
         this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
@@ -277,6 +290,20 @@ export class BluetoothComponent implements OnInit {
       component.roty,
       component.rotz,
       0, 0, 0, 0, 0, 0
+    ]));
+  }
+
+  private handleAtmospheric(component: BluetoothComponent, event: DataView) {
+    const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "atmospheric").Identifier);
+    component.temp = (event.getInt16(0, true) / 1e2);
+    component.press = (event.getInt16(2, true) / 1e2);
+    component.humidity = (event.getInt16(4, true) / 1e5);
+    dataArray.Load(new Data([
+      Date.now(),
+      0,
+      component.temp,
+      component.press,
+      component.humidity
     ]));
   }
 
@@ -355,6 +382,16 @@ export class BluetoothComponent implements OnInit {
     this.stop = true;
     if (this.device.gatt.connected) {
       this.controlCharacteristic.writeValue(new Uint8Array([0x02])).catch(error => {
+        console.log(error);
+        this.handleBluetoothError();
+      });
+    }
+  }
+
+  public calibrate() {
+    this.stop = true;
+    if (this.device.gatt.connected) {
+      this.controlCharacteristic.writeValue(new Uint8Array([0b00001000])).catch(error => {
         console.log(error);
         this.handleBluetoothError();
       });

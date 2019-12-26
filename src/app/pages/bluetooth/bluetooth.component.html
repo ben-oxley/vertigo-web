@@ -32,6 +32,11 @@
               <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
               <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
           </app-tab>
+          <app-tab [tabTitle]="'Atmospheric'">
+            <div><span><b>Temperature: </b><span>{{temp| number:'.2'}}</span> °C</span></div>
+            <div><span><b>Pressure: </b><span>{{press| number:'.2'}}</span> kPa</span></div>
+            <div><span><b>Humidity: </b><span>{{humidity| number:'.2'}}</span> %</span></div>
+        </app-tab>
           <app-tab [tabTitle]="'Status'">
               <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
               <div><span><b>Serial Number:</b> {{serialNumber}}</span></div>
@@ -51,7 +56,7 @@
               <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()"><fa-icon [icon]="['fas', 'play']"></fa-icon> Start Logging</button>
               <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()"><fa-icon [icon]="['fas', 'pause']"></fa-icon> Pause Browser</button>
               <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()"><fa-icon [icon]="['fas', 'stop']"></fa-icon> Stop Logging</button>
-              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected"><fa-icon [icon]="['fas', 'tag']"></fa-icon> Add Tag</button>
+              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="calibrate()"><fa-icon [icon]="['fas', 'compress-arrows-alt']"></fa-icon>Calibrate</button>
               <button type="button" class="btn btn-outline-warning btn-block" [disabled]="!connected"><fa-icon [icon]="['fas', 'cloud-download-alt']"></fa-icon> Download</button>     
         </div>
       </div>
