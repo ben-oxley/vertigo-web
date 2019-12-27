@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NgZone } from '@angular/core';
 import { VertigoProcessedData } from '../../processing/vertigo-data';
 import { VertigoRawData } from "../../processing/vertigo-data";
 import { DataType } from '../../processing/datatype';
 import { Data } from '../../processing/data';
 import { Dataspec } from '../../processing/dataspec';
 import { RawData } from 'src/app/processing/processes/rawdata';
+import { DataListener } from 'src/app/processing/listener';
 
 @Component({
   selector: 'graph-control',
@@ -16,8 +17,20 @@ export class GraphControlComponent {
   private vertigoRawData: VertigoRawData;
   private vertigoProcessedData: VertigoProcessedData;
   private selectedSeries: DataType[] = [];
+  private renderRequested: boolean = false;
+  private controller:GraphControlComponent;
+  private dataListener: DataListener = (a,r)=>{
+    if (!this.renderRequested){
+      this.renderRequested = true;
+      this.zone.run(() => {
+        this.controller.seriesChanged(this.selectedSeries);
+      });
+    }
+    
+  };
 
-  public constructor() {
+  public constructor(private zone: NgZone) {
+    this.controller = this;
     this.GraphData = [{
     }];
   }
@@ -93,8 +106,10 @@ export class GraphControlComponent {
 
 
   public onLoaded(event: VertigoRawData) {
+    if (this.vertigoRawData) this.vertigoRawData.DataTypes.forEach(dt=>dt.RemoveListener(this.dataListener));
     this.vertigoRawData = event;
     if (this.vertigoRawData) {
+      this.vertigoRawData.DataTypes.forEach(dt=>dt.AddListener(this.dataListener));
       this.vertigoRawData.DataTypes.forEach((dt, key) => {
         dt.AddListener((a, r) => {
           const type = this.selectedSeries.find(s => s.Identifier === key);
@@ -146,5 +161,9 @@ export class GraphControlComponent {
     } else {
       this.seriesChanged(this.selectedSeries);
     }
+  }
+
+  onRender(){
+    this.renderRequested = false;
   }
 }

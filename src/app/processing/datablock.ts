@@ -8,6 +8,8 @@ export interface DataBlock{
     Data():Data[];
 
     AddListener(Listener:DataListener);
+    
+    RemoveListener(Listener:DataListener);
 
     Load(data:Data);
 

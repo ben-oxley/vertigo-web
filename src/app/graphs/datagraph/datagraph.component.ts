@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Output, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, SimpleChanges, OnChanges, EventEmitter } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Data } from '../../processing/data';
@@ -12,6 +12,8 @@ import { PlotlyModule } from 'angular-plotly.js';
 export class DataGraphComponent implements OnChanges {
 
   @Input() InputData: any = [];
+
+  @Output() afterPlot: EventEmitter<any> = new EventEmitter<any>();
 
   private graph:PlotlyModule
 
@@ -75,6 +77,10 @@ export class DataGraphComponent implements OnChanges {
 
   @Input() setYAxis(label:String){
     this.layout.yaxis.title.text = label;
+  }
+
+  onPlot(){
+    this.afterPlot.emit();
   }
 
   ngOnChanges(changes: SimpleChanges) {

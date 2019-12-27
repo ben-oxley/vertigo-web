@@ -29,6 +29,10 @@ export abstract class AbstractDataBlock implements DataBlock {
         this.listeners.push(listener);
     }
 
+    RemoveListener(listener: DataListener) {
+        this.listeners = this.listeners.filter(l=>l!=listener);
+    }
+
     protected notifyListeners(added: Data[], removed: Data[]) {
         this.listeners.forEach(l => l(added, removed));
     }

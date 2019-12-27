@@ -296,13 +296,13 @@ export class BluetoothComponent implements OnInit {
   private handleAtmospheric(component: BluetoothComponent, event: DataView) {
     const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "atmospheric").Identifier);
     component.temp = (event.getInt16(0, true) / 1e2);
-    component.press = (event.getInt16(2, true) / 1e2);
-    component.humidity = (event.getInt16(4, true) / 1e5);
+    component.humidity = (event.getInt16(2, true) / 1e2);
+    component.press = (event.getInt16(4, true) / 1e1);
     dataArray.Load(new Data([
       Date.now(),
       0,
-      component.temp,
       component.press,
+      component.temp,
       component.humidity
     ]));
   }
