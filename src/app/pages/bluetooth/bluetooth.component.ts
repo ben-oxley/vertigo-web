@@ -246,10 +246,6 @@ export class BluetoothComponent implements OnInit {
       }
       const options: RequestDeviceOptions = {
         acceptAllDevices: true,
-        optionalServices: [
-          BluetoothComponent.serviceID,
-          BluetoothComponent.harwareInfoServiceId
-        ]
       };
       try {
         console.log('Requesting Bluetooth Device...');

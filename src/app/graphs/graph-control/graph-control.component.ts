@@ -18,10 +18,13 @@ export class GraphControlComponent {
   private vertigoProcessedData: VertigoProcessedData;
   private selectedSeries: DataType[] = [];
   private renderRequested: boolean = false;
+  private lastRender: number = 0;
   private controller:GraphControlComponent;
   private dataListener: DataListener = (a,r)=>{
-    if (!this.renderRequested){
+    let timeDiff:number = Math.round((Date.now() - this.lastRender) / 1000);
+    if (!this.renderRequested && (!this.lastRender || timeDiff>1)){
       this.renderRequested = true;
+      this.lastRender = Date.now();
       this.zone.run(() => {
         this.controller.seriesChanged(this.selectedSeries);
       });
@@ -165,5 +168,6 @@ export class GraphControlComponent {
 
   onRender(){
     this.renderRequested = false;
+
   }
 }
