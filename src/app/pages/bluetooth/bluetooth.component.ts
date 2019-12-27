@@ -101,7 +101,7 @@ export class BluetoothComponent implements OnInit {
     () => this.rotz,
   ];
 
-  public static lookupLoggerState(byte): string {
+  public lookupLoggerState(byte): string {
     switch (byte) {
       case 0x00: return 'Unconfigured';
       case 0x01: return 'No SD card present';// (will go to “Ready” when detected and mounted)
@@ -116,7 +116,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  public static lookupGPSFix(byte): string {
+  public lookupGPSFix(byte): string {
     switch (byte) {
       case 0: return 'No Fix';
       case 2: return '2D Fix';
@@ -124,7 +124,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  public static lookupGPSvalidity(byte): string {
+  public lookupGPSvalidity(byte): string {
     // tslint:disable-next-line: no-bitwise
     switch (0x4 & byte) {
       case 0x00: return 'No valid time information';
@@ -146,7 +146,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  public static lookupIMUState(byte): string {
+  public lookupIMUState(byte): string {
     switch (byte) {
       case 0x00: return 'Unconfigured';
       case 0x01: return 'Initialisation failed';
@@ -157,7 +157,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  public static lookupGPSState(byte): string {
+  public lookupGPSState(byte): string {
     switch (byte) {
       case 0x00: return 'Unconfigured';
       case 0x01: return 'Initialisation failed';
@@ -167,7 +167,7 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  public static lookupAtmosphericState(byte): string {
+  public lookupAtmosphericState(byte): string {
     switch (byte) {
       case 0x00: return 'Unconfigured';
       case 0x01: return 'Initialisation failed';
@@ -328,7 +328,7 @@ export class BluetoothComponent implements OnInit {
     component.q3 = (event.getFloat32(12, true));
     component.quat = {q0: component.q0, q1: component.q1, q2: component.q2, q3: component.q3};
     let arr: number[] = [component.q0, component.q1, component.q2, component.q3];
-    const rpy: number[] = Quat2EulData.toEuler(arr);
+    const rpy: number[] = component.toEuler(arr);
     component.rot = {x:rpy[0],y:rpy[1],z:rpy[2]};
     dataArray.Load(new Data([Date.now(), 0, component.q0, component.q1, component.q2, component.q3, rpy[0], rpy[1], rpy[2]]));
   }
@@ -338,8 +338,8 @@ export class BluetoothComponent implements OnInit {
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
     component.alt = (event.getInt32(8, true) / 1e3);
-    component.fix = BluetoothComponent.lookupGPSFix(event.getUint8(12));
-    component.flags = BluetoothComponent.lookupGPSvalidity(event.getUint8(13));
+    component.fix = component.lookupGPSFix(event.getUint8(12));
+    component.flags = component.lookupGPSvalidity(event.getUint8(13));
     dataArray.Load(new Data([Date.now(), 0, component.lat, component.lon, component.alt, 0, 0, 0, 0, 0]));
   }
 
@@ -352,15 +352,15 @@ export class BluetoothComponent implements OnInit {
       String.fromCharCode(event.getInt8(4)) +
       String.fromCharCode(event.getInt8(5)) +
       String.fromCharCode(event.getInt8(6));
-      component.loggerState = BluetoothComponent.lookupLoggerState(event.getInt8(7));
-      component.imuState = BluetoothComponent.lookupIMUState(event.getInt8(8));
-      component.gpsState = BluetoothComponent.lookupGPSState(event.getInt8(9));
-      component.atmosphericState = BluetoothComponent.lookupAtmosphericState(event.getInt8(10));
+      component.loggerState = component.lookupLoggerState(event.getInt8(7));
+      component.imuState = component.lookupIMUState(event.getInt8(8));
+      component.gpsState = component.lookupGPSState(event.getInt8(9));
+      component.atmosphericState = component.lookupAtmosphericState(event.getInt8(10));
     } else {
-      component.loggerState = BluetoothComponent.lookupLoggerState(event.getInt8(0));
-      component.imuState = BluetoothComponent.lookupIMUState(event.getInt8(1));
-      component.gpsState = BluetoothComponent.lookupGPSState(event.getInt8(2));
-      component.atmosphericState = BluetoothComponent.lookupAtmosphericState(event.getInt8(3));
+      component.loggerState = component.lookupLoggerState(event.getInt8(0));
+      component.imuState = component.lookupIMUState(event.getInt8(1));
+      component.gpsState = component.lookupGPSState(event.getInt8(2));
+      component.atmosphericState = component.lookupAtmosphericState(event.getInt8(3));
     }
   }
 
@@ -465,6 +465,29 @@ export class BluetoothComponent implements OnInit {
     component.stop = true;
     component.connected = false;
   }
+
+  public toEuler(q: Array<number>): Array<number> {
+    const t0 = -2 * (q[2] * q[2] + q[3] * q[3]) + 1;
+    const t1 = 2 * (q[1] * q[2] - q[0] * q[3]);
+    let t2 = -2 * (q[1] * q[3] + q[0] * q[2]);
+    const t3 = 2 * (q[2] * q[3] - q[0] * q[1]);
+    const t4 = -2 * (q[1] * q[1] + q[2] * q[2]) + 1;
+    if (t2 > 1) {
+        t2 = 1;
+    }
+
+    if (t2 < -1) {
+        t2 = -1;
+    }
+
+    let pitch = Math.asin(t2) * 2;
+    let roll = Math.atan2(t3, t4);
+    let yaw = Math.atan2(t1, t0);
+    pitch = pitch * (180.0 / Math.PI);
+    roll = roll * (180.0 / Math.PI);
+    yaw = yaw * (180.0 / Math.PI);
+    return [pitch, roll, yaw];
+}
 
   public async registerToServices(service: BluetoothRemoteGATTService, charteristicID: string): Promise<BluetoothRemoteGATTCharacteristic> {
     return service.getCharacteristic(charteristicID).catch(e => {
