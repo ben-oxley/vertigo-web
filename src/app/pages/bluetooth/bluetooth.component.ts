@@ -337,7 +337,7 @@ export class BluetoothComponent implements OnInit {
     const dataArray: RawData = component.VertigoRawData.DataTypes.get(Dataspec.Spec.Types.find(t => t.Id === "gps").Identifier);
     component.lon = (event.getInt32(0, true) / 1e7);
     component.lat = (event.getInt32(4, true) / 1e7);
-    component.alt = (event.getInt32(8, true) / 1e7);
+    component.alt = (event.getInt32(8, true) / 1e3);
     component.fix = BluetoothComponent.lookupGPSFix(event.getUint8(12));
     component.flags = BluetoothComponent.lookupGPSvalidity(event.getUint8(13));
     dataArray.Load(new Data([Date.now(), 0, component.lat, component.lon, component.alt, 0, 0, 0, 0, 0]));
