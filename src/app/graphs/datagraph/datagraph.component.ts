@@ -41,6 +41,7 @@ export class DataGraphComponent implements OnChanges {
   };
   public layout: any = {
     autosize: true,
+    height: 400, 
     plot_bgcolor: '#FFF3',
     paper_bgcolor: '#FFF3',
     font: { color: '#afafaf' },

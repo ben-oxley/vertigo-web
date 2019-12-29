@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row no-gutters">
     <div class="col-12">
-      <app-tabs style="margin-bottom: 500px; min-height: 500px;">
+      <app-tabs>
         <app-tab [tabTitle]="'Graph'">
           <graph-control-selection [VertigoRawData]="VertigoRawData" ></graph-control-selection>
         </app-tab>
@@ -14,7 +14,7 @@
       </app-tabs>
       <br/>
       <br/>
-      <app-tabs style="margin-bottom: 500px; min-height: 500px;">
+      <app-tabs>
           <app-tab [tabTitle]="'Acceleration'">
                   <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
                   <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
