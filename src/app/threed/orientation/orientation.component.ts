@@ -1,8 +1,9 @@
 import { Component, OnInit, NgZone, Input, HostListener, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges, AfterContentInit } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three-orbitcontrols-ts-port';
+//import { OrbitControls } from 'three-orbitcontrols-ts-port';
 import { Quat2EulData } from 'src/app/processing/processes/quat2euldata';
 import { ThreedModule } from '../threed.module';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 let STLLoader = require('three-stl-loader')(THREE);
 
 
@@ -89,7 +90,6 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
         (this.controls as any).addEventListener('change', () => this.checkSizeAndAnimate());
 
 
-
         this.animate();
         // renderer.render(scene, camera);
         this.resizeCanvasToDisplaySize();
@@ -132,6 +132,7 @@ export class OrientationComponent implements OnInit, AfterViewInit, OnChanges {
 
             // update any render target sizes here
             this.controls.update();
+
             this.animate();
         }
     }
