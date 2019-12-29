@@ -80,9 +80,9 @@ export class BluetoothComponent implements OnInit {
   public temp = 0.0;
   public press = 0.0;
   public humidity = 0.0;
-  public quat = {q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3};
-  public rot = {x: this.rotx, y: this.roty, z: this.rotz};
-  public accel = {x: this.accx, y: this.accy, z: this.accz};
+  public quat = { q0: this.q0, q1: this.q1, q2: this.q2, q3: this.q3 };
+  public rot = { x: this.rotx, y: this.roty, z: this.rotz };
+  public accel = { x: this.accx, y: this.accy, z: this.accz };
   public fix = 'Not detected';
   public flags = 'Not detected';
   public versionNumber = 'Not detected';
@@ -188,43 +188,69 @@ export class BluetoothComponent implements OnInit {
 
   public async tryConnect() {
     return this.device.gatt.connect()
-    .then(server => {
-      this.device.addEventListener('gattserverdisconnected', () => this.reconnect(this));
-      return server.getPrimaryServices();
-    })
+      .then(server => {
+        this.device.addEventListener('gattserverdisconnected', () => this.reconnect(this));
+        return server.getPrimaryServices();
+      })
       .then(services => {
         const service: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.serviceID);
         const deviceService: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.harwareInfoServiceId);
-        return Promise.all([
-          this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
-            .then(charteristic => this.imuQuaternionCharacteristic = charteristic),
-          this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
-            .then(charteristic => this.magnetometerCharacteristic = charteristic),
-           this.registerToServices(service, BluetoothComponent.atmosphericCharacteristicID)
-             .then(charteristic => this.atmosphericCharacteristic = charteristic).catch(error =>
-              console.log("Atmospheric characteristic not present")),
-          this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
-            .then(charteristic => this.gpsCharacteristic = charteristic),
-          this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
-            .then(charteristic => this.controlCharacteristic = charteristic),
-          this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
-            .then(charteristic => this.statusCharacteristic = charteristic),
-          this.registerToServices(deviceService, BluetoothComponent.firwareRevisionCharateristicID)
-            .then(charteristic => this.firmwareVersionCharacteristic = charteristic),
-          // this.registerToServices(deviceService, BluetoothComponent.serialNumberCharateristicID)
-          //   .then(charteristic => this.serialNumberCharteristic = charteristic)
-        ]);
+        this.serialNumberCharteristic = null;
+        this.firmwareVersionCharacteristic = null;
+        this.statusCharacteristic = null;
+        this.controlCharacteristic = null;
+        this.imuQuaternionCharacteristic = null;
+        this.atmosphericCharacteristic = null;
+        this.gpsCharacteristic = null;
+        
+        return this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
+          .then(charteristic => this.imuQuaternionCharacteristic = charteristic)
+          .catch(error => console.log("IMU characteristic not present"))
+          .then(c => this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
+            .then(charteristic => this.magnetometerCharacteristic = charteristic)
+            .catch(error => console.log("Magnetometer characteristic not present")))
+          .then(c => this.registerToServices(service, BluetoothComponent.atmosphericCharacteristicID)
+            .then(charteristic => this.atmosphericCharacteristic = charteristic)
+            .catch(error => console.log("Atmospheric characteristic not present")))
+          .then(c => this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
+            .then(charteristic => this.gpsCharacteristic = charteristic)
+            .catch(error => console.log("GPS characteristic not present")))
+          .then(c => this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
+            .then(charteristic => this.controlCharacteristic = charteristic)
+            .catch(error => console.log("Control characteristic not present")))
+          .then(c => this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
+            .then(charteristic => this.statusCharacteristic = charteristic)
+            .catch(error => console.log("Status characteristic not present")))
+          .then(c => this.registerToServices(deviceService, BluetoothComponent.firwareRevisionCharateristicID)
+            .then(charteristic => this.firmwareVersionCharacteristic = charteristic)
+            .catch(error => console.log("Firmware characteristic not present")))
+            
       })
       .then(() => {
         this.stop = false;
         this.pause = false;
-        this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
+        if (this.magnetometerCharacteristic) return this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
+        else return Promise.resolve(this.magnetometerCharacteristic);
+      })
+      .then(()=>{
         if (this.atmosphericCharacteristic) this.pollforUpdates(this.atmosphericCharacteristic, this.handleAtmospheric, 1);
-        this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1000);
-        this.pollforUpdates(this.statusCharacteristic, this.handleState, 1000);
-        this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
-        //this.readOnce(this.serialNumberCharteristic, this.handleSerial);
-        this.readOnce(this.firmwareVersionCharacteristic, this.handleVersion);
+        else return Promise.resolve(this.atmosphericCharacteristic);
+      })
+      .then(()=>{
+        if (this.gpsCharacteristic) this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1);
+        else return Promise.resolve(this.gpsCharacteristic);
+      })
+      .then(()=>{
+        if (this.imuQuaternionCharacteristic) this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
+        else return Promise.resolve(this.imuQuaternionCharacteristic);
+      })
+      .then(()=>{
+        if (this.statusCharacteristic) this.pollforUpdates(this.statusCharacteristic, this.handleState, 1);
+        else return Promise.resolve(this.statusCharacteristic);
+      })
+      .then(()=>{
+        if (this.firmwareVersionCharacteristic) this.pollforUpdates(this.firmwareVersionCharacteristic, this.handleVersion, 1);
+        else return Promise.resolve(this.firmwareVersionCharacteristic);
       })
       .catch(error => {
         console.log(error);
@@ -250,7 +276,7 @@ export class BluetoothComponent implements OnInit {
           BluetoothComponent.serviceID,
           BluetoothComponent.harwareInfoServiceId
         ],
-        
+
       };
       try {
         console.log('Requesting Bluetooth Device...');
@@ -280,7 +306,7 @@ export class BluetoothComponent implements OnInit {
     component.rotx = (event.getInt16(6, true));
     component.roty = (event.getInt16(8, true));
     component.rotz = (event.getInt16(10, true));
-    component.accel = {x: component.accx, y: component.accy, z: component.accz};
+    component.accel = { x: component.accx, y: component.accy, z: component.accz };
     dataArray.Load(new Data([
       Date.now(),
       0,
@@ -317,7 +343,7 @@ export class BluetoothComponent implements OnInit {
   }
 
   private uintToString(uintArray: ArrayBuffer): string {
-      return String.fromCharCode.apply(null, new Uint8Array(uintArray));
+    return String.fromCharCode.apply(null, new Uint8Array(uintArray));
   }
 
   private handleIMU(component: BluetoothComponent, event: DataView) {
@@ -326,10 +352,10 @@ export class BluetoothComponent implements OnInit {
     component.q1 = (event.getFloat32(4, true));
     component.q2 = (event.getFloat32(8, true));
     component.q3 = (event.getFloat32(12, true));
-    component.quat = {q0: component.q0, q1: component.q1, q2: component.q2, q3: component.q3};
+    component.quat = { q0: component.q0, q1: component.q1, q2: component.q2, q3: component.q3 };
     let arr: number[] = [component.q0, component.q1, component.q2, component.q3];
     const rpy: number[] = component.toEuler(arr);
-    component.rot = {x:rpy[0],y:rpy[1],z:rpy[2]};
+    component.rot = { x: rpy[0], y: rpy[1], z: rpy[2] };
     dataArray.Load(new Data([Date.now(), 0, component.q0, component.q1, component.q2, component.q3, rpy[0], rpy[1], rpy[2]]));
   }
 
@@ -346,12 +372,12 @@ export class BluetoothComponent implements OnInit {
   private handleState(component: BluetoothComponent, event: DataView) {
     if (event.byteLength === 11) {
       component.versionNumber = String.fromCharCode(event.getInt8(0)) +
-      String.fromCharCode(event.getInt8(1)) +
-      String.fromCharCode(event.getInt8(2)) +
-      String.fromCharCode(event.getInt8(3)) +
-      String.fromCharCode(event.getInt8(4)) +
-      String.fromCharCode(event.getInt8(5)) +
-      String.fromCharCode(event.getInt8(6));
+        String.fromCharCode(event.getInt8(1)) +
+        String.fromCharCode(event.getInt8(2)) +
+        String.fromCharCode(event.getInt8(3)) +
+        String.fromCharCode(event.getInt8(4)) +
+        String.fromCharCode(event.getInt8(5)) +
+        String.fromCharCode(event.getInt8(6));
       component.loggerState = component.lookupLoggerState(event.getInt8(7));
       component.imuState = component.lookupIMUState(event.getInt8(8));
       component.gpsState = component.lookupGPSState(event.getInt8(9));
@@ -408,7 +434,6 @@ export class BluetoothComponent implements OnInit {
           })
           .catch(error => {
             console.log(error);
-            this.handleBluetoothError();
           });
       } else {
         this.handleBluetoothError();
@@ -419,39 +444,18 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) {
-    try {
-      if (this.device.gatt.connected) {
-        if (this.useNotifications) {
-          const controller: BluetoothComponent = this;
-          charateristic.oncharacteristicvaluechanged = (e) => {
-            if (this.pause) { return; }
-            const evt: any = e.target;
-            const data: DataView = evt.value;
-            controller.zone.run(() => handler(controller, data));
-          };
-          charateristic.startNotifications();
-          return;
-        }
-        this.connected = true;
-        if (this.pause) {
-          timer(1000).subscribe(() => this.pollforUpdates(charateristic, handler, delay));
-          return;
-        }
-        charateristic.readValue()
-          .then((v) => {
-            handler(this, v);
-          }).then(() => timer(delay).subscribe(() => this.pollforUpdates(charateristic, handler, delay)))
-          .catch(error => {
-            console.log(error);
-            this.handleBluetoothError();
-          });
-      } else {
-        this.handleBluetoothError();
-      }
-    } catch (error) {
-      console.log('Argh! ' + error);
-      this.handleBluetoothError();
+  private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) : Promise<BluetoothRemoteGATTCharacteristic> {
+    if (this.device.gatt.connected) {
+      const controller: BluetoothComponent = this;
+        charateristic.oncharacteristicvaluechanged = (e) => {
+          if (this.pause) { return; }
+          const evt: any = e.target;
+          const data: DataView = evt.value;
+          controller.zone.run(() => handler(controller, data));
+        };
+        return charateristic.startNotifications();
+    } else {
+      throw new Error("Cannot register charateristic " + charateristic.uuid);
     }
   }
 
@@ -473,11 +477,11 @@ export class BluetoothComponent implements OnInit {
     const t3 = 2 * (q[2] * q[3] - q[0] * q[1]);
     const t4 = -2 * (q[1] * q[1] + q[2] * q[2]) + 1;
     if (t2 > 1) {
-        t2 = 1;
+      t2 = 1;
     }
 
     if (t2 < -1) {
-        t2 = -1;
+      t2 = -1;
     }
 
     let pitch = Math.asin(t2) * 2;
@@ -487,10 +491,11 @@ export class BluetoothComponent implements OnInit {
     roll = roll * (180.0 / Math.PI);
     yaw = yaw * (180.0 / Math.PI);
     return [pitch, roll, yaw];
-}
+  }
 
   public async registerToServices(service: BluetoothRemoteGATTService, charteristicID: string): Promise<BluetoothRemoteGATTCharacteristic> {
     return service.getCharacteristic(charteristicID).catch(e => {
+      console.error(e);
       throw new Error("Cannot get charateristic " + charteristicID);
     });
   }
