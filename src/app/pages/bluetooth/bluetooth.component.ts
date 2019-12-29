@@ -186,72 +186,60 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
+  public async getCharacteristic(services: BluetoothRemoteGATTService[], serviceId: string, characteristicId: string): Promise<BluetoothRemoteGATTCharacteristic> {
+    const service: BluetoothRemoteGATTService = services.find(s => s.uuid === serviceId);
+    return this.registerToServices(service, characteristicId)
+      .catch(error => {
+        console.error(error);
+        console.log("Failed to subscribe to characteristic" + characteristicId);
+        throw new Error("Cannot register charateristic " + characteristicId);
+      });
+  }
+
+  public async watchCharacteristic(services: BluetoothRemoteGATTService[], serviceId: string, characteristicId: string, handler: Function): Promise<BluetoothRemoteGATTCharacteristic> {
+    const service: BluetoothRemoteGATTService = services.find(s => s.uuid === serviceId);
+    return this.registerToServices(service, characteristicId)
+      .then(char => this.pollforUpdates(char, handler, 0))
+      .catch(error => {
+        console.error(error);
+        console.log("Failed to subscribe to characteristic" + characteristicId);
+        throw new Error("Cannot register charateristic " + characteristicId);
+      });
+  }
+
+  public async readCharacteristic(services: BluetoothRemoteGATTService[], serviceId: string, characteristicId: string, handler: Function): Promise<BluetoothRemoteGATTCharacteristic> {
+    const service: BluetoothRemoteGATTService = services.find(s => s.uuid === serviceId);
+    return this.registerToServices(service, characteristicId)
+      .then(char => this.readOnce(char, handler))
+      .catch(error => {
+        console.error(error);
+        console.log("Failed to subscribe to characteristic" + characteristicId);
+        throw new Error("Cannot register charateristic " + characteristicId);
+      });
+  }
+
   public async tryConnect() {
+    let foundServices: BluetoothRemoteGATTService[] = null;
     return this.device.gatt.connect()
       .then(server => {
         this.device.addEventListener('gattserverdisconnected', () => this.reconnect(this));
         return server.getPrimaryServices();
       })
       .then(services => {
-        const service: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.serviceID);
-        const deviceService: BluetoothRemoteGATTService = services.find(s => s.uuid === BluetoothComponent.harwareInfoServiceId);
-        this.serialNumberCharteristic = null;
-        this.firmwareVersionCharacteristic = null;
-        this.statusCharacteristic = null;
-        this.controlCharacteristic = null;
-        this.imuQuaternionCharacteristic = null;
-        this.atmosphericCharacteristic = null;
-        this.gpsCharacteristic = null;
-        
-        return this.registerToServices(service, BluetoothComponent.imuQuaternionCharacteristicID)
-          .then(charteristic => this.imuQuaternionCharacteristic = charteristic)
-          .catch(error => console.log("IMU characteristic not present"))
-          .then(c => this.registerToServices(service, BluetoothComponent.magnetometerCharacteristicID)
-            .then(charteristic => this.magnetometerCharacteristic = charteristic)
-            .catch(error => console.log("Magnetometer characteristic not present")))
-          .then(c => this.registerToServices(service, BluetoothComponent.atmosphericCharacteristicID)
-            .then(charteristic => this.atmosphericCharacteristic = charteristic)
-            .catch(error => console.log("Atmospheric characteristic not present")))
-          .then(c => this.registerToServices(service, BluetoothComponent.gpsCharacteristicID)
-            .then(charteristic => this.gpsCharacteristic = charteristic)
-            .catch(error => console.log("GPS characteristic not present")))
-          .then(c => this.registerToServices(service, BluetoothComponent.controlCharacteristicID)
-            .then(charteristic => this.controlCharacteristic = charteristic)
-            .catch(error => console.log("Control characteristic not present")))
-          .then(c => this.registerToServices(service, BluetoothComponent.statusCharacteristicID)
-            .then(charteristic => this.statusCharacteristic = charteristic)
-            .catch(error => console.log("Status characteristic not present")))
-          .then(c => this.registerToServices(deviceService, BluetoothComponent.firwareRevisionCharateristicID)
-            .then(charteristic => this.firmwareVersionCharacteristic = charteristic)
-            .catch(error => console.log("Firmware characteristic not present")))
-            
-      })
-      .then(() => {
+        foundServices = services
+        console.log(services.length + " services found:");
+        services.forEach(s => console.log(s.uuid));
         this.stop = false;
         this.pause = false;
-        if (this.magnetometerCharacteristic) return this.pollforUpdates(this.magnetometerCharacteristic, this.handleMagnetometer, 1);
-        else return Promise.resolve(this.magnetometerCharacteristic);
       })
-      .then(()=>{
-        if (this.atmosphericCharacteristic) this.pollforUpdates(this.atmosphericCharacteristic, this.handleAtmospheric, 1);
-        else return Promise.resolve(this.atmosphericCharacteristic);
-      })
-      .then(()=>{
-        if (this.gpsCharacteristic) this.pollforUpdates(this.gpsCharacteristic, this.handleGPS, 1);
-        else return Promise.resolve(this.gpsCharacteristic);
-      })
-      .then(()=>{
-        if (this.imuQuaternionCharacteristic) this.pollforUpdates(this.imuQuaternionCharacteristic, this.handleIMU, 1);
-        else return Promise.resolve(this.imuQuaternionCharacteristic);
-      })
-      .then(()=>{
-        if (this.statusCharacteristic) this.pollforUpdates(this.statusCharacteristic, this.handleState, 1);
-        else return Promise.resolve(this.statusCharacteristic);
-      })
-      .then(()=>{
-        if (this.firmwareVersionCharacteristic) this.pollforUpdates(this.firmwareVersionCharacteristic, this.handleVersion, 1);
-        else return Promise.resolve(this.firmwareVersionCharacteristic);
-      })
+      .then(() => this.watchCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.imuQuaternionCharacteristicID, this.handleIMU).then(c => this.imuQuaternionCharacteristic = c))
+      .then(() => this.watchCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.atmosphericCharacteristicID, this.handleAtmospheric).then(c => this.atmosphericCharacteristic = c))
+      .then(() => this.watchCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.gpsCharacteristicID, this.handleGPS).then(c => this.gpsCharacteristic = c))
+      .then(() => this.watchCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.magnetometerCharacteristicID, this.handleMagnetometer).then(c => this.magnetometerCharacteristic = c))
+      .then(() => this.watchCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.statusCharacteristicID, this.handleState).then(c => this.statusCharacteristic = c))
+      .then(() => this.getCharacteristic(foundServices, BluetoothComponent.serviceID, BluetoothComponent.controlCharacteristicID).then(c => this.controlCharacteristic = c))
+      .then(() => this.readCharacteristic(foundServices, BluetoothComponent.harwareInfoServiceId, BluetoothComponent.firwareRevisionCharateristicID, this.handleVersion).then(c => this.firmwareVersionCharacteristic = c))
+
       .catch(error => {
         console.log(error);
         this.handleBluetoothError();
@@ -275,8 +263,7 @@ export class BluetoothComponent implements OnInit {
         optionalServices: [
           BluetoothComponent.serviceID,
           BluetoothComponent.harwareInfoServiceId
-        ],
-
+        ]
       };
       try {
         console.log('Requesting Bluetooth Device...');
@@ -425,35 +412,28 @@ export class BluetoothComponent implements OnInit {
     }
   }
 
-  private readOnce(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function) {
-    try {
-      if (this.device.gatt.connected) {
-        charateristic.readValue()
-          .then((v) => {
-            handler(this, v);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      } else {
-        this.handleBluetoothError();
-      }
-    } catch (error) {
-      console.log('Argh! ' + error);
-      this.handleBluetoothError();
-    }
+  private readOnce(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function): Promise<BluetoothRemoteGATTCharacteristic> {
+    return charateristic.readValue()
+      .then((v) => {
+        handler(this, v);
+        return charateristic;
+      })
+      .catch(error => {
+        console.error(error);
+        throw new Error("Cannot read charateristic " + charateristic.uuid);
+      });
   }
 
-  private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number) : Promise<BluetoothRemoteGATTCharacteristic> {
+  private pollforUpdates(charateristic: BluetoothRemoteGATTCharacteristic, handler: Function, delay: number): Promise<BluetoothRemoteGATTCharacteristic> {
     if (this.device.gatt.connected) {
       const controller: BluetoothComponent = this;
-        charateristic.oncharacteristicvaluechanged = (e) => {
-          if (this.pause) { return; }
-          const evt: any = e.target;
-          const data: DataView = evt.value;
-          controller.zone.run(() => handler(controller, data));
-        };
-        return charateristic.startNotifications();
+      charateristic.oncharacteristicvaluechanged = (e) => {
+        if (this.pause) { return; }
+        const evt: any = e.target;
+        const data: DataView = evt.value;
+        controller.zone.run(() => handler(controller, data));
+      };
+      return charateristic.startNotifications();
     } else {
       throw new Error("Cannot register charateristic " + charateristic.uuid);
     }
