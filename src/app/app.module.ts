@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, FaIconLibrary, FaConfig } from '@fortawesome/angular-fontawesome';
 import { faTag, faCloudDownloadAlt, faStop, faPause, faPlay, faCompressArrowsAlt } from '@fortawesome/free-solid-svg-icons'
 import { faBluetooth } from '@fortawesome/free-brands-svg-icons'
+import { MarkdownModule } from 'ngx-markdown';
 // import { fas } from '@fortawesome/free-solid-svg-icons';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
 // import { far } from '@fortawesome/free-regular-svg-icons';
@@ -27,6 +28,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     AppComponent
   ],
   imports: [
+    MarkdownModule.forRoot(),
     BrowserModule,
     CommonModule,
     AppRoutingModule,

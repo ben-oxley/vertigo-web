@@ -9,12 +9,14 @@ import { GraphsModule } from '../graphs/graphs.module';
 import { ControlsModule } from '../controls/controls.module';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MarkdownModule } from 'ngx-markdown';
 import { PendulumComponent } from './pendulum/pendulum.component';
 import { CircularmotionComponent } from './circularmotion/circularmotion.component';
 import { VelocitytimeComponent } from './velocitytime/velocitytime.component';
 import { TrampolineComponent } from './trampoline/trampoline.component';
 import { ThreedModule } from '../threed/threed.module';
 import { InstructionsComponent } from './instructions/instructions.component';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -29,7 +31,9 @@ const PAGES_COMPONENTS = [
     GraphsModule,
     CommonModule,
     FontAwesomeModule,
-    ThreedModule
+    ThreedModule,
+    HttpClientModule,
+    MarkdownModule.forRoot({ loader: HttpClient })
   ],
   declarations: [
     ...PAGES_COMPONENTS,
