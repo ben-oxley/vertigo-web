@@ -21,12 +21,16 @@
                         </ul>
                         <h2>Using Vertigo</h2>
                         <ol>
-                            <li><a href="/#/instructions" (click)="scrollToElement(insert_remove_sd)">Inserting and removing an SD Card</a></li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(turning_on)">Turning vertigo on</a></li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(format_sd)">Clear and format SD Card</a></li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(insert_remove_sd)">Inserting and
+                                    removing an SD Card</a></li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(turning_on)">Turning vertigo on</a>
+                            </li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(format_sd)">Clear and format SD
+                                    Card</a></li>
                             <li>Connect to bluetooth</li>
                             <li>Calibration</li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(logging)">Starting and stopping logging</a></li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(logging)">Starting and stopping
+                                    logging</a></li>
                             <li>Getting files from the SD Card</li>
                             <li><a href="/#/instructions" (click)="scrollToElement(data)">Looking at log data</a></li>
                             <li><a href="/#/instructions" (click)="scrollToElement(charging)">Charging</a></li>
@@ -37,7 +41,7 @@
                         </ul>
                         <h2>Using the website</h2>
                         <ol>
-                            <li>Loading data</li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(web-load-file)">Loading data</a></li>
                             <li>Viewing Graphs</li>
                             <li>Processing Data</li>
                             <li>Connecting to bluetooth</li>
@@ -205,6 +209,27 @@
                             port.
                             4. When the green CHARGE LED is extinguished, the battery is charged.
                         </markdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12" #web-load-file>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Loading Files</h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="card-text">
+                        <markdown ngPreserveWhitespaces>
+                            Files can be loaded at the top of the page click the browse button. If the file only
+                            contains a small section that is of interest, the trim controls can be used to trim the file
+                            down to only contain the information you are interested in.
+                        </markdown>
+                        <img width="80%" src="/assets/gifs/file-load.gif">
                     </div>
                 </div>
             </div>
