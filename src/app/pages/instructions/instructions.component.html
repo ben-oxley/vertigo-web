@@ -42,7 +42,8 @@
                         <h2>Using the website</h2>
                         <ol>
                             <li><a href="/#/instructions" (click)="scrollToElement(web-load-file)">Loading data</a></li>
-                            <li>Viewing Graphs</li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(viewing-graphs)">Viewing Graphs</a>
+                            </li>
                             <li>Processing Data</li>
                             <li>Connecting to bluetooth</li>
                             <li>Installing as an application</li>
@@ -230,6 +231,63 @@
                             down to only contain the information you are interested in.
                         </markdown>
                         <img width="80%" src="/assets/gifs/file-load.gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12" #viewing-graphs>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Viewing graphs</h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="card-text">
+                        <markdown ngPreserveWhitespaces>
+                            Once a file is loaded, you can select the series you want to plot on the graph. The graphs
+                            have a lot of inbuilt functionality, you can zoom in on a region, take screenshots, get the
+                            value of a particular point and much more. Use the controls in the top right of the graph to
+                            turn on features.
+
+                            If that's not enough, the edit graph button in the bottom right corner allows you to
+                            customise the graph to your heart's content, as well as export the processed data series as
+                            a csv, customise the colours and plot types.
+                        </markdown>
+                        <img width="80%" src="/assets/gifs/graph-controls.gif">
+                        <markdown ngPreserveWhitespaces>
+                            Latitude and longitude can also be plotted as a map. Click the map tab at the top. There
+                            should be a marker that shows the most recent point in the dataseries as well as showing the
+                            full path that vertigo took. You can change the backing map as well so you can see the track
+                            overlaid on a map or satellite data.
+                        </markdown>
+                        <img width="80%" src="/assets/gifs/map-controls.gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12" #processing-data>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Processing Data</h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="card-text">
+                        <markdown ngPreserveWhitespaces>
+                            At the bottom of the page, there are a range of options for processing the data. You can
+                            select from smoothing, integration and differentiation right now, but we're planning to add
+                            more!
+
+                            Select a series to process, select what type of processing you want to do and then hit
+                            process. The new processed series will be available on the graph.
+                        </markdown>
+                        <img width="80%" src="/assets/gifs/processing-controls.gif">
                     </div>
                 </div>
             </div>
