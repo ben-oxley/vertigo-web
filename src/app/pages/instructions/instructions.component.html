@@ -12,13 +12,7 @@
                             If this is your first time using vertigo, make sure you do things in order!
                         </p>
                         <h2>What is Vertigo</h2>
-                        <ul>
-                            <li>Sensors</li>
-                            <li>Battery</li>
-                            <li>SD Card</li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(leds)">LEDs (lights)</a></li>
-                            <li>Bluetooth</li>
-                        </ul>
+                        <a href="/#/instructions" (click)="scrollToElement(about)">About</a>
                         <h2>Using Vertigo</h2>
                         <ol>
                             <li><a href="/#/instructions" (click)="scrollToElement(insert_remove_sd)">Inserting and
@@ -42,8 +36,10 @@
                         <h2>Using the website</h2>
                         <ol>
                             <li><a href="/#/instructions" (click)="scrollToElement(web_load_file)">Loading data</a></li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(viewing_graphs)">Viewing Graphs</a></li>
-                            <li><a href="/#/instructions" (click)="scrollToElement(processing_data)">Processing Data</a></li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(viewing_graphs)">Viewing Graphs</a>
+                            </li>
+                            <li><a href="/#/instructions" (click)="scrollToElement(processing_data)">Processing Data</a>
+                            </li>
                             <li>Connecting to bluetooth</li>
                             <li>Installing as an application</li>
                         </ol>
@@ -53,23 +49,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <div class="card" #leds>
+        <div class="col-12" #about>
+            <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">LEDs (Lights)</h5>
+                    <h5 class="card-title">Vertigo Hardware Capabilities</h5>
                 </div>
                 <div class="card-body">
 
                     <div class="card-text">
-                        <p>Vertigo has a set of Light Emitting Diodes (LEDs) which indicate information about the
-                            current status of Vertigo. There are three LEDs on the device. These are Green, Orange and
-                            Blue in colour.</p>
-                        <img width="80%" src="assets/img/led-annotations.PNG">
+                        <markdown [src]="'/assets/instructions/about.md'"></markdown>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <div class="row">
         <div class="col-12">
