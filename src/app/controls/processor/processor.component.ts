@@ -19,12 +19,11 @@ export class ProcessorComponent implements OnInit {
 
   constructor() { }
 
-  @Input() public VertigoRawData: VertigoRawData;
-  @Output() loadedProcessedData = new EventEmitter<VertigoProcessedData>();
   @Output() loadingProgress = new EventEmitter<number>();
   public Dataspec: Dataspec = new Dataspec();
   public SelectedValue: any;
   public SelectedValue2: any;
+  public AvailableValues: DataType[] = [];
   public SelectedValues: DataType[] = [];
   public ProcessingMethods: ProcessingMethod[] = ProcessingMethods.GetAllMethods();
   public SelectedProcessingMethod: ProcessingMethod;
@@ -34,6 +33,11 @@ export class ProcessorComponent implements OnInit {
   private SeriesName: string = "";
 
   ngOnInit() {
+    this.DataStore.AddListener(this);
+  }
+
+  public DataChanged(added: DataType[], removed: DataType[]){
+    this.AvailableValues = this.DataStore.GetAvailableDataTypes();
   }
 
   smooth(dataType: DataType) {
@@ -61,8 +65,8 @@ export class ProcessorComponent implements OnInit {
     this.SelectedValues = DataTypes;
   }
 
-  public setSeriesName(event:any){
-      this.SeriesName = event;
+  public setSeriesName(event: any) {
+    this.SeriesName = event;
   }
 
   public processingSelectionChanged(event: any) {
@@ -79,18 +83,15 @@ export class ProcessorComponent implements OnInit {
 
   public process() {
     console.log(this.Params);
-    this.loadedProcessedData.emit(this.VertigoRawData);
     let method: DataBlock = this.SelectedProcessingMethod.ConstructDataBlock();
     let dataStore: VertigoDataStore = VertigoDataStoreManager.GetDataStore();
     this.SelectedValues.forEach(type => {
       method.SetHeaders(type.Columns.map(c => c.Id as string));
       method.SetParams(this.Params.map(p => p.Value));
-      method.LoadAll(this.VertigoRawData.DataTypes.get(type.Identifier).Data())
-      const dataType:DataType = new DataType().from(type);
+      method.LoadAll(dataStore.Get(type).Data())
+      const dataType: DataType = new DataType().from(type);
       dataType.Name = this.SeriesName;
-      this.ProcessedData.DataTypes.set(dataType.Identifier, method);
-      dataStore.Load(dataType, this.VertigoRawData.DataTypes.get(dataType.Identifier));
+      dataStore.Load(dataType, method);
     });
-    this.loadedProcessedData.emit(this.ProcessedData);
   }
 }

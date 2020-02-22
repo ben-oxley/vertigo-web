@@ -11,7 +11,7 @@
         </div>
         <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" size="5"
             (change)="selectionChanged($event.target.selectedOptions)">
-            <option *ngFor="let type of DataStore.GetAvailableDataTypes()" label="{{type.Name}}" value="{{type.Id}}">{{type.Name}}
+            <option *ngFor="let type of AvailableValues" label="{{type.Name}}" value="{{type.Id}}">{{type.Name}}
             </option>
         </select>
         <select class="custom-select" id="processingmethod2" [(ngModel)]="SelectedValue2" size="5"
