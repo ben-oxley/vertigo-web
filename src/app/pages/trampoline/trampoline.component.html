@@ -1,5 +1,4 @@
 <h1 id="trampoline-jumping-1"><a name="jump"></a>Trampoline Jumping</h1>
-<p><img src="https://media.giphy.com/media/bTIgsd4dlCalDfxZsg/giphy.gif" alt="Alt Text" /></p>
 <h2 id="beginner-3"><a name="BeginnerJ"></a>Beginner</h2>
 <h3 id="measuring-the-forces-acting-on-a-trampolinist">Measuring the forces acting on a trampolinist.</h3>
 <p>For this experiment it will be assumed that the trampolinist is only moving in the vertical direction.<br />
@@ -13,55 +12,29 @@
     <li>Once finished, press the log button again to end the data capture.</li>
     <li>Wait until Vertigo’s LED lights stop flashing</li>
 </ul>
-<p>The following <a href="tramp_scripts.zip">Scripts</a> need to be downloaded into the same folder</p>
 <ul>
-    <li>Open matlab and run the script Trampoline_lesson_1</li>
+    <li>Using the website, load the data logged on from Vertigo using the graph below.</li>
 </ul>
 <p>After a short time, a graph will appear.</p>
 <h3 id="nb">NB</h3>
 <p>The data used here is not from a trampoline, but the scripts have been written for this purpose.</p>
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-                <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
-                (loadingProgress)="loading($event)"></loader>
-            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
-                [SelectedSeries]="Graph1Series">
-            </graph-control>
-        </div>
-        <div class="col-6">
-            <img src="https://vertigo.engineering/vertigo-instructions/tramp0.jpg" alt="" />
-        </div>
-    </div>
-</div>
-
-<p>The operator will then be asked</p>
-<ul>
-    <li>What time do you wish to start analysis from? In the command window normally found at the bottom of the matlab
-        screen</li>
-</ul>
-<p>Looking at the graph, input a suitable start time, in seconds, into the command window</p>
-<p>And then:</p>
-<ul>
-    <li>What time do you wish to end the analysis?</li>
-</ul>
-<p>Chose an end time and enter this in seconds into the command window.</p>
-<p>And finally</p>
-<ul>
-    <li>What is the mass of the trampolinist?</li>
-</ul>
-<p>This is simply required to calculate the force acting on the trampolinist using F=ma.
-    Input the trampolinist’s mass in Kilograms.</p>
-<p>Once this data has been entered, graphs such as the one below will be produced.</p>
-<p><img src="https://vertigo.engineering/vertigo-instructions/tramp1.jpg" alt="" /></p>
-<p>An interesting investigation could be to find the relationship between a pupil’s mass, and the maximum force
+<loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
+    (loadingProgress)="loading($event)"></loader>
+<graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData" [SelectedSeries]="Graph1Series">
+</graph-control>
+<p>Vertigo shows acceleration experienced by the trampolinist, the graph above has several big spikes on it that show
+    where the trampolinist jumps on the trampoline.</p>
+<p>The higher the trampolinist jumps, the greater the acceleration spikes seen on vertigo will be. 
+    An interesting investigation could be to find the relationship between a pupil’s jump height, and the maximum acceleration
     experienced on the trampoline.</p>
+<p></p>
+<p></p>
 <h2 id="intermediate-3"><a name="IntermediateJ"></a>Intermediate</h2>
 <h3 id="force-displacement-and-velocity">Force, displacement and velocity</h3>
 <p>It is also possible to investigate the height and velocity of the trampolinist. This is similar to previous
-    investigations.
-    The gradient of the distance/ time graph ought to be directly proportional to the velocity.</p>
+    investigations. The gradient of the distance/ time graph ought to be directly proportional to the velocity.</p>
+<p>We can use the integral controls on the website to calculate velocity from the acceleration </p>
 <ul>
     <li>Load the script Tramp_lesson2 and follow the instructions as before.</li>
 </ul>
@@ -123,19 +96,19 @@
     rotations is occurring around the x-axis.</p>
 
 <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
-                    [SelectedSeries]="Graph2Series">
-                </graph-control>
-            </div>
-            <div class="col-6">
-                    <img src="https://vertigo.engineering/vertigo-instructions/tramp9.jpg" alt="" />
-            </div>
+    <div class="row">
+        <div class="col-6">
+            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+                [SelectedSeries]="Graph2Series">
+            </graph-control>
+        </div>
+        <div class="col-6">
+            <img src="https://vertigo.engineering/vertigo-instructions/tramp9.jpg" alt="" />
         </div>
     </div>
-    
-    <br/><br/>
+</div>
+
+<br /><br />
 <p>It should be clear that, if rotations between athletes are to be compared, Vertigo will need to be affixed in a
     consistent manner.
     Or, the trampoline jumper would need to face the same way each time he/she jumped.</p>

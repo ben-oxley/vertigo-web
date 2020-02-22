@@ -77,11 +77,13 @@ export class ProcessorComponent implements OnInit {
     console.log(this.Params);
     this.loadedProcessedData.emit(this.VertigoRawData);
     let method: DataBlock = this.SelectedProcessingMethod.ConstructDataBlock();
+    let dataStore:VertigoDataStore = VertigoDataStoreManager.GetDataStore();
     this.SelectedValues.forEach(type=>{
       method.SetHeaders(type.Columns.map(c => c.Id as string));
       method.SetParams(this.Params.map(p=>p.Value));
       method.LoadAll(this.VertigoRawData.DataTypes.get(type.Identifier).Data())
       this.ProcessedData.DataTypes.set(type.Identifier,method);
+      dataStore.Load(type,this.VertigoRawData.DataTypes.get(type.Identifier));
     });
     this.loadedProcessedData.emit(this.ProcessedData);
   }
