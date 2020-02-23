@@ -1,9 +1,9 @@
 <div class="dropdown w-100">
     <div class="input-group">
         <div class="input-group-prepend">
-            <label class="input-group-text" for="nameLabelInputGroup" (change)="setSeriesName($event.target.value)">Description</label>
+            <label class="input-group-text" for="nameLabelInputGroup">Description</label>
         </div>
-        <input type="text" id="nameLabelInputGroup" class="form-control" placeholder="Write a description for the processed data series here" >
+        <input type="text" id="nameLabelInputGroup" class="form-control" (change)="setSeriesName($event.target.value)" placeholder="Write a description for the processed data series here" >
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
