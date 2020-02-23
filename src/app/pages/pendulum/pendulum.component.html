@@ -95,7 +95,7 @@
         <div class="col-6">
             <loader (loaded)="onLoaded($event)" (loadedProcessedData)="onProcessedLoaded($event)"
                 (loadingProgress)="loading($event)"></loader>
-            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+            <graph-control
                 [SelectedSeries]="Graph1Series">
             </graph-control>
         </div>
@@ -125,7 +125,7 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <graph-control [RawData]="VertigoRawData" [ProcessedData]="VertigoProcessedData"
+            <graph-control
                 [SelectedSeries]="Graph2Series">
             </graph-control>
         </div>
