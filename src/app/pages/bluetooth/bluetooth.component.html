@@ -1,9 +1,29 @@
 <div class="container-fluid">
   <div class="row no-gutters">
-    <div class="col-12">
+    <div class="col">
+
+      <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()">
+        <fa-icon [icon]="['fab', 'bluetooth']"></fa-icon> {{connected ? "Disconnect":"Connect"}}
+      </button>
+      <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()">
+        <fa-icon [icon]="['fas', 'play']"></fa-icon> Start Logging
+      </button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()">
+        <fa-icon [icon]="['fas', 'pause']"></fa-icon> Pause Browser
+      </button>
+      <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()">
+        <fa-icon [icon]="['fas', 'stop']"></fa-icon> Stop Logging
+      </button>
+      <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="calibrate()">
+        <fa-icon [icon]="['fas', 'compress-arrows-alt']"></fa-icon>Calibrate
+      </button>
+
+    </div>
+
+    <div class="col-11">
       <app-tabs>
         <app-tab [tabTitle]="'Graph'">
-          <graph-control-selection [VertigoRawData]="VertigoRawData" ></graph-control-selection>
+          <graph-control-selection [VertigoRawData]="VertigoRawData"></graph-control-selection>
         </app-tab>
         <app-tab [tabTitle]="'Map'" (selected)="map.reload()">
           <live-map #map [RawData]="VertigoRawData" [lat]="lat" [lon]="lon"></live-map>
@@ -12,53 +32,41 @@
           <app-orientation #orientation [Quat]="quat" [Accel]="accel"></app-orientation>
         </app-tab>
       </app-tabs>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <app-tabs>
-          <app-tab [tabTitle]="'Acceleration'">
-                  <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
-                  <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-                  <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-                  <div><span><b>Absolute Magnitude: </b><span>{{ acc2 | number:'.5'}}</span> m/s<sup>2</sup></span></div>
-          </app-tab>
-          <app-tab [tabTitle]="'Rotational Velocity'">
-              <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
-              <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
-              <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
-          </app-tab>
-          <app-tab [tabTitle]="'Location'">
-              <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
-              <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
-              <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
-              <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b>  Flags: </b><span>{{flags}}</span></span></div>
-          </app-tab>
-          <app-tab [tabTitle]="'Atmospheric'">
-            <div><span><b>Temperature: </b><span>{{temp| number:'.2'}}</span> °C</span></div>
-            <div><span><b>Pressure: </b><span>{{press| number:'.2'}}</span> kPa</span></div>
-            <div><span><b>Humidity: </b><span>{{humidity| number:'.2'}}</span> %</span></div>
+        <app-tab [tabTitle]="'Acceleration'">
+          <div><span><b>X: </b><span>{{ accx | number:'.5' }}</span> m/s<sup>2</sup></span></div>
+          <div><span><b>Y: </b><span>{{ accy | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+          <div><span><b>Z: </b><span>{{ accz | number:'.5'}}</span> m/s<sup>2</sup></span></div>
+          <div><span><b>Absolute Magnitude: </b><span>{{ acc2 | number:'.5'}}</span> m/s<sup>2</sup></span></div>
         </app-tab>
-          <app-tab [tabTitle]="'Status'">
-              <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
-              <div><span><b>Serial Number:</b> {{serialNumber}}</span></div>
-              <div><span><b>Logger State:</b> {{loggerState}}</span></div>
-              <div><span><b>IMU State:</b> {{imuState}}</span></div>
-              <div><span><b>GPS State:</b> {{gpsState}}</span></div>
-              <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
-          </app-tab>
-         
-        </app-tabs>
-      
-        
-      
-      <div class="row align-items-center no-gutters">
-        <div class="col-12">
-          <button type="button" class="btn btn-outline-primary btn-block" (click)="connect()"><fa-icon [icon]="['fab', 'bluetooth']"></fa-icon> {{connected ? "Disconnect":"Connect"}}</button>
-              <button type="button" class="btn btn-outline-success btn-block" [disabled]="!connected" (click)="startLogging()"><fa-icon [icon]="['fas', 'play']"></fa-icon> Start Logging</button>
-              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="pauseLogging()"><fa-icon [icon]="['fas', 'pause']"></fa-icon> Pause Browser</button>
-              <button type="button" class="btn btn-outline-danger btn-block" [disabled]="!connected" (click)="stopLogging()"><fa-icon [icon]="['fas', 'stop']"></fa-icon> Stop Logging</button>
-              <button type="button" class="btn btn-outline-info btn-block" [disabled]="!connected" (click)="calibrate()"><fa-icon [icon]="['fas', 'compress-arrows-alt']"></fa-icon>Calibrate</button>
-        </div>
-      </div>
+        <app-tab [tabTitle]="'Rotational Velocity'">
+          <div><span><b>X: </b><span>{{ rotx | number:'.0'}}</span>°/s</span></div>
+          <div><span><b>Y: </b><span>{{ roty | number:'.0'}}</span>°/s</span></div>
+          <div><span><b>Z: </b><span>{{ rotz | number:'.0'}}</span>°/s</span></div>
+        </app-tab>
+        <app-tab [tabTitle]="'Location'">
+          <div><span><b>Latitude: </b><span>{{lat| number:'.8'}}</span> Degrees</span></div>
+          <div><span><b>Longitude: </b><span>{{lon| number:'.8'}}</span> Degrees</span></div>
+          <div><span><b>Altitude: </b><span>{{alt| number:'.2'}}</span> m</span></div>
+          <div><span><b>Fix: </b><span>{{fix}}</span></span><span><b> Flags: </b><span>{{flags}}</span></span></div>
+        </app-tab>
+        <app-tab [tabTitle]="'Atmospheric'">
+          <div><span><b>Temperature: </b><span>{{temp| number:'.2'}}</span> °C</span></div>
+          <div><span><b>Pressure: </b><span>{{press| number:'.2'}}</span> kPa</span></div>
+          <div><span><b>Humidity: </b><span>{{humidity| number:'.2'}}</span> %</span></div>
+        </app-tab>
+        <app-tab [tabTitle]="'Status'">
+          <div><span><b>Firmware version:</b> {{versionNumber}}</span></div>
+          <div><span><b>Serial Number:</b> {{serialNumber}}</span></div>
+          <div><span><b>Logger State:</b> {{loggerState}}</span></div>
+          <div><span><b>IMU State:</b> {{imuState}}</span></div>
+          <div><span><b>GPS State:</b> {{gpsState}}</span></div>
+          <div><span><b>Atmospheric Sensor State:</b> {{atmosphericState}}</span></div>
+        </app-tab>
+
+      </app-tabs>
     </div>
   </div>
 </div>
