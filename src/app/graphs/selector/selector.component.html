@@ -11,7 +11,7 @@
       <select multiple class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" size="10"
         (change)="selectionChanged($event.target.selectedOptions)" (click)="$event.stopPropagation()">
         <option value="time" selected>Time (Seconds)</option>
-        <optgroup *ngFor="let type of Dataspec.Types" label="{{type.Name}}">
+        <optgroup *ngFor="let type of AvailableValues" label="{{type.Name}}">
           <option *ngFor="let column of type.Columns" value="{{type.Id}},{{column.Id}}">{{column.Name}}</option>
         </optgroup>
       </select>

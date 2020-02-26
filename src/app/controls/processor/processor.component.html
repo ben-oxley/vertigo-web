@@ -1,15 +1,21 @@
 <div class="dropdown w-100">
     <div class="input-group">
         <div class="input-group-prepend">
+            <label class="input-group-text" for="nameLabelInputGroup">Description</label>
+        </div>
+        <input type="text" id="nameLabelInputGroup" class="form-control" (change)="setSeriesName($event.target.value)" placeholder="Write a description for the processed data series here" >
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">Options</label>
         </div>
         <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="SelectedValue" size="5"
             (change)="selectionChanged($event.target.selectedOptions)">
-            <option *ngFor="let type of Dataspec.Types" label="{{type.Name}}" value="{{type.Id}}">{{type.Name}}
+            <option *ngFor="let type of AvailableValues" label="{{type.Name}}" value="{{type.Id}}">{{type.Name}}
             </option>
         </select>
         <select class="custom-select" id="processingmethod2" [(ngModel)]="SelectedValue2" size="5"
-        (change)="processingSelectionChanged($event.target.selectedOptions)">
+            (change)="processingSelectionChanged($event.target.selectedOptions)">
             <option *ngFor="let type of ProcessingMethods" label="{{type.Name}}" value="{{type.Name}}">
                 {{type.Name}}
             </option>
@@ -17,12 +23,11 @@
     </div>
     <div *ngIf="Params">
         <div *ngFor="let param of Params" class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="{{param.Name}}">{{param.Name}}</span>
-                </div>
-                <input type="number" class="form-control" placeholder="{{param.Value}}" [(ngModel)]="param.Value">
-              </div>
-            
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="{{param.Name}}">{{param.Name}}</span>
+            </div>
+            <input type="number" class="form-control" placeholder="{{param.Value}}" [(ngModel)]="param.Value">
+        </div>
     </div>
     <button (click)="process()" class="btn btn-success w-100">Process</button>
 </div>

@@ -10,7 +10,8 @@ export class VertigoInMemoryDataStore implements VertigoDataStore {
         return Array.from(this.store.keys());
     }
     Get(type: DataType): DataBlock {
-        return this.store.get(type);
+        return [...this.store.entries()].find(e=>e[0].Identifier===type.Identifier&&e[0].Name===type.Name)[1];
+        //return this.store.get(type);
     }
     AddListener(listener: DataStoreListener) {
         this.listeners.push(listener);

@@ -2,6 +2,8 @@ import { Component, OnInit, SimpleChanges, Input, Output, EventEmitter } from '@
 import { Dataspec } from '../../processing/dataspec';
 import { Column } from '../../processing/column';
 import { DataType } from '../../processing/datatype';
+import { VertigoDataStore } from 'src/app/processing/VertigoDataStore';
+import { VertigoDataStoreManager } from 'src/app/processing/VertigoDataStoreManager';
 
 
 
@@ -17,13 +19,22 @@ export class SelectorComponent implements OnInit {
   public Dataspec:Dataspec = new Dataspec();
   public SelectedValue:any;
   public SelectedValues:DataType[] = [];
+  public AvailableValues:DataType[] = [];
+  private DataStore:VertigoDataStore =  VertigoDataStoreManager.GetDataStore();
   @Output() SelectionChanged = new EventEmitter<DataType[]>();
 
   ngOnInit() {
+    this.DataStore.AddListener(this);
+    this.AvailableValues = this.DataStore.GetAvailableDataTypes();
   }
-  
+
   ngOnChanges(changes: SimpleChanges){
     //console.log(this.SelectedValue);
+  }
+
+  
+  public DataChanged(added: DataType[], removed: DataType[]){
+    this.AvailableValues = this.DataStore.GetAvailableDataTypes();
   }
 
   public selectionChanged(event:any){

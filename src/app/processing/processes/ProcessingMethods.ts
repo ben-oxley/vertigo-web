@@ -24,5 +24,4 @@ export class ProcessingMethods{
     public static GetAllMethods():ProcessingMethod[]{
         return [ProcessingMethods.Smoothing,ProcessingMethods.Integrating,ProcessingMethods.Decimating];
     } 
-    
 }
