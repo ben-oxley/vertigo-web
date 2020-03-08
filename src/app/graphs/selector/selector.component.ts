@@ -41,10 +41,10 @@ export class SelectorComponent implements OnInit {
     let DataTypes:DataType[] = [];
     Object.values(event).forEach(v=>{
       let key:any = (<any>v).value.split(":")[1].trim().replace('\'','').replace('\'','').split(",");
-      let group:DataType = this.Dataspec.Types.find(t=>t.Id===key[0]);
-      let col:Column = group.Columns.find(d=>d.Id===key[1]);
-      if (DataTypes.find(t=>t.Id===key[0])){
-        DataTypes.find(t=>t.Id===key[0]).Columns.push(col);
+      let group:DataType = this.AvailableValues.find(t=>t.Id===key[1]&&t.Name==key[0]);
+      let col:Column = group.Columns.find(d=>d.Id===key[2]);
+      if (DataTypes.find(t=>t.Id===key[2])){
+        DataTypes.find(t=>t.Id===key[2]).Columns.push(col);
       } else {
         let newDataType:DataType = new DataType().from(group);
         newDataType.Columns = [];

@@ -12,7 +12,7 @@
         (change)="selectionChanged($event.target.selectedOptions)" (click)="$event.stopPropagation()">
         <option value="time" selected>Time (Seconds)</option>
         <optgroup *ngFor="let type of AvailableValues" label="{{type.Name}}">
-          <option *ngFor="let column of type.Columns" value="{{type.Id}},{{column.Id}}">{{column.Name}}</option>
+          <option *ngFor="let column of type.Columns" value="{{type.Name}},{{type.Id}},{{column.Id}}">{{column.Name}}</option>
         </optgroup>
       </select>
     </div>
