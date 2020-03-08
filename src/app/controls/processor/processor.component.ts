@@ -56,9 +56,10 @@ export class ProcessorComponent implements OnInit {
 
   public selectionChanged(event: any) {
     const DataTypes: DataType[] = [];
+    let dataStore: VertigoDataStore = VertigoDataStoreManager.GetDataStore();
     Object.values(event).forEach(v => {
       const key: any = (v as any).value.replace('\'', '').replace('\'', '').split(',');
-      const group: DataType = this.Dataspec.Types.find(t => t.Id === key[0]);
+      const group: DataType = dataStore.GetAvailableDataTypes().find(t => t.Id === key[0]);
       const newDataType: DataType = new DataType().from(group);
       DataTypes.push(newDataType);
     });

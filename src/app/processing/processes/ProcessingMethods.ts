@@ -3,6 +3,7 @@ import { SmoothedData } from './smootheddata'
 import { DataBlock } from '../datablock';
 import { DataIntegrator } from './dataintegrator';
 import { Decimator } from './decimator';
+import { DriftCorrectedData } from './driftcorrection';
 
 
 export class ProcessingMethods{
@@ -21,7 +22,12 @@ export class ProcessingMethods{
         decimationProcessor.SetParams(args)
         return decimationProcessor;
     },"Decimation", ["Frequency"], [10]);
+    public static DriftCorrecting:ProcessingMethod = new ProcessingMethod((args:number[])=>{
+        let driftProcessor:DataBlock = new DriftCorrectedData();
+        driftProcessor.SetParams(args);
+        return driftProcessor;
+    }, "Drift Correction", [],[]);
     public static GetAllMethods():ProcessingMethod[]{
-        return [ProcessingMethods.Smoothing,ProcessingMethods.Integrating,ProcessingMethods.Decimating];
-    } 
+        return [ProcessingMethods.Smoothing,ProcessingMethods.Integrating,ProcessingMethods.Decimating,ProcessingMethods.DriftCorrecting];
+    }
 }

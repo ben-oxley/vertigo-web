@@ -64,6 +64,7 @@ export class LoaderComponent implements OnInit {
           let spec: Dataspec = new Dataspec();
           rawDataClass.DataTypes.forEach((v,k)=>{
             let type: DataType = spec.Types.find(t=>t.Identifier==k);
+            type.Name = "Raw Data - "+type.Name;
             store.Load(type, v);
           });
           this.vertigoPreviewData = rawDataClass;
