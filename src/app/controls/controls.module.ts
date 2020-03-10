@@ -7,6 +7,7 @@ import { ProcessorComponent } from './processor/processor.component';
 import { FormsModule } from '@angular/forms';
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tab/tab.component';
+import { SeriesNameValidatorDirective } from './processor/seriesnamevalidator';
 
 
 
@@ -22,6 +23,7 @@ import { TabComponent } from './tab/tab.component';
     ProcessorComponent,
     TabsComponent,
     TabComponent
+    
   ]
 })
 export class ControlsModule { }
