@@ -69,6 +69,7 @@ export class DataGraphComponent implements OnChanges {
   public config:any={
     linkText: 'Edit graph',
     showLink: true,
+    showEditInChartStudio: true,
     responsive: true
   }
 

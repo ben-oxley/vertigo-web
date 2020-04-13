@@ -16,11 +16,11 @@ export class DriftCorrectedData extends AbstractDataBlock{
     }
 
     private correct(){
-      
+        let firstTimestamp = this.data[0].Timestamp?this.data[0].Timestamp:this.data[0].Data[0];
         let sumY:number[] = this.data.map(d=>d.Data).reduce((total,value)=>this.addVectors(total,value));
-        let sumX2:number = this.data.map(d=>d.Timestamp).reduce((t,v)=>t+(v*v));
-        let sumX:number = this.data.map(d=>d.Timestamp).reduce((t,v)=>t+(v));
-        let sumXY:number[] = this.data.map(d=>d.Data).reduce((total,value)=>this.addVectors(total,this.multiplyBy(value,value[0])));
+        let sumX2:number = this.data.map(d=>(d.Timestamp?d.Timestamp-firstTimestamp:d.Data[0]-firstTimestamp)).reduce((t,v)=>t+(v*v));
+        let sumX:number = this.data.map(d=>(d.Timestamp?d.Timestamp-firstTimestamp:d.Data[0]-firstTimestamp)).reduce((t,v)=>t+(v));
+        let sumXY:number[] = this.data.map(d=>d.Data).reduce((total,value)=>this.addVectors(total,this.multiplyBy(value,value[0]-firstTimestamp)));
         let sumY2= this.data.map(d=>d.Data).reduce((total,value)=>this.addVectors(total,this.multiplyVectors(value,value)));
         let a:number[]=[];
         let b:number[]=[];
@@ -34,7 +34,7 @@ export class DriftCorrectedData extends AbstractDataBlock{
         for (let row = 0; row < this.data.length; row++){
             let d = new Data(this.data[row].Data);
             for (let i = 2; i < d.Data.length; i++){
-                d.Data[i] = d.Data[i] - (a[i-2] + b[i-2]*d.Data[0]);
+                d.Data[i] = d.Data[i] - (a[i-2] + b[i-2]*(d.Data[0]-firstTimestamp));
             }
             newData.push(d);
         }
