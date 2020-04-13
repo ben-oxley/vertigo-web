@@ -31,7 +31,7 @@ Vertigo contains three LEDs of varying colours to display status information to 
 * Green (GPS) - this LED flashes slowly when searching for a GPS fix; it lights solidly when a fix is active.
 * Blue (Bluetooth) - this LED illuminates solidly when a Bluetooth connection to an external device is active.
 
-![Vertigo LEDs](img/led-annotations.PNG)
+![Vertigo LEDs](/assets/img/led-annotations.PNG)
 
 ## Bluetooth
 
